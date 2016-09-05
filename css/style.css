@@ -1,3 +1,4 @@
+/* General formating */
 html, body {
 	height: 100%;
 	min-height: 100%;
@@ -11,11 +12,12 @@ body {
 	font-family: 'Josefin Sans', sans-serif;
 }
 
+/* Console that appears at the bottom of the screen. */
 #logbar {
 	position: absolute;
+	width: 100%;
 	height: <?php echo $LOG_BAR_HEIGHT; //esc:?>;
 	bottom: 0;
-	width: 100%;
 	overflow: auto;
 	
 	/* Log settings */
@@ -28,29 +30,39 @@ body {
 	margin: 5px;
 }
 
+/* Logo at the top of the Navigation Bar */
 #logo {
 	width: 100%;
 	display: block;
 }
 #logowrapper {
 	padding: 10px;
-	margin-bottom: 20px;
+	margin: 20px 0;
 }
 #name {
-	width: <?php echo $NAV_BAR_WIDTH; //esc:?>;
-	display: block;
-	position: absolute;
-	bottom: 0;
-	text-align: center;
 	padding: 10px 0;
 	margin: 0;
 	
+	/* Settings for name/announcement */
+	color: #FFF;
 	background-color: rgba(0,0,0,0.3);
+	text-align: center;
 	font-family: 'Amatic SC', cursive;
 	font-size: 20px;
-	color: #FFF;
 }
 
+/* Navigation bar */
+#sidebar {
+	width: <?php echo $NAV_BAR_WIDTH; //esc:?>;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	display: inline-block;
+	
+	/* Sidebar settings */
+	background-color: #303030;
+	border-right: 1px solid #777;
+}
 #navigation a {
 	width: 100%;
 	height: <?php echo $NAV_LINK_HEIGHT; //esc:?>;
@@ -71,9 +83,6 @@ body {
 	text-decoration: none;
 	color: #CCC;
 }
-#navigation #logout {
-	margin-bottom: 100px;
-}
 
 #contentscroller {
 	position: absolute;
@@ -88,28 +97,17 @@ body {
 }
 #content {
 	height: 100%;
-	white-space: normal;
-}
-#sidebar {
-	width: <?php echo $NAV_BAR_WIDTH; //esc:?>;
-	height: 100%;
-	overflow-y: auto;
-	overflow-x: hidden;
-	display: inline-block;
-	
-	/* Sidebar settings */
-	background-color: #303030;
-	border-right: 1px solid #777;
 }
 
 .bar {
-	min-width: 300px;
-	max-width: 450px;
+	min-width: 350px;
+	max-width: 500px;
 	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
 	display: inline-block;
-	
+	white-space: normal;
+		
 	/* General bar settings */
 	background-color: rgba(0,0,0,0.2);
 	border-right: 1px solid #777;
@@ -118,6 +116,7 @@ body {
 .title {
 	background-color: #000;
 	padding: 10px 0 10px 20px;
+	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
 }
 .title h1 {
 	margin: 0;
@@ -135,8 +134,8 @@ body {
 	font-size: 24px;
 	font-weight: bold;
 }
-.subtext {
-	margin: 0;
+.subtext p {
+	margin: 6px 0;
 	color: #999;
 }
 
@@ -151,9 +150,9 @@ body {
 }
 .object {
 	display: block;
-	text-decoration: none;
 	padding: 10px 10px 10px 20px;
-	border-top: 1px solid #777;
+	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
+	text-decoration: none;
 }
 .object h1 {
 	margin: 0;
@@ -168,10 +167,75 @@ body {
 .create:hover {
 	background-image: linear-gradient(to top, rgba(0,92,11, 0.7) 0%, rgba(0,148,17, 0.9) 100%);
 }
+.destroy {
+	background-image: linear-gradient(to top, rgba(92,11,0, 0.5) 0%, rgba(148,17,0, 0.7) 100%);
+}
+.destroy:hover {
+	background-image: linear-gradient(to top, rgba(92,11,0, 0.7) 0%, rgba(148,17,0, 0.9) 100%);
+}
 
 .selectable {
 	background: rgba(85,85,85,0.3);
 }
 .selectable:hover {
 	background: rgba(85,85,85,0.6);
+}
+
+.editor {
+	padding: 10px;
+	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
+}
+.editor select {
+	display: inline-block;
+	padding: 5px;
+	margin: 3px 0;
+	width: 160px;
+	border: none;
+	border-bottom: solid 4px #c9c9c9;
+}
+.editor select:focus,
+.editor select.focus {
+	border-bottom: solid 4px #1B96FE;
+	transition: border-bottom 0.3s;
+}
+.editor label {
+	display: inline-block;
+	width: 150px;
+	color: #EEE;
+}
+.editor input[type="checkbox"] {
+	margin: 10px 0;
+}
+.editor input[type="radio"] {
+	margin: 3px 0;
+}
+.editor input[type="text"] {
+	display: inline-block;
+	padding: 5px;
+	margin: 3px 0;
+	width: 150px;
+	border: none;
+	border-bottom: solid 4px #c9c9c9;
+}
+.editor input[type="text"]:focus,
+.editor input[type="text"].focus {
+	border-bottom: solid 4px #1B96FE;
+	transition: border-bottom 0.3s;
+}
+.editor input[type="submit"] {
+	display: block;
+	padding: 15px 32px;
+	margin: auto;
+	border: none;
+	text-align: center;
+	text-decoration: none;
+	color: white;
+	background-color: #1B96FE;
+	font-size: 16px;
+}
+.editor input[type="submit"]:focus,
+.editor input[type="submit"].focus,
+.editor input[type="submit"]:hover {
+	background-color: #64B8FC;
+	transition: background-color 0.3s ease;
 }
