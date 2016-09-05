@@ -10,7 +10,9 @@
 <body>
 	<div id="content">
 		<div id="sidebar">
-			<img id="logo" src="images/logo.png" alt="Rubric Pro">
+			<div id="logowrapper">
+				<img id="logo" src="images/logo.png" alt="Rubric Pro">
+			</div>
 			<div id="navigation">
 				<a href="#"><span>Dashboard</span></a>
 				<a href="#"><span>Classes</span></a>

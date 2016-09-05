@@ -43,8 +43,9 @@ body {
 #logo {
 	width: 100%;
 	display: block;
+}
+#logowrapper {
 	padding: 10px;
-	margin: 0 0 20px;
 }
 #navigation a {
 	width: 100%;
