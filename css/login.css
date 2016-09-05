@@ -1,0 +1,59 @@
+html, body {
+	margin: 0px;
+	padding: 0px;
+}
+body {
+	background-color: #232322;
+	background-image: url("/images/background.png");
+	background-repeat: repeat;
+	font-family: 'Josefin Sans', sans-serif;
+}
+#logo {
+	display: block;
+	width: 100%;
+}
+#login {
+	width: 300px;
+	padding: 20px;
+	margin: 100px auto 0;
+	background-color: rgba(0,0,0,0.4);
+}
+#login h2 {
+	color: #999;
+	text-align: center;
+	margin: 30px 0 10px;
+	font-size: 30px;
+}
+#login input[type="text"],
+#login input[type="password"] {
+	display: block;
+	margin: auto;
+	width: 200px;
+	padding: 10px;
+	border: none;
+	border-bottom: solid 4px #c9c9c9;
+}
+#login input[type="text"]:focus,
+#login input[type="text"].focus,
+#login input[type="password"]:focus,
+#login input[type="password"].focus {
+	border-bottom: solid 4px #1B96FE;
+	transition: border-bottom 0.3s;
+}
+#login input[type="submit"] {
+	background-color: #1B96FE;
+	margin: auto;
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: block;
+	font-size: 16px;
+}
+#login input[type="submit"]:focus,
+#login input[type="submit"].focus,
+#login input[type="submit"]:hover {
+	background-color: #64B8FC;
+	transition: background-color 0.3s ease;
+}
