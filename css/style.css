@@ -1,0 +1,66 @@
+html, body {
+	height: 100%;
+	min-height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+body {
+	background-color: #232322;
+	background-image: url("/images/background.png");
+	background-repeat: repeat
+}
+#content {
+	position: absolute;
+	bottom: <?php echo $LOG_BAR_HEIGHT; //esc:?>;
+	left: 0;
+	right: 0;
+	top: 0;
+}
+#logbar {
+	position: absolute;
+	height: <?php echo $LOG_BAR_HEIGHT; //esc:?>;
+	bottom: 0;
+	width: 100%;
+	color: #080;
+	background-color: #000;
+	border-top: 1px solid #777;
+	overflow: auto;
+}
+#console {
+	margin: 5px 20px;
+}
+#sidebar {
+	width: 250px;
+	height: 100%;
+	background-color: #303030;
+	border-right: 1px solid #777;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+#logo {
+	width: 100%;
+	display: block;
+	padding: 10px;
+	margin: 0 0 20px;
+}
+#navigation a {
+	width: 100%;
+	height: <?php echo $NAV_LINK_HEIGHT; //esc:?>;
+	line-height: <?php echo $NAV_LINK_HEIGHT; //esc:?>;
+	display: block;
+	text-align: center;
+}
+#navigation a:hover {
+	background-color: #222;
+}
+#navigation a span {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: normal; 
+	
+	/* Decoration for sidebar */
+	font-family: 'Josefin Sans', sans-serif;
+	font-size: 18px;
+	text-decoration: none;
+	color: #CCC;
+}
