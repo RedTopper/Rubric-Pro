@@ -20,6 +20,7 @@
 				<a href="#"><span>Rubrics</span></a>
 				<a href="#"><span>Catigories</span></a>
 				<a href="#"><span>Settings</span></a>
+				<a href="#"><span>Logout</span></a>
 			</div>
 		</div>
 	</div>

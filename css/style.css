@@ -23,6 +23,7 @@ body {
 	width: 100%;
 	overflow: auto;
 	
+	/* Log settings */
 	color: #080;
 	background-color: #000;
 	font-family: 'Ubuntu Mono', monospace;
@@ -37,6 +38,7 @@ body {
 	overflow-y: auto;
 	overflow-x: hidden;
 	
+	/* Sidebar settings */
 	background-color: #303030;
 	border-right: 1px solid #777;
 }

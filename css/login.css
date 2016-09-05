@@ -19,17 +19,17 @@ body {
 	background-color: rgba(0,0,0,0.4);
 }
 #login h2 {
+	margin: 30px 0 10px;
 	color: #999;
 	text-align: center;
-	margin: 30px 0 10px;
 	font-size: 30px;
 }
 #login input[type="text"],
 #login input[type="password"] {
 	display: block;
+	padding: 10px;
 	margin: auto;
 	width: 200px;
-	padding: 10px;
 	border: none;
 	border-bottom: solid 4px #c9c9c9;
 }
@@ -41,14 +41,14 @@ body {
 	transition: border-bottom 0.3s;
 }
 #login input[type="submit"] {
-	background-color: #1B96FE;
+	display: block;
+	padding: 15px 32px;
 	margin: auto;
 	border: none;
-	color: white;
-	padding: 15px 32px;
 	text-align: center;
 	text-decoration: none;
-	display: block;
+	color: white;
+	background-color: #1B96FE;
 	font-size: 16px;
 }
 #login input[type="submit"]:focus,
