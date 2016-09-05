@@ -21,21 +21,24 @@ body {
 	height: <?php echo $LOG_BAR_HEIGHT; //esc:?>;
 	bottom: 0;
 	width: 100%;
+	overflow: auto;
+	
 	color: #080;
 	background-color: #000;
+	font-family: 'Ubuntu Mono', monospace;
 	border-top: 1px solid #777;
-	overflow: auto;
 }
 #console {
-	margin: 5px 20px;
+	margin: 5px;
 }
 #sidebar {
-	width: 250px;
+	width: 160px;
 	height: 100%;
-	background-color: #303030;
-	border-right: 1px solid #777;
 	overflow-y: auto;
 	overflow-x: hidden;
+	
+	background-color: #303030;
+	border-right: 1px solid #777;
 }
 #logo {
 	width: 100%;
@@ -58,7 +61,7 @@ body {
 	vertical-align: middle;
 	line-height: normal; 
 	
-	/* Decoration for sidebar */
+	/* Declaration for sidebar */
 	font-family: 'Josefin Sans', sans-serif;
 	font-size: 18px;
 	text-decoration: none;
