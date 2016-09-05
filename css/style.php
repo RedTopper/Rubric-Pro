@@ -14,5 +14,6 @@
 	header("Content-type: text/css; charset: UTF-8");
 	$LOG_BAR_HEIGHT = "90px";
 	$NAV_LINK_HEIGHT = "50px";
+	$NAV_BAR_WIDTH = "160px";
 	include "style.css";
 ?>

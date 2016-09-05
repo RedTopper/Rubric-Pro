@@ -1,3 +1,6 @@
+<?php
+include 
+?>
 <!DOCTYPE html>
 <head>
 	<title>Rubric Pro: Login</title>

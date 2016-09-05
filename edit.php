@@ -2,28 +2,40 @@
 <head>
 	<title>Rubric Pro</title>
 	<link rel="stylesheet" href="css/style.php"> 
-	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Ubuntu+Mono" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Ubuntu+Mono|Amatic+SC" rel="stylesheet"> 
 	<meta charset="UTF-8">
 	<meta name="author" content="Aaron Walter (2016)">
 	<meta name="description" content="Edit your class rubrics and track progress with Rubric Pro!">
 </head>
 <body>
-	<div id="content">
-		<div id="sidebar">
-			<div id="logowrapper">
-				<img id="logo" src="images/logo.png" alt="Rubric Pro">
-			</div>
-			<div id="navigation">
-				<a href="#"><span>Dashboard</span></a>
-				<a href="#"><span>Classes</span></a>
-				<a href="#"><span>Students</span></a>
-				<a href="#"><span>Rubrics</span></a>
-				<a href="#"><span>Catigories</span></a>
-				<a href="#"><span>Settings</span></a>
-				<a href="#"><span>Logout</span></a>
-			</div>
-		</div>
-	</div>
+	<div id="contentscroller">
+		<div id="content">
+			<div id="sidebar">
+				<div id="logowrapper">
+					<img id="logo" src="images/logo.png" alt="Rubric Pro">
+				</div>
+				<div id="navigation">
+					<a href="#"><span>Dashboard</span></a>
+					<a href="#"><span>Classes</span></a>
+					<a href="#"><span>Students</span></a>
+					<a href="#"><span>Rubrics</span></a>
+					<a href="#"><span>Catigories</span></a>
+					<a href="#"><span>Settings</span></a>
+					<a id="logout" href="#"><span>Logout of "admin"</span></a>
+					<p id="name">Crafted with &lt;3 by<br> Aaron Walter</p>
+				</div>
+			</div><!-- These comments are used to prevent the gap in inline-block elements.
+		 --><div class="bar">
+				<div class="title"><h1>Dashboard</h1></div>
+				<div class="object subtitle"><h2>Subtag</h2></div>
+				<p class="object subtext">This is some really long object that might extend the size of the thing. Like, really, it will overflow because of how much text is in this single line.<br>Some other text may appear below the other one.<br>This is short<br>This is also a long line of text that extends beyond the boundries.</p>
+				<a class="object selectable" href="#"><div class="arrow"></div><h1>Some Object</h1></a>
+				<a class="object selectable" href="#"><div class="arrow"></div><h1>Some Object</h1></a>
+				<a class="object selectable" href="#"><div class="arrow"></div><h1>Some Object</h1></a>
+				<a class="object create" href="#"><div class="arrow"></div><h1>Create</h1></a>
+			</div><!--
+	 --></div>
+	 </div>
 	<div id="logbar">
 		<div id="console">
 			[18:02:31] [Server thread/INFO]: Starting minecraft server version 1.10<br>

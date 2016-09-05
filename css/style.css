@@ -7,15 +7,10 @@ html, body {
 body {
 	background-color: #232322;
 	background-image: url("/images/background.png");
-	background-repeat: repeat
+	background-repeat: repeat;
+	font-family: 'Josefin Sans', sans-serif;
 }
-#content {
-	position: absolute;
-	bottom: <?php echo $LOG_BAR_HEIGHT; //esc:?>;
-	left: 0;
-	right: 0;
-	top: 0;
-}
+
 #logbar {
 	position: absolute;
 	height: <?php echo $LOG_BAR_HEIGHT; //esc:?>;
@@ -25,30 +20,37 @@ body {
 	
 	/* Log settings */
 	color: #080;
-	background-color: #000;
+	background-color: rgba(0,0,0,0.8);
 	font-family: 'Ubuntu Mono', monospace;
 	border-top: 1px solid #777;
 }
 #console {
 	margin: 5px;
 }
-#sidebar {
-	width: 160px;
-	height: 100%;
-	overflow-y: auto;
-	overflow-x: hidden;
-	
-	/* Sidebar settings */
-	background-color: #303030;
-	border-right: 1px solid #777;
-}
+
 #logo {
 	width: 100%;
 	display: block;
 }
 #logowrapper {
 	padding: 10px;
+	margin-bottom: 20px;
 }
+#name {
+	width: <?php echo $NAV_BAR_WIDTH; //esc:?>;
+	display: block;
+	position: absolute;
+	bottom: 0;
+	text-align: center;
+	padding: 10px 0;
+	margin: 0;
+	
+	background-color: rgba(0,0,0,0.3);
+	font-family: 'Amatic SC', cursive;
+	font-size: 20px;
+	color: #FFF;
+}
+
 #navigation a {
 	width: 100%;
 	height: <?php echo $NAV_LINK_HEIGHT; //esc:?>;
@@ -65,8 +67,111 @@ body {
 	line-height: normal; 
 	
 	/* Decoration for sidebar */
-	font-family: 'Josefin Sans', sans-serif;
 	font-size: 18px;
 	text-decoration: none;
 	color: #CCC;
+}
+#navigation #logout {
+	margin-bottom: 100px;
+}
+
+#contentscroller {
+	position: absolute;
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+	bottom: <?php echo $LOG_BAR_HEIGHT; //esc:?>;
+	left: 0;
+	right: 0;
+	top: 0;
+	padding: 0;
+}
+#content {
+	height: 100%;
+	white-space: normal;
+}
+#sidebar {
+	width: <?php echo $NAV_BAR_WIDTH; //esc:?>;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	display: inline-block;
+	
+	/* Sidebar settings */
+	background-color: #303030;
+	border-right: 1px solid #777;
+}
+
+.bar {
+	min-width: 300px;
+	max-width: 450px;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	display: inline-block;
+	
+	/* General bar settings */
+	background-color: rgba(0,0,0,0.2);
+	border-right: 1px solid #777;
+}
+
+.title {
+	background-color: #000;
+	padding: 10px 0 10px 20px;
+}
+.title h1 {
+	margin: 0;
+	padding: 0;
+	color: #EEE;
+}
+.subtitle {
+	background-color: #222;
+	padding: 10px 10px 10px 20px;
+}
+.subtitle h2 {
+	margin: 0;
+	padding: 0;
+	color: #CCC;
+	font-size: 24px;
+	font-weight: bold;
+}
+.subtext {
+	margin: 0;
+	color: #999;
+}
+
+.arrow {
+	text-decoration: none;
+	color: #EEE;
+	float: right;
+	font-size: 16px;
+}
+.arrow:before{
+	content: ">";
+}
+.object {
+	display: block;
+	text-decoration: none;
+	padding: 10px 10px 10px 20px;
+	border-top: 1px solid #777;
+}
+.object h1 {
+	margin: 0;
+	padding: 0;
+	color: #EEE;
+	font-size: 16px;
+}
+
+.create {
+	background-image: linear-gradient(to top, rgba(0,92,11, 0.5) 0%, rgba(0,148,17, 0.7) 100%);
+}
+.create:hover {
+	background-image: linear-gradient(to top, rgba(0,92,11, 0.7) 0%, rgba(0,148,17, 0.9) 100%);
+}
+
+.selectable {
+	background: rgba(85,85,85,0.3);
+}
+.selectable:hover {
+	background: rgba(85,85,85,0.6);
 }
