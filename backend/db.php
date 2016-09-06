@@ -1,6 +1,15 @@
 <?php
 include "passwd.php";
 
+#Logs a user out of the page.
+function logout() {
+	if(isset($_SESSION['VALID'])) { 
+		$_SESSION['VALID'] = false; #Makes sure the session is killed.
+	}
+	session_destroy();
+	header("Location: /index.php");
+}
+
 #Stop the page load if needsAuthentication is UNSET
 if(!isset($needsAuthentication)) {
 	http_response_code(500); #Send 500/Internal Server Error
@@ -55,8 +64,13 @@ die();
 #Begin the session
 session_start();
 
+$sessionValid = isset($_SESSION['VALID']) && isset($_SESSION['TIMESTAMP']) && isset($_SESSION["USERNAME"]);
+#Not authenticated means:	this page REQUIRES authentication and (something is not set OR the session is not valid OR
+#							the time logged in is greater than 60 minutes)
+
 #Stop the page load if we are not authenticated to view this page.
-if($needsAuthentication && !isset($_SESSION["USERNAME"])) {
+if($needsAuthentication && (!$sessionValid || !$_SESSION["VALID"] || (strtotime(date("Y-m-d H:i:s")) - strtotime($_SESSION['TIMESTAMP']) > 10))) {
+	logout(); #If something is broke, make sure they really are logged out!
 	http_response_code(403); #Send 403/Forbidden
 ?>
 <!DOCTYPE html>
@@ -72,7 +86,7 @@ if($needsAuthentication && !isset($_SESSION["USERNAME"])) {
 	<div id="login">
 		<img id="logo" src="/images/logo.png" alt="Rubric Pro">
 		<h1>You need to be logged in to do that!</h1>
-		<h2>Sorry about that :(</h2>
+		<h2>Sorry :(</h2>
 		<a href="/">Back to login page</a>
 	</div>
 </body>

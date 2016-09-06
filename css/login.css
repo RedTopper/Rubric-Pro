@@ -1,6 +1,6 @@
 html, body {
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0 0 60px;
 }
 body {
 	background-color: #232322;
@@ -11,6 +11,22 @@ body {
 #logo {
 	display: block;
 	width: 100%;
+}
+#error {
+	width: 300px;
+	padding: 20px;
+	margin: 0 auto;
+	color: #999;
+	background-color: rgba(150,0,0,0.6);
+	text-align: center;
+}
+#changepassword {
+	width: 300px;
+	padding: 20px;
+	margin: 0 auto;
+	color: #999;
+	background-color: rgba(0,150,0,0.6);
+	text-align: center;
 }
 #login {
 	width: 300px;
@@ -44,10 +60,10 @@ body {
 	border-bottom: solid 4px #1B96FE;
 	transition: border-bottom 0.3s;
 }
-#login input[type="submit"], a {
+#login button[type="submit"], a {
 	display: block;
 	padding: 15px 32px;
-	margin: auto;
+	margin: 30px auto 0;
 	border: none;
 	text-align: center;
 	text-decoration: none;
@@ -55,9 +71,9 @@ body {
 	background-color: #1B96FE;
 	font-size: 16px;
 }
-#login input[type="submit"]:focus,
-#login input[type="submit"].focus,
-#login input[type="submit"]:hover,
+#login button[type="submit"]:focus,
+#login button[type="submit"].focus,
+#login button[type="submit"]:hover,
 a:focus, a.focus, a:hover {
 	background-color: #64B8FC;
 	transition: background-color 0.3s ease;
