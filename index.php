@@ -1,4 +1,5 @@
 <?php
+$needsAuthentication = false;
 include "backend/db.php";
 ?>
 <!DOCTYPE html>
