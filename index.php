@@ -112,8 +112,7 @@ if (!empty($_POST)) {
 		$_SESSION['VALID'] = true;
 	} else {
 		if(isset($_POST["GO"]) && $_POST["GO"] === "BACK") {
-			unset($_SESSION['TEMP_USERNAME']);
-			unset($_SESSION['TEMP_ID']);
+			session_destroy();
 			displayLogin(null, "Remember to change your password later!");
 		}
 		
