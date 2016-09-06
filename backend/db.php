@@ -10,28 +10,40 @@ function logout() {
 	header("Location: /index.php");
 }
 
-#Stop the page load if needsAuthentication is UNSET
-if(!isset($needsAuthentication)) {
-	http_response_code(500); #Send 500/Internal Server Error
+#Shows an error code.
+function showError($title = "Error", $header = "An unknown error occured.", $subheader = "Sorry about that :(", $status = 500) {
+	http_response_code($status);
 ?>
 <!DOCTYPE html>
 <head>
-	<title>Error</title>
+	<title><?php echo $title; ?></title>
 	<link rel="stylesheet" href="/css/login.css"> 
 	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet"> 
 	<meta charset="UTF-8">
 	<meta name="author" content="Aaron Walter (2016)">
-	<meta name="description" content="Page Error">
+	<meta name="description" content="<?php echo $title; ?>">
 </head>
 <body>
 	<div id="login">
 		<img id="logo" src="/images/logo.png" alt="Rubric Pro">
-		<h1>It was unable to be deturmined if this page requires authentication.</h1>
-		<h2>Sorry about that :(</h2>
+		<h1><?php echo $header; ?></h1>
+		<h2><?php echo $subheader; ?></h2>
+		<a href="/">Back to login page</a>
 	</div>
 </body>
 <?php
-die();
+die();	
+}
+
+#Begin the session
+session_start();
+
+#Check the session
+$sessionSet = isset($_SESSION['VALID']) && isset($_SESSION['TIMESTAMP']) && isset($_SESSION["USERNAME"]);
+
+#Stop the page load if needsAuthentication is UNSET
+if(!isset($needsAuthentication)) {
+	showError("Server Error", "It was unable to be deturmined if this page requires authentication.", "Sorry about that :(", 500);
 }
 
 #Stop the page load if we cannot connect to the database
@@ -39,58 +51,22 @@ try {
 	$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password); #login
 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); #Enable errors
 } catch(PDOException $e) {
-	http_response_code(500); #Send 500/Internal Server Error
-?>
-<!DOCTYPE html>
-<head>
-	<title>Error</title>
-	<link rel="stylesheet" href="/css/login.css"> 
-	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet"> 
-	<meta charset="UTF-8">
-	<meta name="author" content="Aaron Walter (2016)">
-	<meta name="description" content="Database Error">
-</head>
-<body>
-	<div id="login">
-		<img id="logo" src="/images/logo.png" alt="Rubric Pro">
-		<h1>An error occured when connecting to the database.</h1>
-		<h2>Sorry about that :(</h2>
-	</div>
-</body>
-<?php
-die();
+	showError("Database Error", "An error occured when connecting to the database.", "Sorry about that :(", 500);
 }
 
-#Begin the session
-session_start();
-
-$sessionValid = isset($_SESSION['VALID']) && isset($_SESSION['TIMESTAMP']) && isset($_SESSION["USERNAME"]);
-#Not authenticated means:	this page REQUIRES authentication and (something is not set OR the session is not valid OR
-#							the time logged in is greater than 60 minutes)
-
-#Stop the page load if we are not authenticated to view this page.
-if($needsAuthentication && (!$sessionValid || !$_SESSION["VALID"] || (strtotime(date("Y-m-d H:i:s")) - strtotime($_SESSION['TIMESTAMP']) > 10))) {
-	logout(); #If something is broke, make sure they really are logged out!
-	http_response_code(403); #Send 403/Forbidden
-?>
-<!DOCTYPE html>
-<head>
-	<title>Error</title>
-	<link rel="stylesheet" href="/css/login.css"> 
-	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet"> 
-	<meta charset="UTF-8">
-	<meta name="author" content="Aaron Walter (2016)">
-	<meta name="description" content="Authentication Error">
-</head>
-<body>
-	<div id="login">
-		<img id="logo" src="/images/logo.png" alt="Rubric Pro">
-		<h1>You need to be logged in to do that!</h1>
-		<h2>Sorry :(</h2>
-		<a href="/">Back to login page</a>
-	</div>
-</body>
-<?php
-die();
+#If we need authentication to view this page....
+if($needsAuthentication) {
+	
+	#Stop the page load if something is not set or the session is not valid.
+	if(!$sessionSet || !$_SESSION["VALID"]) {
+		logout(); #If something is broke, make sure they really are logged out!
+		showError("Forbidden", "You need to be logged in to do that!", "Sorry :(", 403);
+	}
+	
+	#Stop the page load if the user timed out.
+	if(strtotime(date("Y-m-d H:i:s")) - strtotime($_SESSION['TIMESTAMP']) > 5) {
+		logout();
+		showError("Forbidden", "Your session timed out.", "Sorry :/", 403);
+	}
 }
 ?>
