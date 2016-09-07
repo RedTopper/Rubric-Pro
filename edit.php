@@ -10,6 +10,8 @@ include "backend/db.php";
 	<meta charset="UTF-8">
 	<meta name="author" content="Aaron Walter (2016)">
 	<meta name="description" content="Edit your class rubrics and track progress with Rubric Pro!">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="/javascript/access.js"></script>
 </head>
 <body>
 	<div id="contentscroller">
@@ -20,23 +22,19 @@ include "backend/db.php";
 					<img id="logo" src="images/logo.png" alt="Rubric Pro">
 				</div>
 				<div id="navigation">
-					<a href="#"><span>Dashboard</span></a>
-					<a href="#"><span>Classes</span></a>
-					<a href="#"><span>Students</span></a>
-					<a href="#"><span>Rubrics</span></a>
-					<a href="#"><span>Catigories</span></a>
-					<a href="#"><span>Settings</span></a>
-					<a href="#"><span>Logout of "admin"</span></a>
+					<a href="#" id="js_dashboard"><span>Dashboard</span></a>
+					<a href="#" id="js_classes"><span>Classes</span></a>
+					<a href="#" id="js_students"><span>Students</span></a>
+					<a href="#" id="js_rubrics"><span>Rubrics</span></a>
+					<a href="#" id="js_catigories"><span>Catigories</span></a>
+					<a href="#" id="js_settings"><span>Settings</span></a>
+					<a href="/backend/logout.php"><span>Log out of <?php echo htmlspecialchars($_SESSION["USERNAME"]); ?></span></a>
 				</div>
-			</div><!-- These comments are used to prevent the gap in inline-block elements.
+			</div><!-- These comments are used to prevent the gap between inline-block elements.
 	 --></div>
 	 </div>
 	<div id="logbar">
 		<div id="console">
-			[18:02:34] [Server thread/INFO]: Preparing spawn area: 0%<br>
-			[18:02:35] [Server thread/INFO]: Preparing spawn area: 39%<br>
-			[18:02:36] [Server thread/INFO]: Preparing spawn area: 85%<br>
-			[18:02:36] [Server thread/INFO]: Done (3.943s)! For help, type "help" or "?"<br>
 		</div>
 	</div>
 </body>
