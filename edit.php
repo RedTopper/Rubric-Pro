@@ -37,4 +37,5 @@ include "backend/db.php";
 		<div id="console">
 		</div>
 	</div>
+	<a href="#" id="js_consolebottom">View new message(s)</a>
 </body>

@@ -29,6 +29,20 @@ body {
 #console {
 	margin: 5px;
 }
+#js_consolebottom {
+	display: none;
+	position: fixed;
+	bottom: 0;
+	right: 36px;
+	width: 200px;
+	height: 24px;
+	background-color: rgba(0,0,0,0.5);
+	color: #999;
+	text-align: center;
+	text-decoration: none;
+	border: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border-bottom: none;
+}
 
 /* Logo at the top of the Navigation Bar */
 #logo {
