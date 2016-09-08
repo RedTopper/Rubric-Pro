@@ -30,8 +30,8 @@ include "backend/db.php";
 					<a href="#" id="js_settings"><span>Settings</span></a>
 					<a href="/backend/logout.php"><span>Log out of <?php echo htmlspecialchars($_SESSION["USERNAME"]); ?></span></a>
 				</div>
-			</div><!-- These comments are used to prevent the gap between inline-block elements.
-	 --></div>
+			</div>
+		</div>
 	 </div>
 	<div id="logbar">
 		<div id="console">

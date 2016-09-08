@@ -10,15 +10,11 @@ function logout() {
 	header("Location: /index.php");
 }
 
-#Deturmine if the request is by AJAX or not
-$usingAJAX = isset($_POST["AJAX"]);
-
 #Shows an error code.
 function showError($title = "Error", $header = "An unknown error occured.", $subheader = "Sorry about that :(", $status = 500) {
 	http_response_code($status);
-	if(!$usingAJAX) {  #If we are not using AJAX, send the doctype. ?>
+	if(!(isset($_POST["AJAX"]))) {  #If we are not using AJAX, send the normal html. ?>
 <!DOCTYPE html>
-<?php } ?>
 <head>
 	<title><?php echo $title; ?></title>
 	<link rel="stylesheet" href="/css/login.css"> 
@@ -36,7 +32,17 @@ function showError($title = "Error", $header = "An unknown error occured.", $sub
 	</div>
 </body>
 <?php
-die();	
+	} else {
+?>
+<div class="object subtitle"><h2><?php echo $title; ?></h2></div>
+<div class="object subtext">
+	<p><?php echo $header; ?>
+	<p><?php echo $subheader; ?>
+</div>
+<a class="object destroy" href="/"><div class="arrow"></div><h1>Return to login.</h1></a>
+<?php
+	}
+	die();	
 }
 
 #Begin the session
@@ -70,7 +76,7 @@ if($needsAuthentication) {
 	#Stop the page load if the user timed out.
 	if(strtotime(date("Y-m-d H:i:s")) - strtotime($_SESSION['TIMESTAMP']) > 60*60) {
 		logout();
-		showError("Forbidden", "Your session timed out.", "Sorry :/", 403);
+		showError("Timed Out", "Your session timed out.", "Sorry :/", 403);
 	}
 }
 ?>

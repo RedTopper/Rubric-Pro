@@ -76,7 +76,7 @@ if (!empty($_POST) || isset($_SESSION["TEMP_USERNAME"])) {
 		}
 		
 		#Connect to database
-		$stmt = $conn->prepare("SELECT ID, USERNAME, PASSWORD, TYPE FROM ACCOUNTS WHERE USERNAME = :username");
+		$stmt = $conn->prepare("SELECT ID, USERNAME, PASSWORD, TYPE, PARENT FROM ACCOUNTS WHERE USERNAME = :username");
 		$stmt->execute(array('username' => $_POST["USERNAME"]));
 		$row = $stmt->fetch();
 		
@@ -95,6 +95,7 @@ if (!empty($_POST) || isset($_SESSION["TEMP_USERNAME"])) {
 		#Initialize Session
 		$_SESSION['USERNAME'] = $row["USERNAME"]; 
 		$_SESSION['TYPE'] = $row["TYPE"];
+		$_SESSION['PARENT'] = $row["PARENT"];
 		$_SESSION['TIMESTAMP'] = date("Y-m-d H:i:s");
 		$_SESSION['VALID'] = true;
 	} else {

@@ -231,6 +231,10 @@ body {
 	border: none;
 	border-bottom: solid 4px #c9c9c9;
 }
+.editor input[type="text"].full {
+	width: 100%;
+	box-sizing: border-box;
+}
 .editor input[type="text"]:focus,
 .editor input[type="text"].focus {
 	border-bottom: solid 4px #1B96FE;
