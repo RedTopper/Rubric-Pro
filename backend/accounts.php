@@ -4,21 +4,31 @@ $needsAJAX = true;
 include "db.php";
 $SEARCH = $_POST["SEARCH"];
 
-function outputAccounts($data, $search) { ?> 
+function outputAccounts($data, $search, $type) { ?> 
 <div class="editor">
-	<input id="js_students_search" class="full" type="text" name="SEARCH" placeholder="Filter Students">
+	<input id="js_accounts_search" class="full" type="text" name="SEARCH" placeholder="Filter Accounts">
 </div>
 <?php if(isset($search) && $search !== "") { ?>
 <div class="object subtitle"><h2>Filter: <?php echo htmlentities($search); ?></h2></div>
 <?php } foreach($data as $row) { ?>
-<a class="object selectable" href="#" data-id="<?php echo $row["ID"] ?>"><div class="arrow"></div><h1><?php echo $row["USERNAME"] ?></h1></a>
+<a class="object selectable" href="#" data-id="<?php echo $row["ID"] ?>"><div class="arrow"></div><h1><?php 
+
+switch ($type) {
+	case 2:
+		echo $row["PARENT"] . ".";
+	case 1:
+		echo $row["USERNAME"];
+}
+
+?></h1></a>
 <?php } ?>
-<a id="js_students_create" class="object create" href="#"><div class="arrow"></div><h1>Create new student account</h1></a>
+<a id="js_accounts_create" class="object create" href="#"><div class="arrow"></div><h1>Create new account</h1></a>
 <?php
 }
 
 switch ($_SESSION["TYPE"]) {
 	case 0:
+		showError("Not Allowed", "Students may not edit other student accounts.", "How did you even request this?", 403);
 		break;
 	case 1:
 		#Connect to database, level 1 is teacher
@@ -31,7 +41,7 @@ switch ($_SESSION["TYPE"]) {
 			$stmt->execute(array('username' => $_SESSION["USERNAME"]));	
 		}
 		$data = $stmt->fetchAll();
-		outputAccounts($data, $SEARCH);
+		outputAccounts($data, $SEARCH, $_SESSION["TYPE"]);
 		break;
 	case 2:
 		#Connect to database, level 2 is root, they can see all accounts.
@@ -44,7 +54,7 @@ switch ($_SESSION["TYPE"]) {
 			$stmt->execute();	
 		}
 		$data = $stmt->fetchAll();
-		outputAccounts($data, $SEARCH);
+		outputAccounts($data, $SEARCH, $_SESSION["TYPE"]);
 		break;
 }
 ?>

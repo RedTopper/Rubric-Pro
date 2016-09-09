@@ -25,7 +25,7 @@ include "backend/db.php";
 				<div id="navigation">
 					<a href="#" id="js_dashboard"><span>Dashboard</span></a>
 					<a href="#" id="js_classes"><span>Classes</span></a>
-					<a href="#" id="js_students"><span>Students</span></a>
+					<a href="#" id="js_accounts"><span>Accounts</span></a>
 					<a href="#" id="js_rubrics"><span>Rubrics</span></a>
 					<a href="#" id="js_catigories"><span>Catigories</span></a>
 					<a href="#" id="js_settings"><span>Settings</span></a>

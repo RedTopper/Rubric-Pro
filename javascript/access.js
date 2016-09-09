@@ -121,6 +121,7 @@ function callServer(tier, path, title, post) {
 			log("AJAX/server", "Obtained data for " + title + ".");
 		},
 		error: function(xhr, status, error) {
+			//If it's short...
 			if(xhr.responseText.length < 10) {
 				$("#tier" + tier).append(
 					'<div class="object subtitle"><h2>Programming Error</h2></div>' +
@@ -130,6 +131,20 @@ function callServer(tier, path, title, post) {
 					'</div>'
 				);
 				log("AJAX/server", "Fatal error requesting data for " + title + ".");
+				
+			//If it's long, but does not include the standard header...
+			} else if(!(xhr.responseText.includes('<div class="object subtitle">'))) {
+				$("#tier" + tier).append(
+					'<div class="object subtitle"><h2>Undefined Error</h2></div>' +
+					'<div class="object subtext">' +
+						'<p>An undefined error in the application occured.' +
+						'<p>The server returned a non-empty and non-standard response.' +
+						'<p>General information: ' + error +
+					'</div>'
+				);
+				log("AJAX/server", "Fatal error requesting data for " + title + ".");
+				
+			//If it's long AND includes the standard header...
 			} else {
 				$("#tier" + tier).append(xhr.responseText);
 				log("AJAX/server", "The server returned an error.");
@@ -146,33 +161,33 @@ $(document).on('click', '#js_classes', function(e) {
 	return false;
 });
 
-//Sidebar: Students tab.
-$(document).on('click', '#js_students', function(e) {
+//Sidebar: Accounts tab.
+$(document).on('click', '#js_accounts', function(e) {
 	var tier = 0; //This function originates from the sidebar, a tier 0 item.
-	log("JQUERY/user", "Request students tab.");
-	createTier(tier, "Students");
-	callServer(tier, "/backend/students.php", "students");
+	log("JQUERY/user", "Request accounts tab.");
+	createTier(tier, "Accounts");
+	callServer(tier, "/backend/accounts.php", "accounts");
 	return false;
 });
 
-	//Students tab: search student.
-	$(document).on('keydown', '#js_students_search', function(e) {
+	//Accounts tab: search accounts.
+	$(document).on('keydown', '#js_accounts_search', function(e) {
 		if(e.which === 13) {
 			var tier = 0;
 			var search = $("#js_students_search").val();
-			log("JQUERY/user", "You searched the student database for: " + search);
-			createTier(tier, "Students");
-			callServer(tier, "/backend/students.php", "students", {SEARCH: search});
+			log("JQUERY/user", "You searched the account database for: " + search);
+			createTier(tier, "Accounts");
+			callServer(tier, "/backend/accounts.php", "accounts", {SEARCH: search});
 			return false;
 		}
 	});
 	
-	//Students tab: create student
-	$(document).on('click', '#js_students_create', function(e) {
+	//Accounts tab: create accounts
+	$(document).on('click', '#js_accounts_create', function(e) {
 		var tier = 1; //This function originates from a tier 0 item, so it is 
-		log("JQUERY/user", "Request students > create tab");
-		createTier(tier, "Create a new student");
-		callServer(tier, "/backend/students_create.php", "students_create");
+		log("JQUERY/user", "Request accounts > create tab");
+		createTier(tier, "Create a new account");
+		callServer(tier, "/backend/accounts_create.php", "accounts_create");
 		return false;
 	});
 
