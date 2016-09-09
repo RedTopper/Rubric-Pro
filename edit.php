@@ -1,5 +1,6 @@
 <?php
 $needsAuthentication = true;
+$needsAJAX = false;
 include "backend/db.php";
 ?>
 <!DOCTYPE html>

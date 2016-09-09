@@ -88,7 +88,7 @@ function createTier(tier, name) {
 	tier = tier + 1;
 	
 	//create the tier.
-	$("#content").append('<div class="bar" id="tier' + tier + '"><div class="title"><h1>' + name + '</h1></div></div>').find("#tier" + tier).hide().fadeIn();
+	$("#content").append('<div class="bar" id="tier' + tier + '"><div class="title"><h1>' + name + '</h1></div></div>').find("#tier" + tier).hide().fadeIn("fast");
 	
 	//Remove the white space between inline-block elements (to prevent gaps)
 	$("#content").contents().filter(function () {
@@ -151,7 +151,7 @@ $(document).on('click', '#js_students', function(e) {
 	var tier = 0; //This function originates from the sidebar, a tier 0 item.
 	log("JQUERY/user", "Request students tab.");
 	createTier(tier, "Students");
-	callServer(tier, "/backend/students.php", "Students");
+	callServer(tier, "/backend/students.php", "students");
 	return false;
 });
 
@@ -162,9 +162,18 @@ $(document).on('click', '#js_students', function(e) {
 			var search = $("#js_students_search").val();
 			log("JQUERY/user", "You searched the student database for: " + search);
 			createTier(tier, "Students");
-			callServer(tier, "/backend/students.php", "Students", {SEARCH: search});
+			callServer(tier, "/backend/students.php", "students", {SEARCH: search});
 			return false;
 		}
+	});
+	
+	//Students tab: create student
+	$(document).on('click', '#js_students_create', function(e) {
+		var tier = 1; //This function originates from a tier 0 item, so it is 
+		log("JQUERY/user", "Request students > create tab");
+		createTier(tier, "Create a new student");
+		callServer(tier, "/backend/students_create.php", "students_create");
+		return false;
 	});
 
 //"View new messages" button.

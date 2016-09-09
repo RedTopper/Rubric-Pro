@@ -1,9 +1,25 @@
 <?php
+$needsAuthentication = false;
+$needsAJAX = false;
+include "backend/db.php";
+$USERNAME = $_POST["USERNAME"];
+$PASSWORD = $_POST["PASSWORD"];
+$PASSWORD1 = $_POST["PASSWORD1"];
+$PASSWORD2 = $_POST["PASSWORD2"];
+$GO = $_POST["GO"];
+
+/*
+A little information on the variables above:
+
+By declairing the $_POST[] variables to actual variables, I can quickly
+see what the client should be sending to this PHP file, should anything
+change. This also allows sanitization to occur directly after the 
+declarations if needed.
+*/
+
+#Static vars so the code can be read better.
 $LOGIN = true;
 $CHANGE = false;
-
-$needsAuthentication = false;
-include "backend/db.php";
 
 #Display the HTML login screen. Pass the error if needed.
 function display($login, $error, $success) {
@@ -35,7 +51,7 @@ function display($login, $error, $success) {
 <?php } else { ?>
 		<form method="post">
 		  <h2>Username:</h2>
-		  <input type="text" name="USERNAME" value="<?php echo htmlspecialchars($_SESSION["TEMP_USERNAME"]); ?>" disabled>
+		  <input type="text" name="USERNAME" value="<?php echo htmlentities($_SESSION["TEMP_USERNAME"]); ?>" disabled>
 		  <h2>Password:</h2>
 		  <input type="password" name="PASSWORD1" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
 		  <h2>Retype password:</h2>
@@ -63,80 +79,78 @@ function display($login, $error, $success) {
 die();
 }
 
-if (!empty($_POST) || isset($_SESSION["TEMP_USERNAME"])) {
-	if(!isset($_SESSION["TEMP_USERNAME"])) {
-		#Check if empty
-		if(!(isset($_POST["USERNAME"]) && isset($_POST["PASSWORD"]))) {
-			display($LOGIN, null, null);
-		}
-		
-		#Check if empty
-		if($_POST["USERNAME"] === '') {
-			display($LOGIN, null, null);
-		}
-		
-		#Connect to database
-		$stmt = $conn->prepare("SELECT ID, USERNAME, PASSWORD, TYPE, PARENT FROM ACCOUNTS WHERE USERNAME = :username");
-		$stmt->execute(array('username' => $_POST["USERNAME"]));
-		$row = $stmt->fetch();
-		
-		#If the database says "CHANGE", then the user needs to set their password before they log in.
-		if($row["PASSWORD"] === "CHANGE") {
-			$_SESSION['TEMP_USERNAME'] = $_POST["USERNAME"]; 
-			$_SESSION['TEMP_ID'] = $row["ID"];
-			display($CHANGE, null, "You need to change your password before you can log in.");
-		}
-		
-		#Verify password
-		if(!(password_verify($_POST["PASSWORD"], $row["PASSWORD"]))) {
-			display($LOGIN, "The username or password is incorrect!", null); 
-		}
-		
-		#Initialize Session
-		$_SESSION['USERNAME'] = $row["USERNAME"]; 
-		$_SESSION['TYPE'] = $row["TYPE"];
-		$_SESSION['PARENT'] = $row["PARENT"];
-		$_SESSION['TIMESTAMP'] = date("Y-m-d H:i:s");
-		$_SESSION['VALID'] = true;
-	} else {
-		#Go back if go back is set.
-		if(isset($_POST["GO"]) && $_POST["GO"] === "BACK") {
-			session_destroy();
-			display($LOGIN, null, "Remember to change your password later!");
-		}
-		
-		#Check if passwords are set
-		if(!(isset($_POST["PASSWORD1"]) && isset($_POST["PASSWORD2"]))) {
-			display($CHANGE, null, null);
-		}
-		
-		#Check if the passwords match
-		if($_POST["PASSWORD1"] !== $_POST["PASSWORD2"]) {
-			display($CHANGE, "The new passwords do not match.", null);
-		}
-		
-		#Password length can't be too short
-		if(strlen($_POST["PASSWORD1"]) <= 6) {
-			display($CHANGE, "Your new password needs to be longer than 6 characters!", null);
-		} 
-		
-		#Password length can't be too long. If it is, BCRYPT does some really funkey stuff.
-		if(strlen($_POST["PASSWORD1"]) > 70) {
-			display($CHANGE, "I know you like security, but you'll break things if your new password is that long.", null);
-		} 
-		
-		#Connect to database
-		$options = ['cost' => 12];
-		$stmt = $conn->prepare("UPDATE ACCOUNTS SET PASSWORD = :password WHERE ID = :id");
-		$stmt->execute(array('password' => password_hash($_POST["PASSWORD1"], PASSWORD_BCRYPT, $options),
-							 'id' => $_SESSION["TEMP_ID"]));
-		
-		#Destroy the session
-		session_destroy();
-		
-		#Return to login page
-		display($LOGIN, null, "You changed your password!");
+if(!isset($_SESSION["TEMP_USERNAME"])) {
+	#Check if empty
+	if(!(isset($USERNAME) && isset($PASSWORD))) {
+		display($LOGIN, null, null);
 	}
+	
+	#Check if empty
+	if($USERNAME === '') {
+		display($LOGIN, null, null);
+	}
+	
+	#Connect to database
+	$stmt = $conn->prepare("SELECT ID, USERNAME, PASSWORD, TYPE, PARENT FROM ACCOUNTS WHERE USERNAME = :username");
+	$stmt->execute(array('username' => $USERNAME));
+	$row = $stmt->fetch();
+	
+	#If the database says "CHANGE", then the user needs to set their password before they log in.
+	if($row["PASSWORD"] === "CHANGE") {
+		$_SESSION['TEMP_USERNAME'] = $USERNAME; 
+		$_SESSION['TEMP_ID'] = $row["ID"];
+		display($CHANGE, null, "You need to change your password before you can log in.");
+	}
+	
+	#Verify password
+	if(!(password_verify($PASSWORD, $row["PASSWORD"]))) {
+		display($LOGIN, "The username or password is incorrect!", null); 
+	}
+	
+	#Initialize Session
+	$_SESSION['USERNAME'] = $row["USERNAME"]; 
+	$_SESSION['TYPE'] = $row["TYPE"];
+	$_SESSION['PARENT'] = $row["PARENT"];
+	$_SESSION['TIMESTAMP'] = date("Y-m-d H:i:s");
+	$_SESSION['VALID'] = true;
+} else {
+	#Go back if go back is set.
+	if(isset($GO) && $GO === "BACK") {
+		session_destroy();
+		display($LOGIN, null, "Remember to change your password later!");
+	}
+	
+	#Check if passwords are set
+	if(!(isset($PASSWORD1) && isset($PASSWORD2))) {
+		display($CHANGE, null, null);
+	}
+	
+	#Check if the passwords match
+	if($PASSWORD1 !== $PASSWORD2) {
+		display($CHANGE, "The new passwords do not match.", null);
+	}
+	
+	#Password length can't be too short
+	if(strlen($PASSWORD1) <= 6) {
+		display($CHANGE, "Your new password needs to be longer than 6 characters!", null);
+	} 
+	
+	#Password length can't be too long. If it is, BCRYPT does some really funkey stuff.
+	if(strlen($PASSWORD1) > 70) {
+		display($CHANGE, "I know you like security, but you'll break things if your new password is that long.", null);
+	} 
+	
+	#Connect to database
+	$options = ['cost' => 12];
+	$stmt = $conn->prepare("UPDATE ACCOUNTS SET PASSWORD = :password WHERE ID = :id");
+	$stmt->execute(array('password' => password_hash($PASSWORD1, PASSWORD_BCRYPT, $options),
+						 'id' => $_SESSION["TEMP_ID"]));
+	
+	#Destroy the session
+	session_destroy();
+	
+	#Return to login page
+	display($LOGIN, null, "You changed your password!");
 }
 
 #If we are logged in, redirect to the editor.

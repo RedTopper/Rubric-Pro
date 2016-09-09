@@ -53,7 +53,12 @@ $sessionSet = isset($_SESSION['VALID']) && isset($_SESSION['TIMESTAMP']) && isse
 
 #Stop the page load if needsAuthentication is UNSET
 if(!isset($needsAuthentication)) {
-	showError("Server Error", "It was unable to be deturmined if this page requires authentication.", "Sorry about that :(", 500);
+	showError("Server Error", "It was unable to be deturmined if this page requires authentication.", "Tell an administrator to fix this!", 500);
+}
+
+#Stop the page load if needsAJAX is UNSET
+if(!isset($needsAJAX)) {
+	showError("Server Error", "It was unable to be deturmined if this page requires AJAX.", "Tell an administrator to fix this!", 500);
 }
 
 #Stop the page load if we cannot connect to the database
@@ -77,6 +82,15 @@ if($needsAuthentication) {
 	if(strtotime(date("Y-m-d H:i:s")) - strtotime($_SESSION['TIMESTAMP']) > 60*60) {
 		logout();
 		showError("Timed Out", "Your session timed out.", "Sorry :/", 403);
+	}
+}
+
+#If we need AJAX to view the page...
+if($needsAJAX) {
+	
+	#Stop the page load if we need ajax, but don't have the post check (Basically dumb user check, anybody can "fool" this).
+	if(!(isset($_POST["AJAX"]))) {
+		showError("Requires AJAX", "This page is not meant to be read by a human.", "Try to be a robot next time.", 400);
 	}
 }
 ?>
