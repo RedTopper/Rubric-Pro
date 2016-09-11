@@ -41,15 +41,17 @@ function outputAccounts($data, $search, $where) { ?>
 <a id="js_accounts_search_last" class="object query" href="#"><div class="arrow"></div><h1>Last name</h1></a>
 <a id="js_accounts_search_first" class="object query" href="#"><div class="arrow"></div><h1>First name</h1></a>
 
+<?php if(isset($search) && $search !== "") { ?>
 <div class="object subtitle">
-	<h2>Your linked student accounts</h2>
+	<h2><?php echo $where . " filter: " . htmlentities($search); ?></h2>
 </div>
+<?php } else { ?>
+<div class="object subtitle">
+	<h2>All linked student accounts:</h2>
+</div>
+<?php } ?>
 
 <a id="js_accounts_create" class="object create" href="#"><div class="arrow"></div><h1>Create new account</h1></a>
-
-<?php if(isset($search) && $search !== "") { ?>
-<div class="object subtitle"><h2><?php echo $where . " filter: " . htmlentities($search); ?></h2></div>
-<?php } ?>
 
 <?php foreach($data as $row) { ?>
 <a class="object selectable" href="#" data-id="<?php echo $row["NUM"] ?>">
@@ -76,23 +78,23 @@ switch ($_SESSION["TYPE"]) {
 		#Connect to database, level 1 is teacher
 		if($SEARCH !== "") {
 			$stmt = $conn->prepare(
-<<<EOT
+<<<SQL
 SELECT STUDENT.NUM, STUDENT.USERNAME, STUDENT.FIRST_NAME, STUDENT.LAST_NAME, STUDENT.NICK_NAME
 FROM STUDENT
 JOIN TEACHES ON STUDENT.NUM = TEACHES.STUDENT_NUM
 JOIN TEACHER ON TEACHES.TEACHER_NUM = :teacherID
 WHERE $location LIKE CONCAT('%',:search,'%') 
-EOT
+SQL
 			);
 			$stmt->execute(array('teacherID' => $_SESSION["NUM"], 'search' => $SEARCH));	
 		} else {
 			$stmt = $conn->prepare( 
-<<<EOT
+<<<SQL
 SELECT STUDENT.NUM, STUDENT.USERNAME, STUDENT.FIRST_NAME, STUDENT.LAST_NAME, STUDENT.NICK_NAME 
 FROM STUDENT
 JOIN TEACHES ON STUDENT.NUM = TEACHES.STUDENT_NUM
 JOIN TEACHER ON TEACHES.TEACHER_NUM = :teacherID
-EOT
+SQL
 			);
 			$stmt->execute(array('teacherID' => $_SESSION["NUM"]));	
 		}
