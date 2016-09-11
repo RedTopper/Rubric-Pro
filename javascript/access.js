@@ -96,6 +96,47 @@ function createTier(tier, name) {
 	}).remove();
 }
 
+function appendServerResponse(tier, title, data, success, errorcode) {
+	if(success) {
+		errorcode = "Invalid response. The server sent data, but the format was not standard.";
+	}
+	
+	//If the data is too short
+	if(data.length < 30) {
+		$("#tier" + tier).append(
+			'<div class="object subtitle"><h2>Programming Error</h2></div>' +
+			'<div class="object subtext">' +
+				'<p>An error in the programming occured.' +
+				'<p>The server returned an empty response.' +
+			'</div>'
+		);
+		log("AJAX/server", "Fatal error requesting data for " + title + ".");
+		
+	//else if the data does not have ther right header.
+	} else if(!(data.includes('<div class="object subtitle">'))) {
+		$("#tier" + tier).append(
+			'<div class="object subtitle"><h2>Undefined Error</h2></div>' +
+			'<div class="object subtext">' +
+				'<p>An undefined error in the application occured.' +
+				'<p>The server returned a non-empty and non-standard response.' +
+				'<p>General information: ' + errorcode +
+			'</div>'
+		);
+		log("AJAX/server", "Fatal error requesting data for " + title + ".");
+		
+	//else the data has the right header...
+	} else {
+		$("#tier" + tier).append(data);
+		
+		//and it's successfull
+		if(success) {
+			log("AJAX/server", "Obtained data successfully for " + title + ".");
+		} else {
+			log("AJAX/server", "Fatal error requesting data for " + title + ".");
+		}
+	}
+}
+
 /**
  * Performs an AJAX request on the server.
  *
@@ -117,40 +158,29 @@ function callServer(tier, path, title, post) {
 		url: path,
 		data: params,
 		success: function(data) {
-			$("#tier" + tier).append(data);
-			log("AJAX/server", "Obtained data for " + title + ".");
+			appendServerResponse(tier, title, data, true);
 		},
 		error: function(xhr, status, error) {
-			//If it's short...
-			if(xhr.responseText.length < 10) {
-				$("#tier" + tier).append(
-					'<div class="object subtitle"><h2>Programming Error</h2></div>' +
-					'<div class="object subtext">' +
-						'<p>An error in the programming occured.' +
-						'<p>The server returned an empty response.' +
-					'</div>'
-				);
-				log("AJAX/server", "Fatal error requesting data for " + title + ".");
-				
-			//If it's long, but does not include the standard header...
-			} else if(!(xhr.responseText.includes('<div class="object subtitle">'))) {
-				$("#tier" + tier).append(
-					'<div class="object subtitle"><h2>Undefined Error</h2></div>' +
-					'<div class="object subtext">' +
-						'<p>An undefined error in the application occured.' +
-						'<p>The server returned a non-empty and non-standard response.' +
-						'<p>General information: ' + error +
-					'</div>'
-				);
-				log("AJAX/server", "Fatal error requesting data for " + title + ".");
-				
-			//If it's long AND includes the standard header...
-			} else {
-				$("#tier" + tier).append(xhr.responseText);
-				log("AJAX/server", "The server returned an error.");
-			}
+			appendServerResponse(tier, title, xhr.responseText, false, error);
 		}
 	});
+}
+
+/**
+ * Used for sending specific searches to the database.
+ * tier is the tier to create the result on.
+ * tiername is the tier's name
+ * dir is the path on the webserver to query
+ * searchbox is the html ID of the search box.
+ * database is the database we are searching. Exclusively for the user.
+ * where is the is the variable
+ */
+function search(tier, tiername, dir, searchbox, database, where) {
+	var tier = 0;
+	var search = $(searchbox).val();
+	log("JQUERY/user", "You searched the " + database + " database where the " + where + " is: " + search);
+	createTier(tier, tiername);
+	callServer(tier, dir, tiername.toLowerCase(), {SEARCH: search, WHERE: where});
 }
 
 //Sidebar: Classes tab.
@@ -170,17 +200,29 @@ $(document).on('click', '#js_accounts', function(e) {
 	return false;
 });
 
-	//Accounts tab: search accounts.
+	//Disable search enter key.
 	$(document).on('keydown', '#js_accounts_search', function(e) {
 		if(e.which === 13) {
-			var tier = 0;
-			var search = $("#js_students_search").val();
-			log("JQUERY/user", "You searched the account database for: " + search);
-			createTier(tier, "Accounts");
-			callServer(tier, "/backend/accounts.php", "accounts", {SEARCH: search});
 			return false;
 		}
 	});
+	//Accounts tab: search accounts by username.
+	$(document).on('click', '#js_accounts_search_username', function(e) {
+		search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "username");
+		return false;
+	});
+	//Accounts tab: search accounts by last name.
+	$(document).on('click', '#js_accounts_search_last', function(e) {
+		search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "last");
+		return false;
+	});
+	//Accounts tab: search accounts by first name.
+	$(document).on('click', '#js_accounts_search_first', function(e) {
+		search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "first");
+		return false;
+	});
+	
+	
 	
 	//Accounts tab: create accounts
 	$(document).on('click', '#js_accounts_create', function(e) {

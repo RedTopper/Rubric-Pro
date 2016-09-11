@@ -115,7 +115,7 @@ body {
 
 .bar {
 	min-width: 350px;
-	max-width: 500px;
+	max-width: 400px;
 	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -193,6 +193,13 @@ body {
 }
 .selectable:hover {
 	background: rgba(85,85,85,0.6);
+}
+
+.query {
+	background: rgba(255,191,0,0.2);
+}
+.query:hover {
+	background: rgba(255,191,0,0.4);
 }
 
 .editor {
