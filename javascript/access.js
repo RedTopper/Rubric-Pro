@@ -88,12 +88,14 @@ function createTier(tier, name) {
 	tier = tier + 1;
 	
 	//create the tier.
-	$("#content").append('<div class="bar" id="tier' + tier + '"><div class="title"><h1>' + name + '</h1></div></div>').find("#tier" + tier).hide().fadeIn("fast");
+	$("#content").append('<div class="bar" id="tier' + tier + '"><div class="title"><h1>' + name + '</h1></div></div>').find("#tier" + tier).hide().fadeIn("normal");
 	
 	//Remove the white space between inline-block elements (to prevent gaps)
 	$("#content").contents().filter(function () {
 		return this.nodeType === 3;
 	}).remove();
+	
+	$('#contentscroller').animate({scrollLeft: "+=401px"});
 }
 
 function appendServerResponse(tier, title, data, success, errorcode) {
@@ -200,12 +202,6 @@ $(document).on('click', '#js_accounts', function(e) {
 	return false;
 });
 
-	//Disable search enter key.
-	$(document).on('keydown', '#js_accounts_search', function(e) {
-		if(e.which === 13) {
-			return false;
-		}
-	});
 	//Accounts tab: search accounts by username.
 	$(document).on('click', '#js_accounts_search_username', function(e) {
 		search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "username");
@@ -221,10 +217,7 @@ $(document).on('click', '#js_accounts', function(e) {
 		search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "first");
 		return false;
 	});
-	
-	
-	
-	//Accounts tab: create accounts
+	//Accounts tab: Create accounts
 	$(document).on('click', '#js_accounts_create', function(e) {
 		var tier = 1; //This function originates from a tier 0 item, so it is 
 		log("JQUERY/user", "Request accounts > create tab");
@@ -232,6 +225,21 @@ $(document).on('click', '#js_accounts', function(e) {
 		callServer(tier, "/backend/accounts_create.php", "accounts_create");
 		return false;
 	});
+		//Create accounts: submit
+		$(document).on('click', '#js_accounts_create_submit', function(e) {
+			var tier = 2; //This function originates from a tier 0 item, so it is 
+			log("JQUERY/user", "Request accounts > create tab > submit");
+			createTier(tier, "Submit");
+			callServer(tier, "/backend/accounts_create_submit.php", "accounts_create_submit", 
+			{
+				USERNAME: $("#username").val(),
+				LAST_NAME: $("#last").val(),
+				FIRST_NAME: $("#first").val(),
+				NICK_NAME: $("#nick").val(),
+				EXTRA: $("#comment").val()
+			});
+			return false;
+		});
 
 //"View new messages" button.
 $(document).on('click', '#js_consolebottom', function(e) {

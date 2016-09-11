@@ -11,17 +11,14 @@ $SEARCH = preg_replace('/%+/', '', $SEARCH);
 //Sanatize $WHERE strictly.
 $location = "STUDENT.USERNAME"; //default.
 switch($WHERE) {
-	case "first":
 	case "FIRST":
 		$location = "STUDENT.FIRST_NAME";
 		$WHERE = "First name";
 		break;
-	case "last":
 	case "LAST":
 		$location = "STUDENT.LAST_NAME";
 		$WHERE = "Last name";
 		break;
-	case "username":
 	case "USERNAME":
 	default:
 		$location = "STUDENT.USERNAME";
@@ -37,9 +34,9 @@ function outputAccounts($data, $search, $where) { ?>
 <div class="object subtitle">
 	<h2>Filter by...</h2>
 </div>
-<a id="js_accounts_search_username" class="object query" href="#"><div class="arrow"></div><h1>Username</h1></a>
-<a id="js_accounts_search_last" class="object query" href="#"><div class="arrow"></div><h1>Last name</h1></a>
-<a id="js_accounts_search_first" class="object query" href="#"><div class="arrow"></div><h1>First name</h1></a>
+<a id="js_accounts_search_username" class="object query" href="#"><h1>Username</h1></a>
+<a id="js_accounts_search_last" class="object query" href="#"><h1>Last name</h1></a>
+<a id="js_accounts_search_first" class="object query" href="#"><h1>First name</h1></a>
 
 <?php if(isset($search) && $search !== "") { ?>
 <div class="object subtitle">
@@ -54,15 +51,15 @@ function outputAccounts($data, $search, $where) { ?>
 <a id="js_accounts_create" class="object create" href="#"><div class="arrow"></div><h1>Create new account</h1></a>
 
 <?php foreach($data as $row) { ?>
-<a class="object selectable" href="#" data-id="<?php echo $row["NUM"] ?>">
+<a class="object selectable" href="#" data-num="<?php echo $row["NUM"] ?>">
 <div class="arrow"></div>
 <h1>
 <?php 
 echo "[" . 
-$row["USERNAME"] . "]: " . 
-$row["LAST_NAME"] . ", " . 
-$row["FIRST_NAME"] . 
-($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " "); 
+htmlentities($row["USERNAME"]) . "]: " . 
+htmlentities($row["LAST_NAME"]) . ", " . 
+htmlentities($row["FIRST_NAME"]) . 
+htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " ")); 
 ?> 
 </h1>
 </a>

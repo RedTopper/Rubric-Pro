@@ -6,25 +6,18 @@ include "db.php";
 function outputForm() {	
 ?>
 <div class="editor">
-	<label for="first">First Name: </label>
-	<input id="first" type="text" name="FIRST_NAME" placeholder="Jon"><br>
+	<label for="username">Username: </label>
+	<input id="username" type="text" name="USERNAME" placeholder="0019247"><br>
 	<label for="last">Last Name: </label>
 	<input id="last" type="text" name="LAST_NAME" placeholder="Snow"><br>
-	<label for="username">Username: </label>
-	<input id="username" type="text" name="USERNAME" placeholder="lordsnow"><br>
-	<label for="studentid">Student ID: </label>
-	<input id="studentid" type="text" name="STUDENT_ID" placeholder="1662289"><br>
-	<label for="type">Type: </label>
-	<select id="type">
-		<option value="0">Student</option>
-		<option value="1">Teacher</option>
-	</select> 
-	<label for="parent">Parent: </label>
-	<select id="parent">
-		<option value="root">root</option>
-	</select> 
+	<label for="first">First Name: </label>
+	<input id="first" type="text" name="FIRST_NAME" placeholder="Jon"><br>
+	<label for="nick">Nickname: </label>
+	<input id="nick" type="text" name="NICK_NAME" placeholder="Lord Snow"><br>
+	<label for="comment">Comment: </label>
+	<input id="comment" type="text" name="EXTRA" placeholder="True King of the North"><br>
 </div>
-<a id="js_accounts_create" class="object create" href="#"><div class="arrow"></div><h1>Submit</h1></a>
+<a id="js_accounts_create_submit" class="object create" href="#"><div class="arrow"></div><h1>Submit</h1></a>
 <div class="object subtitle"><h2>Notice</h2></div>
 <div class="object subtext">
 	<p>Students will be able to create their passwords the first time they log in.
@@ -33,12 +26,10 @@ function outputForm() {
 }
 
 switch ($_SESSION["TYPE"]) {
-	case 0:
+	case "STUDENT":
 		showError("Not Allowed", "Students may not create other student accounts.", "How did you even request this?", 403);
 		break;
-	case 1:
-		break;
-	case 2:
+	case "TEACHER":
 		outputForm();
 		break;
 }
