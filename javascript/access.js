@@ -190,15 +190,7 @@ function search(tier, tiername, dir, searchbox, database, where) {
 	callServer(tier, dir, tiername.toLowerCase(), {SEARCH: search, WHERE: where});
 }
 
-//Sidebar: Classes tab.
-$(document).on('click', '#js_classes', function(e) {
-	var tier = 0; //This function originates from the sidebar, a tier 0 item.
-	createTier(tier, "Classes");
-	log("JQUERY/user", "Request classes tab.");
-	return false;
-});
-
-//Sidebar: Accounts tab. Bound to function because it can be called during a REDIRECT: ACCOUNTS
+//Sidebar: Accounts tab. Bound to function because it can be called during a JS-Redirect: account
 function doAccounts(e) {
 	var tier = 0; //This function originates from the sidebar, a tier 0 item.
 	log("JQUERY/user", "Request accounts tab.");
@@ -225,7 +217,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 	});
 	//Accounts tab: Create accounts
 	$(document).on('click', '#js_accounts_create', function(e) {
-		var tier = 1; //This function originates from a tier 0 item, so it is 
+		var tier = 1; 
 		log("JQUERY/user", "Request accounts > create tab");
 		createTier(tier, "Create a new account");
 		callServer(tier, "/backend/accounts_create.php", "accounts_create");
@@ -233,7 +225,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 	});
 		//Create accounts: submit
 		$(document).on('click', '#js_accounts_create_submit', function(e) {
-			var tier = 2; //This function originates from a tier 0 item, so it is 
+			var tier = 2;
 			log("JQUERY/user", "Request accounts > create tab > submit");
 			createTier(tier, "Submit");
 			callServer(tier, "/backend/accounts_create_submit.php", "accounts_create_submit", 
@@ -247,6 +239,17 @@ $(document).on('click', '#js_accounts', doAccounts);
 			});
 			return false;
 		});
+	//Accounts tab: Action on ANY student
+	$(document).on('click', '.js_accounts_student', function(e) {
+		var tier = 1; 
+		log("JQUERY/user", "Request accounts > student tab");
+		createTier(tier, "Edit a student");
+		callServer(tier, "/backend/accounts_student.php", "accounts_student",
+		{
+			STUDENT: $(this).data('num')
+		});
+		return false;
+	});
 
 //"View new messages" button.
 $(document).on('click', '#js_consolebottom', function(e) {
