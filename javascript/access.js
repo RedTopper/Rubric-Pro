@@ -159,8 +159,13 @@ function callServer(tier, path, title, post) {
 		type: "POST",
 		url: path,
 		data: params,
-		success: function(data) {
+		success: function(data, textStatus, xhr) {
 			appendServerResponse(tier, title, data, true);
+			switch(xhr.getResponseHeader("JS-Redirect")) {
+				case "account":
+					setTimeout(doAccounts, 1500);
+					break;
+			}
 		},
 		error: function(xhr, status, error) {
 			appendServerResponse(tier, title, xhr.responseText, false, error);
@@ -193,14 +198,15 @@ $(document).on('click', '#js_classes', function(e) {
 	return false;
 });
 
-//Sidebar: Accounts tab.
-$(document).on('click', '#js_accounts', function(e) {
+//Sidebar: Accounts tab. Bound to function because it can be called during a REDIRECT: ACCOUNTS
+function doAccounts(e) {
 	var tier = 0; //This function originates from the sidebar, a tier 0 item.
 	log("JQUERY/user", "Request accounts tab.");
 	createTier(tier, "Accounts");
 	callServer(tier, "/backend/accounts.php", "accounts");
 	return false;
-});
+}
+$(document).on('click', '#js_accounts', doAccounts);
 
 	//Accounts tab: search accounts by username.
 	$(document).on('click', '#js_accounts_search_username', function(e) {
@@ -236,6 +242,7 @@ $(document).on('click', '#js_accounts', function(e) {
 				LAST_NAME: $("#last").val(),
 				FIRST_NAME: $("#first").val(),
 				NICK_NAME: $("#nick").val(),
+				GRADE: $("#grade").val(),
 				EXTRA: $("#comment").val()
 			});
 			return false;

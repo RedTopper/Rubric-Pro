@@ -11,14 +11,17 @@ $SEARCH = preg_replace('/%+/', '', $SEARCH);
 //Sanatize $WHERE strictly.
 $location = "STUDENT.USERNAME"; //default.
 switch($WHERE) {
+	case "first":
 	case "FIRST":
 		$location = "STUDENT.FIRST_NAME";
 		$WHERE = "First name";
 		break;
+	case "last":
 	case "LAST":
 		$location = "STUDENT.LAST_NAME";
 		$WHERE = "Last name";
 		break;
+	case "username":
 	case "USERNAME":
 	default:
 		$location = "STUDENT.USERNAME";
