@@ -71,7 +71,11 @@ SQL
 <div class="object subtext">
 	<p>If this is <b>NOT</b> the student you are looking for, edit the fields to the left, then submit the request again.
 </div>
-<a id="js_accounts_create_submit_bind" class="object create" href="#" data-num="<?php echo $studentNum; ?>"><div class="arrow"></div><h1>Bind Accounts</h1></a>
+<a id="js_accounts_create_submit_bind" class="object create" href="#" 
+data-num="<?php echo $studentNum; ?>" data-username="<?php echo htmlentities($row["USERNAME"]); ?>">
+	<div class="arrow"></div>
+	<h1>Bind Accounts</h1>
+</a>
 <?php
 die();
 	}

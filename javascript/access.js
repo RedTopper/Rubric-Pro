@@ -250,7 +250,8 @@ $(document).on('click', '#js_accounts', doAccounts);
 				createTier(tier, "Bind");
 				callServer(tier, "/backend/accounts_create_submit_bind.php", "accounts_create_submit_bind",
 				{
-					STUDENT: $(this).data('num')
+					NUM: $("#js_accounts_create_submit_bind").data('num'),
+					USERNAME: $("#js_accounts_create_submit_bind").data('username')
 				});
 				return false;
 			});
