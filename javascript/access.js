@@ -98,6 +98,9 @@ function createTier(tier, name) {
 	$('#contentscroller').animate({scrollLeft: "+=401px"});
 }
 
+/**
+ * Takes a server response, does some loose parsing, then appends it to a tier.
+ */
 function appendServerResponse(tier, title, data, success, errorcode) {
 	if(success) {
 		errorcode = "Invalid response. The server sent data, but the format was not standard.";
