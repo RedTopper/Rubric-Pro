@@ -63,6 +63,11 @@ if(!isset($needsAJAX)) {
 	showError("Server Error", "It was unable to be deturmined if this page requires AJAX.", "Tell an administrator to fix this!", 500);
 }
 
+#Stop the page load if needsTeacher is UNSET
+if(!isset($needsTeacher)) {
+	showError("Server Error", "It was unable to be deturmined if this page requires teacher level authentication.", "Tell an administrator to fix this!", 500);
+}
+
 #Stop the page load if we cannot connect to the database
 try {
 	$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password); #login
@@ -94,5 +99,10 @@ if($needsAJAX) {
 	if(!(isset($_POST["AJAX"]))) {
 		showError("Requires AJAX", "This page is not meant to be read by a human.", "Try to be a robot next time.", 400);
 	}
+}
+
+#If we need to be a teacher and we are not then stop page load.
+if($needsTeacher && $_SESSION["TYPE"] !== "TEACER") {
+	showError("Requires higher authentication", "Only a teacher may request this page.", null, 400);
 }
 ?>

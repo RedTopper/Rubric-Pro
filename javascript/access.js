@@ -193,7 +193,8 @@ function search(tier, tiername, dir, searchbox, database, where) {
 	callServer(tier, dir, tiername.toLowerCase(), {SEARCH: search, WHERE: where});
 }
 
-//Sidebar: Accounts tab. Bound to function because it can be called during a JS-Redirect: account
+//Sidebar: Accounts tab. 
+//Bound to function because it can be called during a JS-Redirect: account
 function doAccounts(e) {
 	var tier = 0; //This function originates from the sidebar, a tier 0 item.
 	log("JQUERY/user", "Request accounts tab.");
@@ -242,6 +243,17 @@ $(document).on('click', '#js_accounts', doAccounts);
 			});
 			return false;
 		});
+			//Submit: bind
+			$(document).on('click', '#js_accounts_create_submit_bind', function(e) {
+				var tier = 3;
+				log("JQUERY/user", "Request accounts > create tab > submit > bind");
+				createTier(tier, "Bind");
+				callServer(tier, "/backend/accounts_create_submit_bind.php", "accounts_create_submit_bind",
+				{
+					STUDENT: $(this).data('num')
+				});
+				return false;
+			});
 	//Accounts tab: Action on ANY student
 	$(document).on('click', '.js_accounts_student', function(e) {
 		var tier = 1; 

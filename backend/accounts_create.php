@@ -23,16 +23,13 @@ function outputForm() {
 <div class="object subtitle"><h2>Notice</h2></div>
 <div class="object subtext">
 	<p>Students will be able to create their passwords the first time they log in.
+	<p>Pro tip: Other teachers in your district might have already created an account for your student! Before typing in all the fields, try submitting the username field only, and we'll search the district for a matching account. If we find one, we'll let you know!
 </div>
 <?php
 }
 
-switch ($_SESSION["TYPE"]) {
-	case "STUDENT":
-		showError("Not Allowed", "Students may not create other student accounts.", "How did you even request this?", 403);
-		break;
-	case "TEACHER":
-		outputForm();
-		break;
+if ($_SESSION["TYPE"] !== "TEACHER") {
+	showError("Not Allowed", "Students may not create other student accounts.", "How did you even request this?", 403);
 }
+outputForm();
 ?>
