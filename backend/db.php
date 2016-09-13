@@ -102,7 +102,7 @@ if($needsAJAX) {
 }
 
 #If we need to be a teacher and we are not then stop page load.
-if($needsTeacher && $_SESSION["TYPE"] !== "TEACER") {
-	showError("Requires higher authentication", "Only a teacher may request this page.", null, 400);
+if($needsTeacher && $_SESSION["TYPE"] !== "TEACHER") {
+	showError("Requires higher authentication", "Only a teacher may request this page.", null, 400, true);
 }
 ?>

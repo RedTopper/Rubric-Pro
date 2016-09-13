@@ -2,7 +2,6 @@
 $needsAuthentication = false;
 $needsAJAX = false;
 $needsTeacher = false;
-
 include "backend/db.php";
 $USERNAME = isset($_POST["USERNAME"]) ? $_POST["USERNAME"] : "";
 $PASSWORD = isset($_POST["PASSWORD"]) ? $_POST["PASSWORD"] : "";

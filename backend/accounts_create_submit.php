@@ -1,19 +1,14 @@
 <?php
 $needsAuthentication = true;
 $needsAJAX = true;
+$needsTeacher = true;
 include "db.php";
-
 $USERNAME = isset($_POST["USERNAME"]) ? $_POST["USERNAME"] : "";
 $LAST_NAME = isset($_POST["LAST_NAME"]) ? $_POST["LAST_NAME"] : "";
 $FIRST_NAME = isset($_POST["FIRST_NAME"]) ? $_POST["FIRST_NAME"] : "";
 $NICK_NAME = isset($_POST["NICK_NAME"]) ? $_POST["NICK_NAME"] : "";
 $GRADE = isset($_POST["GRADE"]) ? $_POST["GRADE"] : "";
 $EXTRA = isset($_POST["EXTRA"]) ? $_POST["EXTRA"] : "";
-
-#Check if teacher
-if ($_SESSION["TYPE"] !== "TEACHER") {
-	showError("Not Allowed", "Students may not create other student accounts.", "How did you even request this?", 403);
-}
 
 #check to see if the user actually typed anything.
 if(strlen($USERNAME) < 2) {

@@ -1,6 +1,7 @@
 <?php
 $needsAuthentication = true;
 $needsAJAX = true;
+$needsTeacher = true;
 include "db.php";
 $STUDENT = isset($_POST["STUDENT"]) ? $_POST["STUDENT"] : "";
 

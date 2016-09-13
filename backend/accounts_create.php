@@ -1,9 +1,10 @@
 <?php
 $needsAuthentication = true;
 $needsAJAX = true;
+$needsTeacher = true;
 include "db.php";
 
-function outputForm() {	
+#There isn't much here other than a web form.
 ?>
 <div class="editor">
 	<label for="username">Username: </label>
@@ -25,11 +26,3 @@ function outputForm() {
 	<p>Students will be able to create their passwords the first time they log in.
 	<p>Pro tip: Other teachers in your district might have already created an account for your student! Before typing in all the fields, try submitting the username field only, and we'll search the district for a matching account. If we find one, we'll let you know!
 </div>
-<?php
-}
-
-if ($_SESSION["TYPE"] !== "TEACHER") {
-	showError("Not Allowed", "Students may not create other student accounts.", "How did you even request this?", 403);
-}
-outputForm();
-?>

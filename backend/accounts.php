@@ -1,6 +1,7 @@
 <?php
 $needsAuthentication = true;
 $needsAJAX = true;
+$needsTeacher = true;
 include "db.php";
 $SEARCH = isset($_POST["SEARCH"]) ? $_POST["SEARCH"] : "";
 $WHERE = isset($_POST["WHERE"]) ? $_POST["WHERE"] : "";
@@ -86,13 +87,8 @@ htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " "))
 
 }
 
-switch ($_SESSION["TYPE"]) {
-	case "STUDENT":
-		showError("Not Allowed", "Students may not edit other student accounts.", "How did you even request this?", 403);
-		break;
-	case "TEACHER":
-		if($SEARCH !== "") {
-			$stmt = $conn->prepare(
+if($SEARCH !== "") {
+	$stmt = $conn->prepare(
 <<<SQL
 SELECT STUDENT.NUM, STUDENT.USERNAME, STUDENT.FIRST_NAME, STUDENT.LAST_NAME, STUDENT.NICK_NAME
 FROM STUDENT
@@ -100,21 +96,19 @@ JOIN TEACHES ON STUDENT.NUM = TEACHES.STUDENT_NUM
 JOIN TEACHER ON TEACHES.TEACHER_NUM = :teacherID
 WHERE $location LIKE CONCAT('%',:search,'%') 
 SQL
-			);
-			$stmt->execute(array('teacherID' => $_SESSION["NUM"], 'search' => $SEARCH));	
-		} else {
-			$stmt = $conn->prepare( 
+	);
+	$stmt->execute(array('teacherID' => $_SESSION["NUM"], 'search' => $SEARCH));	
+} else {
+	$stmt = $conn->prepare( 
 <<<SQL
 SELECT STUDENT.NUM, STUDENT.USERNAME, STUDENT.FIRST_NAME, STUDENT.LAST_NAME, STUDENT.NICK_NAME 
 FROM STUDENT
 JOIN TEACHES ON STUDENT.NUM = TEACHES.STUDENT_NUM
 JOIN TEACHER ON TEACHES.TEACHER_NUM = :teacherID
 SQL
-			);
-			$stmt->execute(array('teacherID' => $_SESSION["NUM"]));	
-		}
-		$data = $stmt->fetchAll();
-		outputAccounts($data, $SEARCH, $WHERE);
-		break;
+	);
+	$stmt->execute(array('teacherID' => $_SESSION["NUM"]));	
 }
+$data = $stmt->fetchAll();
+outputAccounts($data, $SEARCH, $WHERE);
 ?>

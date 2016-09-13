@@ -1,6 +1,7 @@
 <?php
 $needsAuthentication = true;
 $needsAJAX = false;
+$needsTeacher = true;
 include "backend/db.php";
 ?>
 <!DOCTYPE html>
