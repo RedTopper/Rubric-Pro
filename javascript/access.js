@@ -320,6 +320,26 @@ $(document).on('click', '#js_accounts', doAccounts);
 				});
 				return false;
 			});
+
+//Sidebar: Classes tab.
+//Function used during a JS-Redirect: classes
+function doClass(e) {
+	var tier = 0;
+	log("JQUERY/user", "Request classes tab.");
+	createTier(tier, "Classes");
+	callServer(tier, "/backend/classes.php", "classes");
+	return false;
+}
+$(document).on('click', '#js_classes', doClass);
+	//Classes tab: create
+	$(document).on('click', '#js_classes_create', function(e) {
+		var tier = 1; 
+		log("JQUERY/user", "Request classes > create");
+		createTier(tier, "Create a new class");
+		callServer(tier, "/backend/classes_create.php", "classes_create");
+		return false;
+	});
+
 //"View new messages" button.
 $(document).on('click', '#js_consolebottom', function(e) {
 	jumplog();

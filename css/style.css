@@ -230,7 +230,8 @@ body {
 .editor input[type="radio"] {
 	margin: 3px 0;
 }
-.editor input[type="text"] {
+.editor input[type="text"],
+.editor input[type="number"] {
 	display: inline-block;
 	padding: 5px;
 	margin: 3px 0;
@@ -243,7 +244,9 @@ body {
 	box-sizing: border-box;
 }
 .editor input[type="text"]:focus,
-.editor input[type="text"].focus {
+.editor input[type="text"].focus,
+.editor input[type="number"]:focus,
+.editor input[type="number"].focus {
 	border-bottom: solid 4px #1B96FE;
 	transition: border-bottom 0.3s;
 }

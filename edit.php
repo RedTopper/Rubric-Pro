@@ -40,4 +40,7 @@ include "backend/db.php";
 		</div>
 	</div>
 	<a href="#" id="js_consolebottom">View new message(s)</a>
+	<script>
+	log("WELCOME/user", "Welcome to Rubric Pro! Actions you perform will appear down here.");
+	</script>
 </body>
