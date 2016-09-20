@@ -199,6 +199,24 @@ function search(tier, tiername, dir, searchbox, database, where) {
 //==========================================================================================================
 
 
+//Special cases: The search function replaces "tier 0", so even though it's called from a "tier 0"
+//object, it belongs as a root function.
+//Accounts tab: search accounts by username.
+$(document).on('click', '#js_accounts_search_username', function(e) {
+	search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "username");
+	return false;
+});
+//Accounts tab: search accounts by last name.
+$(document).on('click', '#js_accounts_search_last', function(e) {
+	search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "last");
+	return false;
+});
+//Accounts tab: search accounts by first name.
+$(document).on('click', '#js_accounts_search_first', function(e) {
+	search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "first");
+	return false;
+});
+
 //Sidebar: Accounts tab. 
 //Bound to function because it can be called during a JS-Redirect: account
 function doAccounts(e) {
@@ -209,21 +227,6 @@ function doAccounts(e) {
 	return false;
 }
 $(document).on('click', '#js_accounts', doAccounts);
-	//Accounts tab: search accounts by username.
-	$(document).on('click', '#js_accounts_search_username', function(e) {
-		search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "username");
-		return false;
-	});
-	//Accounts tab: search accounts by last name.
-	$(document).on('click', '#js_accounts_search_last', function(e) {
-		search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "last");
-		return false;
-	});
-	//Accounts tab: search accounts by first name.
-	$(document).on('click', '#js_accounts_search_first', function(e) {
-		search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "first");
-		return false;
-	});
 	//Accounts tab: Create accounts
 	$(document).on('click', '#js_accounts_create', function(e) {
 		var tier = 1; 
