@@ -264,3 +264,8 @@ body {
 	background-color: #64B8FC;
 	transition: background-color 0.3s ease;
 }
+.monospace {
+	font-family: 'Ubuntu Mono', monospace;
+	display: inline-block;
+	font-weight: 400;
+}

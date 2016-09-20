@@ -75,8 +75,8 @@ foreach($data as $row) {
 
 
 //Outpus the actual students.
-echo "[" . 
-htmlentities($row["USERNAME"]) . "]: " . 
+echo "<div class='monospace'>[" . 
+htmlentities($row["USERNAME"]) . "]:</div> " . 
 htmlentities($row["LAST_NAME"]) . ", " . 
 htmlentities($row["FIRST_NAME"]) . 
 htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " ")); 
@@ -96,6 +96,7 @@ JOIN TEACHES ON STUDENT.NUM = TEACHES.STUDENT_NUM
 WHERE
 TEACHES.TEACHER_NUM = :teacherID AND
 $location LIKE CONCAT('%',:search,'%') 
+ORDER BY STUDENT.LAST_NAME
 SQL
 	);
 	$stmt->execute(array('teacherID' => $_SESSION["NUM"], 'search' => $SEARCH));	
@@ -107,6 +108,7 @@ FROM STUDENT
 JOIN TEACHES ON STUDENT.NUM = TEACHES.STUDENT_NUM
 WHERE 
 TEACHES.TEACHER_NUM = :teacherID
+ORDER BY STUDENT.LAST_NAME
 SQL
 	);
 	$stmt->execute(array('teacherID' => $_SESSION["NUM"]));	

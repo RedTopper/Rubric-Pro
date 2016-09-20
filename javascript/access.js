@@ -193,6 +193,12 @@ function search(tier, tiername, dir, searchbox, database, where) {
 	callServer(tier, dir, tiername.toLowerCase(), {SEARCH: search, WHERE: where});
 }
 
+
+//==========================================================================================================
+//===============Stuff beyond this point is used for sending and getting data from the server===============
+//==========================================================================================================
+
+
 //Sidebar: Accounts tab. 
 //Bound to function because it can be called during a JS-Redirect: account
 function doAccounts(e) {
@@ -203,7 +209,6 @@ function doAccounts(e) {
 	return false;
 }
 $(document).on('click', '#js_accounts', doAccounts);
-
 	//Accounts tab: search accounts by username.
 	$(document).on('click', '#js_accounts_search_username', function(e) {
 		search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "username");
@@ -260,13 +265,61 @@ $(document).on('click', '#js_accounts', doAccounts);
 		var tier = 1; 
 		log("JQUERY/user", "Request accounts > student tab");
 		createTier(tier, "Edit a student");
-		callServer(tier, "/backend/accounts_student.php", "accounts_student",
+		callServer(tier, "/backend/accounts_student.php", "accounts_student (view)",
 		{
-			STUDENT: $(this).data('num')
+			STUDENT: $(this).data('num'), 
+			REQUEST: "VIEW"
 		});
 		return false;
 	});
-
+		//Action on ANY student: reset password
+		$(document).on('click', '#js_accounts_student_reset', function(e) {
+			var tier = 2; 
+			log("JQUERY/user", "Request accounts > student tab > reset password");
+			createTier(tier, "Reset Password");
+			callServer(tier, "/backend/accounts_student.php", "accounts_student (reset-ask)",
+			{
+				STUDENT: $(this).data('num'),
+				REQUEST: "RESET-ASK"
+			});
+			return false;
+		});
+			//reset password: agree!
+			$(document).on('click', '#js_accounts_student_reset_yes', function(e) {
+				var tier = 3; 
+				log("JQUERY/user", "Request accounts > student tab > reset password > reset!");
+				createTier(tier, "Reset!");
+				callServer(tier, "/backend/accounts_student.php", "accounts_student (reset)",
+				{
+					STUDENT: $(this).data('num'),
+					REQUEST: "RESET"
+				});
+				return false;
+			});
+		//Action on ANY student: unblind account
+		$(document).on('click', '#js_accounts_student_unbind', function(e) {
+			var tier = 2; 
+			log("JQUERY/user", "Request accounts > student tab > unbind account");
+			createTier(tier, "Unbind account");
+			callServer(tier, "/backend/accounts_student.php", "accounts_student (unbind-ask)",
+			{
+				STUDENT: $(this).data('num'),
+				REQUEST: "UNBIND-ASK"
+			});
+			return false;
+		});
+			//unblind account: agree!
+			$(document).on('click', '#js_accounts_student_unbind_yes', function(e) {
+				var tier = 3; 
+				log("JQUERY/user", "Request accounts > student tab > unbind account > unbind!");
+				createTier(tier, "Unbound!");
+				callServer(tier, "/backend/accounts_student.php", "accounts_student (unbind)",
+				{
+					STUDENT: $(this).data('num'),
+					REQUEST: "UNBIND"
+				});
+				return false;
+			});
 //"View new messages" button.
 $(document).on('click', '#js_consolebottom', function(e) {
 	jumplog();
