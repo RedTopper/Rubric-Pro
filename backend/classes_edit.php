@@ -22,24 +22,37 @@ if($count == 1) {
 	$row = $stmt->fetch();
 ?>
 	<div class="object subtitle">
-		<h2>What would you like to do with <?php echo htmlentities($row["NAME"]); ?>?</h2>
+		<h2><?php echo htmlentities($row["NAME"]); ?></h2>
 	</div>
-	<a id="js_classes_edit_students" class="object create" href="#"><div class="arrow"></div>
-		<h1>Add a student to this class</h1>
-	</a>
-	<a id="js_classes_edit_students" class="object create" href="#"><div class="arrow"></div>
-		<h1>Create a project for this class</h1>
-	</a>
-	<div class="object subtitle">
-		<h2>Class information: </h2>
-	</div>
-	<div class="object subtext">
+		<div class="object subtext">
 		<p><?php echo "Year: " . $row["YEAR"]; ?>.
 		<p><?php echo "Term: " . $row["TERM"]; ?>.
 		<p><?php echo htmlentities($row["PERIOD"]); ?>.
 		<p><?php echo ($row["DESCRIPTOR"] !== "" ? 
 			"Description: " . htmlentities($row["DESCRIPTOR"]) . "." : 
 			"");  ?>
+	</div>
+	<div class="object subtitle">
+		<h2>Project management:</h2>
+	</div>
+	<a id="js_classes_edit_viewprojects" class="object create" href="#"><div class="arrow"></div>
+		<h1>View</h1>
+	</a>
+	<a id="js_classes_edit_createprojects" class="object create" href="#"><div class="arrow"></div>
+		<h1>Create</h1>
+	</a>
+	<a id="js_classes_edit_removeprojects" class="object destroy" href="#"><div class="arrow"></div>
+		<h1>Remove</h1>
+	</a>
+	<div class="object subtitle">
+		<h2>Student management:</h2>
+	</div>
+	<a id="js_classes_edit_viewstudents" class="object create" href="#"><div class="arrow"></div>
+		<h1>View</h1>
+	</a>
+	</div>
+		<div class="object subtext">
+		<p>Add or remove students from this class through the Accounts tab.
 	</div>
 <?php
 } else {

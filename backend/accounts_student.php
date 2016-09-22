@@ -4,7 +4,16 @@ $needsAJAX = true;
 $needsTeacher = true;
 include "db.php";
 $STUDENT = isset($_POST["STUDENT"]) ? $_POST["STUDENT"] : "";
+$CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
 $REQUEST = isset($_POST["REQUEST"]) ? $_POST["REQUEST"] : "";
+
+#Function used for adding a student to a class.
+$needsFunction = true;
+include "function_listclasses.php";
+
+####This file contains many of the features for managing student accounts. Please check
+####the switch statement for details.
+####Reason: the SQL statement below checks the existance of a student.
 
 #Selecting of the password is only to show if the student has changed their password or not.
 $stmt = $conn->prepare( 
@@ -27,9 +36,56 @@ if($count == 1) {
 	#Check how we are viewing the student.
 	switch ($REQUEST) {
 		
+		#add the student to the selected class.
+		case "ADDCLASS-SELECT":
+			if($CLASS == "") {
+				showError("Whoops!", "You didn't select a class!", "Try selecting a class first.", 400);
+			}
+			
+			#Check ownership
+			$stmt = $conn->prepare("SELECT NUM, TEACHER_NUM, NAME FROM CLASS WHERE TEACHER_NUM = :teacherNum AND NUM = :classNum");
+			$stmt->execute(array('teacherNum' => $_SESSION["NUM"], 'classNum' => $CLASS));
+			$classcount = $stmt->rowCount();
+			if($classcount != 1) {
+				showError("Whoops!", "You can't add a student to a class that doesn't belong to you!", "Try selecting another class.", 400);
+			}
+			
+			#Get the name of the class.
+			$classname = $stmt->fetch();
+		
+			#Use access.js to redirect the user back to their accounts after some time.
+			header("JS-Redirect: account");
+			
+			#Bind!
+			$stmt = $conn->prepare("INSERT INTO `CLASS-STUDENT_LINKER` (STUDENT_NUM, CLASS_NUM) VALUES (:studentnum, :classnum)");
+			$stmt->execute(array('studentnum' => $STUDENT, 'classnum' => $CLASS)); #We've already verified the number is correct.
+			
+			#Show that it's been bound
+			showError("Ok!", "The acccount has been bound to " . htmlentities($classname["NAME"]) . ".", "We'll automatically redirect you now...", 201);
+			break;
+		
+		
+		
+		
+		
+		
+		#List classes so a teacher can add a student to a class.
+		case "ADDCLASS":
+			?>
+			<div class="object subtitle">
+				<h2>Choose the class you want to add <?php echo  htmlentities($row["FIRST_NAME"]) . " " . htmlentities($row["LAST_NAME"]); ?> to:</h2>
+			</div>
+			<?php
+			listclasses("js_accounts_student_addclass_select");
+			break;
+		
+		
+		
+		
+		
+		
 		#ACTUALLY unbind the user's account!
 		case "UNBIND":
-			#Use access.js to redirect the user back to their accounts after some time.
 			header("JS-Redirect: account");
 			
 			#Unbind!
@@ -115,6 +171,11 @@ if($count == 1) {
 				<p>Nick Name: <?php if($row["NICK_NAME"] != "") {echo htmlentities($row["NICK_NAME"]);} else {echo "None given";} ?>.
 				<p>Grade level: <?php echo $row["GRADE"]; ?>.
 				<p>Extra information: <?php if($row["EXTRA"] != "") {echo htmlentities($row["EXTRA"]);} else {echo "None given";} ?>.
+			</div>
+			<a id="js_accounts_student_addclass" class="object create" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h1>Add this student to a class</h1></a>
+			
+			<div class="object subtitle">
+				<h2>Other options:</h2>
 			</div>
 			<?php
 
