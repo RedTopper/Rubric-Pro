@@ -81,6 +81,7 @@ function removeToTier(tier) {
  * tier: The tier is the tier of the caller, if we are calling from tier "0", then data will be created in tier1.
  */
 function createTier(tier, name) {
+	
 	//remove all the other tiers that come after the current tier.
 	removeToTier(tier);
 	
@@ -168,6 +169,9 @@ function callServer(tier, path, title, post) {
 				case "account":
 					setTimeout(doAccounts, 1500);
 					break;
+				case "classes":
+					setTimeout(doClass, 1500);
+					break;
 			}
 		},
 		error: function(xhr, status, error) {
@@ -191,6 +195,32 @@ function search(tier, tiername, dir, searchbox, database, where) {
 	log("JQUERY/user", "You searched the " + database + " database where the " + where + " is: " + search);
 	createTier(tier, tiername);
 	callServer(tier, dir, tiername.toLowerCase(), {SEARCH: search, WHERE: where});
+}
+
+/**
+ * Changes the color when a user clicks on an element. 
+ */
+function changeColor(tier, object) {
+	if(object.parent().attr('id') == "navigation") {
+		
+		//If we are looking at the navigation bar, we need to handle it specially
+		//because we are not in a "tier" yet.
+		$('#navigation').children().each(function () {
+			$(this).removeAttr('style');
+		});
+		
+		//We'll set it to black.
+		object.css("background-color", "#000");
+	} else {
+		
+		//In a tier, it's fairly modular.
+		$('#tier' + tier).children().each(function () {
+			$(this).removeAttr('style');
+		});
+		
+		//Blue gradient.
+		object.css("background", "linear-gradient(to bottom, rgba(0,75,150,1) 0%,rgba(0,38,76,1) 100%)");
+	}
 }
 
 
@@ -222,6 +252,7 @@ $(document).on('click', '#js_accounts_search_first', function(e) {
 function doAccounts(e) {
 	var tier = 0; //This function originates from the sidebar, a tier 0 item.
 	log("JQUERY/user", "Request accounts tab.");
+	changeColor(tier, $(this));
 	createTier(tier, "Accounts");
 	callServer(tier, "/backend/accounts.php", "accounts");
 	return false;
@@ -231,6 +262,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 	$(document).on('click', '#js_accounts_create', function(e) {
 		var tier = 1; 
 		log("JQUERY/user", "Request accounts > create tab");
+		changeColor(tier, $(this));
 		createTier(tier, "Create a new account");
 		callServer(tier, "/backend/accounts_create.php", "accounts_create");
 		return false;
@@ -239,6 +271,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 		$(document).on('click', '#js_accounts_create_submit', function(e) {
 			var tier = 2;
 			log("JQUERY/user", "Request accounts > create tab > submit");
+			changeColor(tier, $(this));
 			createTier(tier, "Submit");
 			callServer(tier, "/backend/accounts_create_submit.php", "accounts_create_submit", 
 			{
@@ -255,11 +288,12 @@ $(document).on('click', '#js_accounts', doAccounts);
 			$(document).on('click', '#js_accounts_create_submit_bind', function(e) {
 				var tier = 3;
 				log("JQUERY/user", "Request accounts > create tab > submit > bind");
+				changeColor(tier, $(this));
 				createTier(tier, "Bind");
 				callServer(tier, "/backend/accounts_create_submit_bind.php", "accounts_create_submit_bind",
 				{
-					NUM: $("#js_accounts_create_submit_bind").data('num'),
-					USERNAME: $("#js_accounts_create_submit_bind").data('username')
+					NUM: $(this).data('num'),
+					USERNAME: $(this).data('username')
 				});
 				return false;
 			});
@@ -267,6 +301,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 	$(document).on('click', '.js_accounts_student', function(e) {
 		var tier = 1; 
 		log("JQUERY/user", "Request accounts > student tab");
+		changeColor(tier, $(this));
 		createTier(tier, "Edit a student");
 		callServer(tier, "/backend/accounts_student.php", "accounts_student (view)",
 		{
@@ -279,6 +314,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 		$(document).on('click', '#js_accounts_student_reset', function(e) {
 			var tier = 2; 
 			log("JQUERY/user", "Request accounts > student tab > reset password");
+			changeColor(tier, $(this));
 			createTier(tier, "Reset Password");
 			callServer(tier, "/backend/accounts_student.php", "accounts_student (reset-ask)",
 			{
@@ -291,6 +327,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 			$(document).on('click', '#js_accounts_student_reset_yes', function(e) {
 				var tier = 3; 
 				log("JQUERY/user", "Request accounts > student tab > reset password > reset!");
+				changeColor(tier, $(this));
 				createTier(tier, "Reset!");
 				callServer(tier, "/backend/accounts_student.php", "accounts_student (reset)",
 				{
@@ -303,6 +340,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 		$(document).on('click', '#js_accounts_student_unbind', function(e) {
 			var tier = 2; 
 			log("JQUERY/user", "Request accounts > student tab > unbind account");
+			changeColor(tier, $(this));
 			createTier(tier, "Unbind account");
 			callServer(tier, "/backend/accounts_student.php", "accounts_student (unbind-ask)",
 			{
@@ -315,6 +353,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 			$(document).on('click', '#js_accounts_student_unbind_yes', function(e) {
 				var tier = 3; 
 				log("JQUERY/user", "Request accounts > student tab > unbind account > unbind!");
+				changeColor(tier, $(this));
 				createTier(tier, "Unbound!");
 				callServer(tier, "/backend/accounts_student.php", "accounts_student (unbind)",
 				{
@@ -329,6 +368,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 function doClass(e) {
 	var tier = 0;
 	log("JQUERY/user", "Request classes tab.");
+	changeColor(tier, $(this));
 	createTier(tier, "Classes");
 	callServer(tier, "/backend/classes.php", "classes");
 	return false;
@@ -338,8 +378,37 @@ $(document).on('click', '#js_classes', doClass);
 	$(document).on('click', '#js_classes_create', function(e) {
 		var tier = 1; 
 		log("JQUERY/user", "Request classes > create");
+		changeColor(tier, $(this));
 		createTier(tier, "Create a new class");
 		callServer(tier, "/backend/classes_create.php", "classes_create");
+		return false;
+	});
+		//create: submit
+		$(document).on('click', '#js_classes_create_submit', function(e) {
+			var tier = 2; 
+			log("JQUERY/user", "Request classes > create > submit");
+			changeColor(tier, $(this));
+			createTier(tier, "Submit");
+			callServer(tier, "/backend/classes_create_submit.php", "classes_create",
+			{
+				NAME: $("#classname").val(),
+				YEAR: $("#year").val(),
+				TERM: $("#term").val(),
+				PERIOD: $("#period").val(),
+				DESCRIPTOR: $("#descriptor").val(),
+			});
+			return false;
+		});
+	//Classes tab: editor
+	$(document).on('click', '.js_classes_edit', function(e) {
+		var tier = 1; 
+		log("JQUERY/user", "Request classes > edit");
+		changeColor(tier, $(this));
+		createTier(tier, "Edit this class");
+		callServer(tier, "/backend/classes_edit.php", "classes_edit",
+		{
+			CLASS: $(this).data('num')
+		});
 		return false;
 	});
 

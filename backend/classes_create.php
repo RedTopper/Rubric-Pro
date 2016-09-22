@@ -11,6 +11,8 @@ include "db.php";
 	<input id="classname" type="text" name="NAME" placeholder="AP Computer Science"><br>
 	<label for="year">Year: </label>
 	<input id="year" type="number" name="YEAR" placeholder="2016"><br>
+	<label for="term">Term: </label>
+	<input id="term" type="number" name="TERM" placeholder="1"><br>
 	<label for="period">Period: </label>
 	<input id="period" type="text" name="PERIOD" placeholder="Period 8-9"><br>
 	<label for="descriptor">Description: </label>
