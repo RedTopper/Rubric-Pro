@@ -33,6 +33,7 @@ $studentNum = $row["NUM"];
 	
 #Ok, so unfortunately we have a match, we figure out how to deal with it.
 if($stmt->rowCount() > 0) {
+	
 	#Check if there is already a link between the teacher and the student
 	$stmt = $conn->prepare("SELECT STUDENT_NUM, TEACHER_NUM FROM TEACHES WHERE STUDENT_NUM = :student AND TEACHER_NUM = :teacher");
 	$stmt->execute(array('student' => $studentNum, 'teacher' => $_SESSION["NUM"]));
@@ -53,31 +54,34 @@ SQL
 		);
 		$stmt->execute(array('student' => $studentNum));
 		$row = $stmt->fetch();
-?>
-<div class="object subtitle">
-	<h2>We found a matching username!</h2>
-	<h2>Is <?php echo htmlentities($row["LAST_NAME"]) . ", " . htmlentities($row["FIRST_NAME"]); ?> the student you are looking for?</h2>
-</div>
-<div class="object subtext">
-	<p>Username: <?php echo htmlentities($row["USERNAME"]); ?>.
-	<p>Password: <?php echo ($row["PASSWORD"] == "CHANGE" ? "No password set" : "Yes");  ?>.
-	<p>Nick Name: <?php if($row["NICK_NAME"] != "") {echo htmlentities($row["NICK_NAME"]);} else {echo "None given";} ?>.
-	<p>Grade level: <?php echo $row["GRADE"]; ?>.
-	<p>Extra information: <?php if($row["EXTRA"] != "") {echo htmlentities($row["EXTRA"]);} else {echo "None given";} ?>.
-</div>
-<div class="object subtitle">
-	<h2>Notice</h2>
-</div>
-<div class="object subtext">
-	<p>If this is <b>NOT</b> the student you are looking for, edit the fields to the left, then submit the request again.
-</div>
-<a id="js_accounts_create_submit_bind" class="object create" href="#" 
-data-num="<?php echo $studentNum; ?>" data-username="<?php echo htmlentities($row["USERNAME"]); ?>">
-	<div class="arrow"></div>
-	<h1>Bind Accounts</h1>
-</a>
-<?php
-die();
+		?>
+		<div class="object subtitle">
+			<h2>We found a matching username!</h2>
+			<h2>Is <?php echo htmlentities($row["LAST_NAME"]) . ", " . htmlentities($row["FIRST_NAME"]); ?> the student you are looking for?</h2>
+		</div>
+
+		<div class="object subtext">
+			<p>Username: <?php echo htmlentities($row["USERNAME"]); ?>.
+			<p>Password: <?php echo ($row["PASSWORD"] == "CHANGE" ? "No password set" : "Yes");  ?>.
+			<p>Nick Name: <?php if($row["NICK_NAME"] != "") {echo htmlentities($row["NICK_NAME"]);} else {echo "None given";} ?>.
+			<p>Grade level: <?php echo $row["GRADE"]; ?>.
+			<p>Extra information: <?php if($row["EXTRA"] != "") {echo htmlentities($row["EXTRA"]);} else {echo "None given";} ?>.
+		</div>
+
+		<div class="object subtitle">
+			<h2>Notice</h2>
+		</div>
+		<div class="object subtext">
+			<p>If this is <b>NOT</b> the student you are looking for, edit the fields to the left, then submit the request again.
+		</div>
+
+		<a id="js_accounts_create_submit_bind" class="object create" href="#" 
+		data-num="<?php echo $studentNum; ?>" data-username="<?php echo htmlentities($row["USERNAME"]); ?>">
+			<div class="arrow"></div>
+			<h1>Bind Accounts</h1>
+		</a>
+		<?php
+		die();
 	}
 } 
 
@@ -90,25 +94,35 @@ if(strlen($GRADE) < 1 || !is_numeric($GRADE)) {
 }
 
 #Ok, so far so good. Now we need to insert the new account.
-$stmt = $conn->prepare(<<<SQL
+$stmt = $conn->prepare(
+<<<SQL
 INSERT INTO STUDENT 
 (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, NICK_NAME, GRADE, EXTRA, SETTINGS)
 VALUES
 (:username, :password, :first, :last, :nick, :grade, :extra, :settings)
 SQL
 );
-$stmt->execute(array('username' => $USERNAME, 'password' => "CHANGE", 'first' => $FIRST_NAME, 'last' => $LAST_NAME, 'nick' => $NICK_NAME, 'grade' => $GRADE, 'extra' => $EXTRA, 'settings' => "{}"));
+$stmt->execute(array('username' => $USERNAME, 
+					 'password' => "CHANGE", 
+					 'first' => $FIRST_NAME, 
+					 'last' => $LAST_NAME, 
+					 'nick' => $NICK_NAME, 
+					 'grade' => $GRADE, 
+					 'extra' => $EXTRA, 
+					 'settings' => "{}"));
 $insertedStudent = $conn->lastInsertId();
 
 #Ok, so we have the new account, so we need to insert it into the  database
-$stmt = $conn->prepare(<<<SQL
+$stmt = $conn->prepare(
+<<<SQL
 INSERT INTO TEACHES
 (TEACHER_NUM, STUDENT_NUM)
 VALUES
 (:teacher, :student)
 SQL
 );
-$stmt->execute(array('teacher' => $_SESSION['NUM'], 'student' => $insertedStudent));
+$stmt->execute(array('teacher' => $_SESSION['NUM'], 
+					 'student' => $insertedStudent));
 
 #Redirect using some Javascript Hackery(tm)
 header("JS-Redirect: account");

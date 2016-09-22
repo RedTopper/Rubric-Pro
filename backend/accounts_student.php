@@ -7,9 +7,9 @@ $STUDENT = isset($_POST["STUDENT"]) ? $_POST["STUDENT"] : "";
 $CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
 $REQUEST = isset($_POST["REQUEST"]) ? $_POST["REQUEST"] : "";
 
-#Function used for adding a student to a class.
+#General global functions
 $needsFunction = true;
-include "function_listclasses.php";
+include "functions.php";
 
 ####This file contains many of the features for managing student accounts. Please check
 ####the switch statement for details.
@@ -64,7 +64,7 @@ if($count == 1) {
 				showError("Whoops!", "That student already belongs in that class!", "Try selecting another class or student.", 400);
 			}
 			
-			#Use access.js to redirect the user back to their accounts after some time.
+			#Use access.js to clear all things after tier 1 (so the user doesn't loose their search)
 			header("JS-Redirect: removeto1");
 			
 			#Bind!
@@ -87,7 +87,18 @@ if($count == 1) {
 				<h2>Choose the class you want to add <?php echo  htmlentities($row["FIRST_NAME"]) . " " . htmlentities($row["LAST_NAME"]); ?> to:</h2>
 			</div>
 			<?php
-			listclasses("js_accounts_student_addclass_select");
+			$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, TEACHER_NUM, NAME, YEAR, TERM, PERIOD, DESCRIPTOR
+FROM CLASS
+WHERE
+TEACHER_NUM = :teacherID
+ORDER BY YEAR DESC, TERM DESC, PERIOD
+SQL
+);
+			$stmt->execute(array('teacherID' => $_SESSION["NUM"]));	
+			$classes = $stmt->fetchAll();
+			listclasses("js_accounts_student_addclass_select", $classes);
 			break;
 		
 		
@@ -172,6 +183,8 @@ if($count == 1) {
 		#VIEW of the students (and the default if all else fails)
 		case "VIEW":
 		default:
+		
+			#Show some general information about the student.
 			?>
 			<div class="object subtitle">
 				<h2>Editing: <?php echo htmlentities($row["LAST_NAME"]) . ", " . htmlentities($row["FIRST_NAME"]); ?></h2>
@@ -183,8 +196,54 @@ if($count == 1) {
 				<p>Grade level: <?php echo $row["GRADE"]; ?>.
 				<p>Extra information: <?php if($row["EXTRA"] != "") {echo htmlentities($row["EXTRA"]);} else {echo "None given";} ?>.
 			</div>
-			<a id="js_accounts_student_addclass" class="object create" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h1>Add this student to a class</h1></a>
+			<a id="js_accounts_student_addclass" class="object create" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div>
+				<h1>Add student to a class</h1>
+			</a>
+			<?php
 			
+			#Gets a list of classes that the student belongs to in relation to the currently logged in teacher.
+			$stmt = $conn->prepare(
+<<<SQL
+SELECT CLASS.NUM, CLASS.NAME, CLASS.YEAR, CLASS.PERIOD, CLASS.TERM, CLASS.DESCRIPTOR
+FROM `CLASS-STUDENT_LINKER` CSL, CLASS
+WHERE
+CSL.STUDENT_NUM = :studentNum AND 
+CSL.CLASS_NUM = CLASS.NUM AND
+CLASS.TEACHER_NUM = :teacherNum
+ORDER BY YEAR DESC, TERM DESC, PERIOD
+SQL
+			);
+			$stmt->execute(array('studentNum' => $row["NUM"], 'teacherNum' => $_SESSION['NUM']));
+			$countClasses = $stmt->rowCount();
+
+			#If there is at least one class....
+			if($countClasses > 0) {
+				$classes = $stmt->fetchAll();
+				
+				#Show a header
+				?>
+				<div class="object subtitle">
+					<h2>Remove student from the class:</h2>
+				</div>
+				<?php
+				
+				#Print every class.
+				listclasses("somethinggoeshere", $classes, "destroy");
+			} else {
+				
+				#Otherwise show a tip to add a student to a class.
+				?>
+				<div class="object subtitle">
+					<h2>This student belongs to no classes!</h2>
+				</div>
+				<div class="object subtext">
+					<p>Use the button above to add the student to a class.
+				</div>
+				<?php
+			}
+			
+			#Output any other options
+			?>
 			<div class="object subtitle">
 				<h2>Other options:</h2>
 			</div>
@@ -192,13 +251,13 @@ if($count == 1) {
 
 			#Do not display the ability to reset the password if the password is reset already!
 			if($row["PASSWORD"] != "CHANGE") { ?>
-			<a id="js_accounts_student_reset" class="object create" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h1>Reset password</h1></a>
+			<a id="js_accounts_student_reset" class="object selectable" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h1>Reset password</h1></a>
 			<?php 
 			}
 
 			#Finally, add the ability to unbind the account from the teacher.
 			?>
-			<a id="js_accounts_student_unbind" class="object destroy" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h1>Unbind account</h1></a>
+			<a id="js_accounts_student_unbind" class="object selectable" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h1>Unbind account</h1></a>
 
 
 			<?php

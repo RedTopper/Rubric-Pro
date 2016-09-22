@@ -5,6 +5,10 @@ $needsTeacher = true;
 include "db.php";
 $CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
 
+#General global functions
+$needsFunction = true;
+include "functions.php";
+
 $stmt = $conn->prepare(
 <<<SQL
 SELECT NUM, TEACHER_NUM, NAME, YEAR, TERM, PERIOD, DESCRIPTOR
@@ -20,7 +24,9 @@ $count = $stmt->rowCount();
 #Check to see if there is really a student!
 if($count == 1) {
 	$row = $stmt->fetch();
-?>
+	
+	#Show general information
+	?>
 	<div class="object subtitle">
 		<h2><?php echo htmlentities($row["NAME"]); ?></h2>
 	</div>
@@ -32,6 +38,10 @@ if($count == 1) {
 			"Description: " . htmlentities($row["DESCRIPTOR"]) . "." : 
 			"");  ?>
 	</div>
+	<?php
+	
+	#Project management section
+	?>
 	<div class="object subtitle">
 		<h2>Project management:</h2>
 	</div>
@@ -44,16 +54,49 @@ if($count == 1) {
 	<a id="js_classes_edit_removeprojects" class="object destroy" href="#"><div class="arrow"></div>
 		<h1>Remove</h1>
 	</a>
+	<?php
+	
+	#Students that belong to this class
+	?>
 	<div class="object subtitle">
-		<h2>Student management:</h2>
+		<h2>Current members:</h2>
 	</div>
-	<a id="js_classes_edit_viewstudents" class="object create" href="#"><div class="arrow"></div>
-		<h1>View</h1>
-	</a>
-	</div>
-		<div class="object subtext">
-		<p>Add or remove students from this class through the Accounts tab.
-	</div>
+	<?php
+	
+	#Gets a list of students in a class that belongs to the logged in teacher.
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT STUDENT.NUM, STUDENT.USERNAME, STUDENT.FIRST_NAME, STUDENT.LAST_NAME, STUDENT.NICK_NAME, STUDENT.GRADE, STUDENT.EXTRA
+FROM STUDENT, `CLASS-STUDENT_LINKER` CSL
+WHERE
+CSL.CLASS_NUM = :classNum AND 
+CSL.STUDENT_NUM = STUDENT.NUM
+ORDER BY STUDENT.LAST_NAME, STUDENT.FIRST_NAME
+SQL
+	);
+	$stmt->execute(array('classNum' => $row["NUM"]));
+	$countStudents = $stmt->rowCount();
+	
+	if($countStudents > 0) {
+		$students = $stmt->fetchAll();
+		
+		#Display students. Last false means not selectable btw
+		listStudents("idkbro", $students, false);
+		?>
+		</div>
+			<div class="object subtext">
+			<p>You can add and remove more students throught the "Accounts" tab.
+		</div>
+		<?php
+	} else {
+		?>
+		</div>
+			<div class="object subtext">
+			<p>No students belong to this class. Try adding some through the accounts tab.
+		</div>
+		<?php
+	}
+	?>
 <?php
 } else {
 		showError("Whoops!", "Something went wrong when requesting that class.", "Check to see if you are the owner of that class, or if your client sent the wrong class ID.", 400);
