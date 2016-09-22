@@ -167,11 +167,16 @@ function callServer(tier, path, title, post) {
 			appendServerResponse(tier, title, data, true);
 			switch(xhr.getResponseHeader("JS-Redirect")) {
 				case "account":
-					setTimeout(doAccounts, 1500);
+					setTimeout(doAccounts, 2000);
 					break;
 				case "classes":
-					setTimeout(doClass, 1500);
+					setTimeout(doClass, 2000);
 					break;
+				case "removeto1":
+					setTimeout(function() {
+						removeToTier(1);
+					}, 2000);
+					
 			}
 		},
 		error: function(xhr, status, error) {
@@ -219,7 +224,11 @@ function changeColor(tier, object) {
 		});
 		
 		//Blue gradient.
-		object.css("background", "linear-gradient(to bottom, rgba(0,75,150,1) 0%,rgba(0,38,76,1) 100%)");
+		//object.css("background", "linear-gradient(to bottom, rgba(0,75,150,1) 0%,rgba(0,38,76,1) 100%)");
+		
+		//Solid black.
+		object.css("background-color", "#000");
+		object.css("background-image", "none");
 	}
 }
 
@@ -310,6 +319,36 @@ $(document).on('click', '#js_accounts', doAccounts);
 		});
 		return false;
 	});
+		//Action on ANY student: add to class
+		$(document).on('click', '#js_accounts_student_addclass', function(e) {
+			var tier = 2; 
+			log("JQUERY/user", "Request accounts > student tab > add a student to class");
+			changeColor(tier, $(this));
+			createTier(tier, "Pick a class");
+			callServer(tier, "/backend/accounts_student.php", "accounts_student (addclass)",
+			{
+				STUDENT: $(this).data('num'),
+				REQUEST: "ADDCLASS"
+			});
+			return false;
+		});
+			//add to class: actual selection of the class
+			$(document).on('click', '.js_accounts_student_addclass_select', function(e) {
+				var tier = 3; 
+				log("JQUERY/user", "Request accounts > student tab > add a student to class > select");
+				changeColor(tier, $(this));
+				createTier(tier, "Added.");
+				callServer(tier, "/backend/accounts_student.php", "accounts_student (addclass-select)",
+				{
+					//Student is found from previous tier ID.
+					STUDENT: $("#js_accounts_student_addclass").data('num'),
+					
+					//Class is the current data entry for the clicked object when this class is selected.
+					CLASS: $(this).data('num'),
+					REQUEST: "ADDCLASS-SELECT"
+				});
+				return false;
+			});
 		//Action on ANY student: reset password
 		$(document).on('click', '#js_accounts_student_reset', function(e) {
 			var tier = 2; 
