@@ -40,6 +40,6 @@ criteria for each grade a student recieves.
   * Example: "Not Included (0 points)", "Poor (6 points)",	"Good (8 points)",	"Proficient (10 points)".
     
 ### Screenshots
-![Login Screen](images/screenshots/login.png?raw=true "Greeter for Rubric Pro.")
-![Student Screen](images/screenshots/student.png?raw=true "Allows teachers to manage student accounts.")
-![Classes Screen](images/screenshots/classes.png?raw=true "Allows teachers to manage their classes and projects.")
+![Login Screen](images/screenshots/login.PNG?raw=true "Greeter for Rubric Pro.")
+![Student Screen](images/screenshots/student.PNG?raw=true "Allows teachers to manage student accounts.")
+![Classes Screen](images/screenshots/classes.PNG?raw=true "Allows teachers to manage their classes and projects.")
