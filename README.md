@@ -41,5 +41,5 @@ criteria for each grade a student recieves.
     
 ### Screenshots
 ![Login Screen](images/screenshots/login.PNG?raw=true "Greeter for Rubric Pro.")
-![Student Screen](images/screenshots/students.PNG?raw=true "Allows teachers to manage student accounts.")
+![Student Screen](images/screenshots/student.PNG?raw=true "Allows teachers to manage student accounts.")
 ![Classes Screen](images/screenshots/classes.PNG?raw=true "Allows teachers to manage their classes and projects.")
