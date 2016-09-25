@@ -92,13 +92,45 @@ if($count == 1) {
 SELECT NUM, TEACHER_NUM, NAME, YEAR, TERM, PERIOD, DESCRIPTOR
 FROM CLASS
 WHERE
-TEACHER_NUM = :teacherID
+TEACHER_NUM = :teacherNum
 ORDER BY YEAR DESC, TERM DESC, PERIOD
 SQL
 );
-			$stmt->execute(array('teacherID' => $_SESSION["NUM"]));	
+			$stmt->execute(array('teacherNum' => $_SESSION["NUM"]));	
 			$classes = $stmt->fetchAll();
 			listclasses("js_accounts_student_addclass_select", $classes);
+			break;
+		
+		
+		
+		
+		
+		#Called when a client clicks on a student to remove them from a class.
+		case "REMOVECLASS":
+			if($CLASS == "") {
+				showError("Whoops!", "You didn't select a class!", "Try selecting a class first.", 400);
+			}
+			
+			#Check ownership
+			$stmt = $conn->prepare("SELECT NUM, TEACHER_NUM, NAME FROM CLASS WHERE TEACHER_NUM = :teacherNum AND NUM = :classNum");
+			$stmt->execute(array('teacherNum' => $_SESSION["NUM"], 'classNum' => $CLASS));
+			$classcount = $stmt->rowCount();
+			if($classcount != 1) {
+				showError("Whoops!", "You can't remove a student from a class that doesn't belong to you!", "Try selecting another class.", 400);
+			}
+						
+			#Get the name of the class.
+			$classname = $stmt->fetch();
+		
+			#Use access.js to clear all things after tier 1 (so the user doesn't loose their search)
+			header("JS-Redirect: removeto1");
+			
+			#Unbind!
+			$stmt = $conn->prepare("DELETE FROM `CLASS-STUDENT_LINKER` WHERE STUDENT_NUM = :studentnum AND CLASS_NUM = :classnum");
+			$stmt->execute(array('studentnum' => $STUDENT, 'classnum' => $CLASS)); #We've already verified the number is correct.
+			
+			#Show that it's been unbound
+			showError("Ok!", "The acccount has been unbound from " . htmlentities($classname["NAME"]) . ".", "We'll automatically redirect you now...", 201);
 			break;
 		
 		
@@ -130,14 +162,18 @@ SQL
 			</div>
 			<div class="object subtext">
 				<p>Here's what'll happen:
-				<p>The student WILL have access to grades from your class
-				<p>The student WILL effect your graded criteria
-				<p>The student WILL be able to view their rubrics
-				<p>The student CAN be added back to this list
-				<p>The student CAN be added to other teachers classes
-				<p>The student WILL NOT be deleted forever
-				<p>The student WILL NOT appear in this list any more!
+				<p>The student...
+				<ul>
+				<li><b>CAN</b> be added back to this list</li>
+				<li><b>CAN</b> be added to other teachers classes</li>
+				<li><b>WILL</b> have access to grades from your class</li>
+				<li><b>WILL</b> effect your graded criteria</li>
+				<li><b>WILL</b> be able to view their rubrics</li>
+				<li><b>WILL NOT</b> be deleted forever</li>
+				<li><b>WILL NOT</b> appear in this list any more!</li>
+				</ul>
 				<p>This operation makes it easy for YOU to manage your students! Unbinding a student from your account is NOT a dangerous operation, so it's reccomended to unbind a student at the end of the term or year!
+				<p>To undo these changes, navigate to Accounts > Create new account > Enter student username > Submit
 			</div>
 			<a id="js_accounts_student_unbind_yes" class="object destroy" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h1>Yes, unbind <?php echo  htmlentities($row["FIRST_NAME"]) . " " . htmlentities($row["LAST_NAME"]); ?></h1></a>
 			<?php
@@ -228,7 +264,21 @@ SQL
 				<?php
 				
 				#Print every class.
-				listclasses("somethinggoeshere", $classes, "destroy");
+				listclasses("js_accounts_student_removeclass", $classes, "destroy");
+				?>
+				<div class="object subtext">
+					<p>Here's what'll happen:
+					<p>The student...
+					<ul>
+					<li><b>CAN</b> be added back to this list</li>
+					<li><b>WILL</b> still effect your graded criteria</li>
+					<li><b>WILL NOT</b> be able to view their projects</li>
+					<li><b>WILL NOT</b> have any data lost</li>
+					<li><b>WILL NOT</b> be able to access their grades from this class</li>
+					</ul>
+					<p>To undo these changes, add them back to this class by selecting "Add student to a class"
+				</div>
+				<?php
 			} else {
 				
 				#Otherwise show a tip to add a student to a class.
