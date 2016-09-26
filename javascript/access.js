@@ -88,8 +88,14 @@ function createTier(tier, name) {
 	//procede to next tier.
 	tier = tier + 1;
 	
+	var append = '<div class="bar" id="tier' + tier + '">';
+	
+	if(name != "") {
+		append = '<div class="bar" id="tier' + tier + '"><div class="title"><h1>' + name + '</h1></div></div>';
+	}
+	
 	//create the tier.
-	$("#content").append('<div class="bar" id="tier' + tier + '"><div class="title"><h1>' + name + '</h1></div></div>').find("#tier" + tier).hide().fadeIn("normal");
+	$("#content").append(append).find("#tier" + tier).hide().fadeIn("normal");
 	
 	//Remove the white space between inline-block elements (to prevent gaps)
 	$("#content").contents().filter(function () {
@@ -233,9 +239,9 @@ function changeColor(tier, object) {
 }
 
 
-//==========================================================================================================
-//===============Stuff beyond this point is used for sending and getting data from the server===============
-//==========================================================================================================
+//======================================================================================================
+//=============Stuff beyond this point is used for sending and getting data from the server=============
+//======================================================================================================
 
 
 //Special cases: The search function replaces "tier 0", so even though it's called from a "tier 0"
@@ -337,7 +343,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 				var tier = 3; 
 				log("JQUERY/user", "Request accounts > student tab > add a student to class > select");
 				changeColor(tier, $(this));
-				createTier(tier, "Added.");
+				createTier(tier, "Adding...");
 				callServer(tier, "/backend/accounts_student.php", "accounts_student (addclass-select)",
 				{
 					//Student is found from previous tier ID.
@@ -349,6 +355,23 @@ $(document).on('click', '#js_accounts', doAccounts);
 				});
 				return false;
 			});
+		//Action on ANY student: removal from a class
+		$(document).on('click', '.js_accounts_student_removeclass', function(e) {
+			var tier = 2; 
+			log("JQUERY/user", "Request accounts > student tab > remove a student from a class");
+			changeColor(tier, $(this));
+			createTier(tier, "Removing...");
+			callServer(tier, "/backend/accounts_student.php", "accounts_student (removeclass)",
+			{
+				//Student is found from the unbind account field. A little bit hacky.
+				STUDENT: $("#js_accounts_student_unbind").data('num'),
+				
+				//Class is found natively in the button.
+				CLASS: $(this).data('num'),
+				REQUEST: "REMOVECLASS"
+			});
+			return false;
+		});
 		//Action on ANY student: reset password
 		$(document).on('click', '#js_accounts_student_reset', function(e) {
 			var tier = 2; 
@@ -450,7 +473,41 @@ $(document).on('click', '#js_classes', doClass);
 		});
 		return false;
 	});
-
+//Sidebar: Components tab.
+//Function used during a JS-Redirect: components
+function doComponents(e) {
+	var tier = 0;
+	log("JQUERY/user", "Request components tab.");
+	changeColor(tier, $(this));
+	createTier(tier, "Component Editor");
+	callServer(tier, "/backend/component.php", "component");
+	return false;
+}
+$(document).on('click', '#js_components', doComponents);
+	//Components tab: select
+	$(document).on('click', '.js_components_select', function(e) {
+		var tier = parseInt($(this).parent().attr('id').substring(4)); 
+		log("JQUERY/user", "Request components > select");
+		changeColor(tier, $(this));
+		createTier(tier, "");
+		callServer(tier, "/backend/component.php", "component (sent parent component)",
+		{
+			COMPONENT: $(this).data('num')
+		});
+		return false;
+	});
+	//Components tab: create
+	$(document).on('click', '.js_component_create', function(e) {
+		var tier = parseInt($(this).parent().attr('id').substring(4)); 
+		log("JQUERY/user", "Request components > create");
+		changeColor(tier, $(this));
+		createTier(tier, "Create New Component");
+		callServer(tier, "/backend/component_create.php", "component_create",
+		{
+			PARENT: $(this).data('num')
+		});
+		return false;
+	});
 //"View new messages" button.
 $(document).on('click', '#js_consolebottom', function(e) {
 	jumplog();

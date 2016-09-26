@@ -22,11 +22,11 @@ SELECT STUDENT.NUM, STUDENT.USERNAME, STUDENT.PASSWORD, STUDENT.FIRST_NAME, STUD
 FROM STUDENT
 JOIN TEACHES ON STUDENT.NUM = TEACHES.STUDENT_NUM
 WHERE 
-TEACHES.TEACHER_NUM = :teacherID AND
+TEACHES.TEACHER_NUM = :teacherNum AND
 STUDENT.NUM = :student
 SQL
 );
-$stmt->execute(array('teacherID' => $_SESSION["NUM"], 'student' => $STUDENT));
+$stmt->execute(array('teacherNum' => $_SESSION["NUM"], 'student' => $STUDENT));
 $count = $stmt->rowCount();
 
 #Check to see if there is really a student!

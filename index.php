@@ -37,6 +37,7 @@ function display($login, $error, $success) {
 	<meta charset="UTF-8">
 	<meta name="author" content="Aaron Walter (2016)">
 	<meta name="description" content="Log in to Rubric Pro.">
+	<meta name="viewport" content="width=device-width, initial-scale=0.9">
 </head>
 <body>
 	<div id="login">

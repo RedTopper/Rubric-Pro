@@ -129,7 +129,7 @@ body {
 
 .title {
 	background-color: #000;
-	padding: 10px 0 10px 20px;
+	padding: 10px 10px 10px 20px;
 	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
 }
 .title h1 {
@@ -149,6 +149,10 @@ body {
 	font-weight: bold;
 }
 .subtext p {
+	margin: 6px 0;
+	color: #999;
+}
+.subtext ul {
 	margin: 6px 0;
 	color: #999;
 }
@@ -221,7 +225,7 @@ body {
 }
 .editor label {
 	display: inline-block;
-	width: 150px;
+	width: 120px;
 	color: #EEE;
 }
 .editor input[type="checkbox"] {
@@ -231,13 +235,18 @@ body {
 	margin: 3px 0;
 }
 .editor input[type="text"],
-.editor input[type="number"] {
+.editor input[type="number"],
+.editor textarea {
 	display: inline-block;
 	padding: 5px;
 	margin: 3px 0;
-	width: 150px;
+	width: 200px;
 	border: none;
 	border-bottom: solid 4px #c9c9c9;
+}
+.editor textarea {
+	resize: vertical;
+	max-height: 350px;
 }
 .editor input[type="text"].full {
 	width: 100%;
@@ -246,7 +255,9 @@ body {
 .editor input[type="text"]:focus,
 .editor input[type="text"].focus,
 .editor input[type="number"]:focus,
-.editor input[type="number"].focus {
+.editor input[type="number"].focus,
+.editor textarea:focus,
+.editor textarea.focus {
 	border-bottom: solid 4px #1B96FE;
 	transition: border-bottom 0.3s;
 }
