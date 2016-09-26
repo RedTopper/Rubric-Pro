@@ -74,9 +74,9 @@ if($COMPONENT === null) {
 	<h1>Create new component in <br>"<?php echo htmlentities($parent["NAME"]); ?>"</h1>
 </a>
 <?php
+}
 
 #Display all components from the data array.
-}
 foreach($data as $row) { ?>
 	<a class="js_components_select object selectable" href="#" data-num="<?php echo $row["NUM"] ?>">
 	<div class="arrow"></div>

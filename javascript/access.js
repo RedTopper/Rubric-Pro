@@ -171,6 +171,8 @@ function callServer(tier, path, title, post) {
 		data: params,
 		success: function(data, textStatus, xhr) {
 			appendServerResponse(tier, title, data, true);
+			
+			//Parse static header responses.
 			switch(xhr.getResponseHeader("JS-Redirect")) {
 				case "account":
 					setTimeout(doAccounts, 2000);
@@ -178,11 +180,20 @@ function callServer(tier, path, title, post) {
 				case "classes":
 					setTimeout(doClass, 2000);
 					break;
-				case "removeto1":
+				case "components":
+					setTimeout(doComponents, 2000);
+					break;
+			}
+			
+			//Parse dynamic tier removal tool.
+			if(xhr.getResponseHeader("JS-Redirect") != null &&
+			   xhr.getResponseHeader("JS-Redirect").substring(0,8) == "removeto") {
+				var removeTier = xhr.getResponseHeader("JS-Redirect").substring(8);
+				if(parseInt(removeTier) > 0 && parseInt(removeTier) < 999) {
 					setTimeout(function() {
-						removeToTier(1);
-					}, 2000);
-					
+						removeToTier(parseInt(removeTier));
+					}, 2000);	
+				}
 			}
 		},
 		error: function(xhr, status, error) {
@@ -473,6 +484,7 @@ $(document).on('click', '#js_classes', doClass);
 		});
 		return false;
 	});
+
 //Sidebar: Components tab.
 //Function used during a JS-Redirect: components
 function doComponents(e) {
@@ -486,6 +498,8 @@ function doComponents(e) {
 $(document).on('click', '#js_components', doComponents);
 	//Components tab: select
 	$(document).on('click', '.js_components_select', function(e) {
+		//It's impossible to tell what tier we will be on when we select a component,
+		//so we select the previous tier and call it a day.
 		var tier = parseInt($(this).parent().attr('id').substring(4)); 
 		log("JQUERY/user", "Request components > select");
 		changeColor(tier, $(this));
@@ -508,6 +522,21 @@ $(document).on('click', '#js_components', doComponents);
 		});
 		return false;
 	});
+		//create: submit
+		$(document).on('click', '#js_component_create_submit', function(e) {
+			var tier = parseInt($(this).parent().attr('id').substring(4)); 
+			log("JQUERY/user", "Request components > create > submit");
+			changeColor(tier, $(this));
+			createTier(tier, "Submit");
+			callServer(tier, "/backend/component_create_submit.php", "component_create_submit",
+			{
+				PARENT: $(this).data('num'),
+				SYMBOL: $("#symbol").val(),
+				NAME: $("#componentname").val(),
+				DESCRIPTION: $("#description").val()
+			});
+			return false;
+		});
 //"View new messages" button.
 $(document).on('click', '#js_consolebottom', function(e) {
 	jumplog();
