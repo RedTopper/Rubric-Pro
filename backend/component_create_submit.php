@@ -70,6 +70,6 @@ $stmt->execute(array('teacherNum' => $_SESSION["NUM"],
 
 header("JS-Redirect: components");
 
-#Show that it's been unbound
+#Show that it's been created
 showError("Ok!", "Created the component \"" . htmlentities($NAME) . "\".", "We'll automatically redirect you now...", 201);
 ?>
