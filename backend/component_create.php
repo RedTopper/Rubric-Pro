@@ -30,12 +30,12 @@ if($count != 1) {
 <div class="editor">
 	<label for="componentname">Name: </label>
 	<input id="componentname" type="text" name="NAME" placeholder="AP Computer Science"><br>
-	<label for="description">Description: </label>
-	<textarea id="description" name="DESCRIPTION" placeholder="College level computer science curriculum." rows="8"></textarea><br>
 	<label for="symbol">Symbol: </label>
 	<input id="symbol" type="text" name="TERM" placeholder="CIS, HIS, PSY, ENG, MATH, etc..."><br>
+	<label for="description">Description: </label>
+	<textarea id="description" name="DESCRIPTION" placeholder="College level computer science curriculum." rows="8"></textarea><br>
 </div>
-<a id="js_component_create_submit" class="object create" href="#"><div class="arrow"></div><h1>Submit</h1></a>
+<a id="js_component_create_submit" class="object create" href="#"><div class="arrow"></div><h3>Submit</h3></a>
 <?php	
 } else {
 	
@@ -44,13 +44,13 @@ if($count != 1) {
 <div class="object subtitle"><h2>"<?php echo htmlentities($parentdata["NAME"]);?>"<br> sub component</h2></div>
 <div class="editor">
 	<label for="componentname">Name: </label>
-	<input id="componentname" type="text" name="NAME" placeholder="Derivitives"><br>
-	<label for="description">Description: </label>
-	<textarea id="description" name="DESCRIPTION" placeholder="General understanding of limits, derivitives, formulas, and their application." rows="8"></textarea><br>
+	<input id="componentname" type="text" name="NAME" value="Component"><br>
 	<label for="symbol">Symbol: </label>
 	<input id="symbol" type="text" name="TERM" placeholder="IV, Chapter 1, A, b, etc."><br>
+	<label for="description">Description: </label>
+	<textarea id="description" name="DESCRIPTION" placeholder="General understanding of limits, derivitives, formulas, and their application." rows="8"></textarea><br>
 </div>
-<a id="js_component_create_submit" class="object create" href="#" data-num="<?php echo $parentdata["NUM"]; ?>"><div class="arrow"></div><h1>Submit</h1></a>
+<a id="js_component_create_submit" class="object create" href="#" data-num="<?php echo $parentdata["NUM"]; ?>"><div class="arrow"></div><h3>Submit</h3></a>
 <?php
 }
 ?>

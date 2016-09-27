@@ -70,7 +70,9 @@ function removeToTier(tier) {
 	for(var remove = currentTier; remove > tier; remove--) {
 		$("#tier" + remove).remove();
 	}
-	
+	if(tier <= 0) {
+		tier = 0;
+	}
 	currentTier = tier + 1;
 }
 
@@ -189,9 +191,23 @@ function callServer(tier, path, title, post) {
 			if(xhr.getResponseHeader("JS-Redirect") != null &&
 			   xhr.getResponseHeader("JS-Redirect").substring(0,8) == "removeto") {
 				var removeTier = xhr.getResponseHeader("JS-Redirect").substring(8);
-				if(parseInt(removeTier) > 0 && parseInt(removeTier) < 999) {
+				var number = parseInt(removeTier);
+				
+				//If the tier we want to remove is some positive number, then 
+				//we remove everything AFTER that tier.
+				if(number > 0 && number < 999) {
 					setTimeout(function() {
-						removeToTier(parseInt(removeTier));
+						removeToTier(number);
+					}, 2000);	
+				}
+				
+				//If the tier we want to remove is some negative number, then
+				//we remove the amount of tiers leftwards from the current tier.
+				//For example, if we are at tier 4, and we get -1, then we remove everything
+				//up to tier 3.
+				if(number < 0 && number > -999) {
+					setTimeout(function() {
+						removeToTier(currentTier + number); //note to self, number is negative
 					}, 2000);	
 				}
 			}
@@ -241,11 +257,11 @@ function changeColor(tier, object) {
 		});
 		
 		//Blue gradient.
-		//object.css("background", "linear-gradient(to bottom, rgba(0,75,150,1) 0%,rgba(0,38,76,1) 100%)");
+		object.css("background", "linear-gradient(to bottom, rgba(0,75,150,1) 0%,rgba(0,38,76,1) 100%)");
 		
 		//Solid black.
-		object.css("background-color", "#000");
-		object.css("background-image", "none");
+		//object.css("background-color", "#000");
+		//object.css("background-image", "none");
 	}
 }
 

@@ -13,7 +13,7 @@ function listclasses($classname, $data, $type = "selectable") {
 	foreach($data as $row) { ?>
 		<a class="<?php echo $classname; ?> object <?php echo $type; ?>" href="#" data-num="<?php echo $row["NUM"] ?>">
 		<div class="arrow"></div>
-			<h1>
+			<h3>
 			<?php 
 
 			#Outputs the classes
@@ -24,7 +24,7 @@ function listclasses($classname, $data, $type = "selectable") {
 			htmlentities($row["PERIOD"]) . 
 			($row["DESCRIPTOR"] !== "" ? " <br><div class='monospace'>(" . htmlentities($row["DESCRIPTOR"]) . ")</div> " : " "); 
 			?>
-			</h1>
+			</h3>
 		</a>
 		<?php 
 	}
@@ -46,8 +46,9 @@ function listStudents($classname, $students, $selectable = true) {
 			<div class="object">
 		<?php } ?>
 			
-			<h1>
+			<h3>
 			<?php 
+			
 			#Student information
 			echo "<div class='monospace'>[" . 
 			htmlentities($row["USERNAME"]) . "]:</div> " . 
@@ -55,7 +56,7 @@ function listStudents($classname, $students, $selectable = true) {
 			htmlentities($row["FIRST_NAME"]) . 
 			htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " ")); 
 			?> 
-			</h1>
+			</h3>
 			
 		<?php echo ($selectable ? "</a>" : "</div>"); 
 	}

@@ -175,7 +175,7 @@ SQL
 				<p>This operation makes it easy for YOU to manage your students! Unbinding a student from your account is NOT a dangerous operation, so it's reccomended to unbind a student at the end of the term or year!
 				<p>To undo these changes, navigate to Accounts > Create new account > Enter student username > Submit
 			</div>
-			<a id="js_accounts_student_unbind_yes" class="object destroy" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h1>Yes, unbind <?php echo  htmlentities($row["FIRST_NAME"]) . " " . htmlentities($row["LAST_NAME"]); ?></h1></a>
+			<a id="js_accounts_student_unbind_yes" class="object destroy" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h3>Yes, unbind <?php echo  htmlentities($row["FIRST_NAME"]) . " " . htmlentities($row["LAST_NAME"]); ?></h3></a>
 			<?php
 			break;
 		
@@ -208,7 +208,7 @@ SQL
 			<div class="object subtext">
 				<p>They'll be able to set a new password the next time they log in.
 			</div>
-			<a id="js_accounts_student_reset_yes" class="object destroy" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h1>Yes, really reset their password</h1></a>
+			<a id="js_accounts_student_reset_yes" class="object destroy" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h3>Yes, really reset their password</h3></a>
 			<?php
 			break;
 		
@@ -233,7 +233,7 @@ SQL
 				<p>Extra information: <?php if($row["EXTRA"] != "") {echo htmlentities($row["EXTRA"]);} else {echo "None given";} ?>.
 			</div>
 			<a id="js_accounts_student_addclass" class="object create" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div>
-				<h1>Add student to a class</h1>
+				<h3>Add student to a class</h3>
 			</a>
 			<?php
 			
@@ -301,13 +301,13 @@ SQL
 
 			#Do not display the ability to reset the password if the password is reset already!
 			if($row["PASSWORD"] != "CHANGE") { ?>
-			<a id="js_accounts_student_reset" class="object selectable" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h1>Reset password</h1></a>
+			<a id="js_accounts_student_reset" class="object selectable" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h3>Reset password</h3></a>
 			<?php 
 			}
 
 			#Finally, add the ability to unbind the account from the teacher.
 			?>
-			<a id="js_accounts_student_unbind" class="object selectable" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h1>Unbind account</h1></a>
+			<a id="js_accounts_student_unbind" class="object selectable" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h3>Unbind account</h3></a>
 
 
 			<?php

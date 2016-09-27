@@ -18,7 +18,7 @@ include "db.php";
 	<label for="descriptor">Description: </label>
 	<input id="descriptor" type="text" name="DESCRIPTOR" placeholder="Extra information"><br>
 </div>
-<a id="js_classes_create_submit" class="object create" href="#"><div class="arrow"></div><h1>Submit</h1></a>
+<a id="js_classes_create_submit" class="object create" href="#"><div class="arrow"></div><h3>Submit</h3></a>
 <div class="object subtitle"><h2>Note</h2></div>
 <div class="object subtext">
 	<p>The description field can be left blank.

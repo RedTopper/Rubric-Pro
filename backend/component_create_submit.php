@@ -12,10 +12,6 @@ if(strlen($NAME) < 2) {
 	showError("Error creating component!", "The name needs to be at least 2 letters!", "Please type a longer name.", 400);
 }
 
-if(strlen($DESCRIPTION) < 5) {
-	showError("Error creating component!", "The description needs to be at least 5 letters!", "Please type a longer description.", 400);
-}
-
 if(strlen($SYMBOL) < 1) {
 	showError("Error creating component!", "The symbol needs to be at least 1 letter!", "Please type a longer symbol.", 400);
 }
@@ -68,7 +64,7 @@ $stmt->execute(array('teacherNum' => $_SESSION["NUM"],
 					 'description' => $DESCRIPTION));
 }
 
-header("JS-Redirect: components");
+header("JS-Redirect: removeto-3");
 
 #Show that it's been created
 showError("Ok!", "Created the component \"" . htmlentities($NAME) . "\".", "We'll automatically redirect you now...", 201);

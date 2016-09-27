@@ -10,7 +10,7 @@ include "functions.php";
 <div class="object subtitle">
 	<h2>Your classes</h2>
 </div>
-<a id="js_classes_create" class="object create" href="#"><div class="arrow"></div><h1>Create new class</h1></a>
+<a id="js_classes_create" class="object create" href="#"><div class="arrow"></div><h3>Create new class</h3></a>
 <?php
 
 $stmt = $conn->prepare(

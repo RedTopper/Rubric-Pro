@@ -33,6 +33,17 @@ SQL
 );
 $stmt->execute(array('teacherNum' => $_SESSION["NUM"], 'componentNum' => $COMPONENT));
 $parent = $stmt->fetch();
+$count = $stmt->rowCount();
+
+#If we do not have a matching parent show an error.
+if($count != 1) {
+?>
+<div class="title">
+	<h3>Something happened</h3>
+</div>
+<?php
+showError("Whoops!", "There is no matching parent.", "Sorry about that!", 400);
+}
 
 #Get all components from that parent
 $stmt = $conn->prepare(<<<SQL
@@ -56,7 +67,7 @@ if($COMPONENT === null) {
 	<h2>Your root components:</h2>
 </div>
 <a class="js_component_create object create" href="#"><div class="arrow"></div>
-	<h1>Create new <br>"Root Component"</h1>
+	<h3>Create new <br>"Root Component"</h3>
 </a>
 <?php
 
@@ -71,7 +82,7 @@ if($COMPONENT === null) {
 	<h2>Components</h2>
 </div>
 <a class="js_component_create object create" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
-	<h1>Create new component in <br>"<?php echo htmlentities($parent["NAME"]); ?>"</h1>
+	<h3>Create new component in <br>"<?php echo htmlentities($parent["NAME"]); ?>"</h3>
 </a>
 <?php
 }
@@ -80,13 +91,20 @@ if($COMPONENT === null) {
 foreach($data as $row) { ?>
 	<a class="js_components_select object selectable" href="#" data-num="<?php echo $row["NUM"] ?>">
 	<div class="arrow"></div>
-		<h1>
+		<h3>
 		<?php 
 
 		#Outputs the components
-		echo "(" . $row["SYMBOL"] . ") " . htmlentities($row["NAME"]) . "<br><div class=\"monospace\">" .  htmlentities($row["DESCRIPTION"]) . "</div>";
+		echo "(" . $row["SYMBOL"] . ") " . htmlentities($row["NAME"]);
 		?>
-		</h1>
+		</h3>
+		<div class="monospace">
+		<?php
+		
+		#And their descriptions
+		echo htmlentities($row["DESCRIPTION"]);
+		?>
+		</div>
 	</a>
 	<?php 
 }

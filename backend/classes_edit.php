@@ -46,13 +46,13 @@ if($count == 1) {
 		<h2>Project management:</h2>
 	</div>
 	<a id="js_classes_edit_viewprojects" class="object create" href="#"><div class="arrow"></div>
-		<h1>View</h1>
+		<h3>View</h3>
 	</a>
 	<a id="js_classes_edit_createprojects" class="object create" href="#"><div class="arrow"></div>
-		<h1>Create</h1>
+		<h3>Create</h3>
 	</a>
 	<a id="js_classes_edit_removeprojects" class="object destroy" href="#"><div class="arrow"></div>
-		<h1>Remove</h1>
+		<h3>Remove</h3>
 	</a>
 	<?php
 	

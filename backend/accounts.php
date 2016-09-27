@@ -44,9 +44,9 @@ function outputAccounts($data, $search, $where) {
 	<div class="object subtitle">
 		<h2>Filter by...</h2>
 	</div>
-	<a id="js_accounts_search_username" class="object query" href="#"><h1>Username</h1></a>
-	<a id="js_accounts_search_last" class="object query" href="#"><h1>Last name</h1></a>
-	<a id="js_accounts_search_first" class="object query" href="#"><h1>First name</h1></a>
+	<a id="js_accounts_search_username" class="object query" href="#"><h3>Username</h3></a>
+	<a id="js_accounts_search_last" class="object query" href="#"><h3>Last name</h3></a>
+	<a id="js_accounts_search_first" class="object query" href="#"><h3>First name</h3></a>
 	<?php 
 
 	#If we are searching, tell the user what we searched, otherwise just say "Everything"
@@ -62,7 +62,7 @@ function outputAccounts($data, $search, $where) {
 
 	#Output a text box so the user can create a new account for a student.
 	?>
-	<a id="js_accounts_create" class="object create" href="#"><div class="arrow"></div><h1>Create new account</h1></a>
+	<a id="js_accounts_create" class="object create" href="#"><div class="arrow"></div><h3>Create new account</h3></a>
 	<?php 
 
 	#Display students

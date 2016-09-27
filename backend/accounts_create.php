@@ -20,7 +20,7 @@ include "db.php";
 	<label for="comment">Comment: </label>
 	<input id="comment" type="text" name="EXTRA" placeholder="True King of the North"><br>
 </div>
-<a id="js_accounts_create_submit" class="object create" href="#"><div class="arrow"></div><h1>Submit</h1></a>
+<a id="js_accounts_create_submit" class="object create" href="#"><div class="arrow"></div><h3>Submit</h3></a>
 <div class="object subtitle"><h2>Notice</h2></div>
 <div class="object subtext">
 	<p>Students will be able to create their passwords the first time they log in.
