@@ -84,6 +84,9 @@ if($COMPONENT === null) {
 <a class="js_component_create object create" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
 	<h3>Create new component in <br>"<?php echo htmlentities($parent["NAME"]); ?>"</h3>
 </a>
+<a class="js_component_destroy object destroy" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
+	<h3>Destroy <br>"<?php echo htmlentities($parent["NAME"]); ?>"</h3>
+</a>
 <?php
 }
 
