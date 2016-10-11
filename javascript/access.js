@@ -622,11 +622,11 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		return false;
 	});
 		//edit: quality
-		$(document).on('click', '#js_rubrics_edit_quality', function(e) {
+		$(document).on('click', '#js_rubrics_edit_qualityview', function(e) {
 			var tier = 2;
 			log("JQUERY/user", "Request rubrics > edit");
 			changeColor(tier, $(this));
-			createTier(tier, "Edit: Quality");
+			createTier(tier, "Quality");
 			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (QUALITY)",
 			{
 				REQUEST: "QUALITY",
@@ -635,7 +635,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			return false;
 		});
 		//edit: criteria
-		$(document).on('click', '#js_rubrics_edit_criteria', function(e) {
+		$(document).on('click', '#js_rubrics_edit_criteriaview', function(e) {
 			var tier = 2;
 			log("JQUERY/user", "Request rubrics > edit");
 			changeColor(tier, $(this));

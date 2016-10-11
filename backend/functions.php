@@ -86,12 +86,12 @@ function listRubrics($classname, $rubrics) {
 }
 
 /**
- * This function creates a formatted list of all of the criterias.
+ * This function creates a formatted list of all of the qualities.
  *
  * $classname The HTML class name for each button (used for JQuery binding in access.js)
  * $criteria 2D array output from the database (you must call the database yourself!)
  */
-function listCriteria($classname, $criteria) {
+function listQuality($classname, $criteria) {
 	?>
 	<div class="objectborder">
 		<div class="inlinesmall left subtext">

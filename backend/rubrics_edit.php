@@ -29,11 +29,11 @@ if($countRubrics == 1) {
 	
 	#Check how we are viewing the edit.
 	switch ($REQUEST) {
-		case "CRITERIA":
+		case "QUALITY":
 			?>
 			
 			<div class="object subtitle">
-				<h2>Current Criteria</h2>
+				<h2>Current Quality</h2>
 			</div>
 			
 			<?php
@@ -44,10 +44,19 @@ FROM RUBRIC_QUALITY
 WHERE
 RUBRIC_NUM = :rubric
 SQL
-		);
+			);
 			$stmt->execute(array('rubric' => $row["NUM"]));	
-			$data = $stmt->fetchAll();
-			listCriteria("test", $data);
+			$countqualities = $stmt->rowCount();
+			if($countqualities > 0) {
+				$data = $stmt->fetchAll();
+				listQuality("test", $data);
+			} else {
+				?>
+				<div class="object subtext">
+					<p>There's nothing here.</p>
+				</div>
+				<?php
+			}
 			break;
 		
 		
@@ -56,7 +65,7 @@ SQL
 		
 		
 		
-		case "QUALITY":
+		case "CRITERIA":
 			
 			break;
 		
@@ -72,7 +81,9 @@ SQL
 <div class="object subtitle">
 	<h2><?php echo htmlentities($row["SUBTITLE"])?> </h2>
 </div>
-<a id="js_rubrics_edit_mode" class="object create" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Edit rubric cells</h3></a>
+<a id="js_rubrics_edit_qualityview" class="object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Edit qualities</h3></a>
+<a id="js_rubrics_edit_criteriaview" class="object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Edit criteria</h3></a>
+<a id="js_rubrics_edit_mode" class="object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Edit rubric cells</h3></a>
 <a id="js_rubrics_edit_quality" class="object create" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Create new quality</h3></a>
 <a id="js_rubrics_edit_criteria" class="object create" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Create new criteria</h3></a>
 <a id="js_rubrics_edit_destroy" class="object destroy" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Destroy this rubric</h3></a>
