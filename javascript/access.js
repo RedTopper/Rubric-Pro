@@ -151,6 +151,18 @@ function appendServerResponse(tier, title, data, success, errorcode) {
 	}
 }
 
+$( document ).ajaxStart(function() {
+	NProgress.start();
+});
+
+$( document ).ajaxSend(function() {
+	NProgress.set(0.4);
+});
+
+$( document ).ajaxComplete(function() {
+	NProgress.done();
+});
+
 /**
  * Performs an AJAX request on the server.
  *

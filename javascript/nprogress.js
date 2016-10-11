@@ -24,10 +24,10 @@
     trickle: true,
     trickleSpeed: 250,
     showSpinner: true,
-    barSelector: '[role="bar"]',
+    barSelector: '[role="progressbar"]',
     spinnerSelector: '[role="spinner"]',
     parent: 'body',
-    template: '<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
+    template: '<div class="progressbar" role="progressbar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
   };
 
   /**
