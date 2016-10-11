@@ -114,13 +114,15 @@ body {
 }
 
 .bar {
-	min-width: 350px;
-	max-width: 400px;
+	min-width: 250px;
+	width: 370px;
+	max-width: 700px;
 	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
 	display: inline-block;
 	white-space: normal;
+	resize: horizontal;
 		
 	/* General bar settings */
 	background-color: rgba(0,0,0,0.2);
@@ -178,7 +180,7 @@ body {
 	color: #EEE;
 	font-size: 16px;
 }
-.object:not(.create):not(.destroy):not(.query) h3 {
+.object:not(.create):not(.destroy):not(.query):not(.warn) h3 {
 	color: #1B96FE;
 }
 
@@ -189,10 +191,12 @@ body {
 	background-image: linear-gradient(to top, rgba(0,92,11, 0.8) 0%, rgba(0,148,17, 0.8) 100%);
 }
 .destroy {
-	background-image: linear-gradient(to top, rgba(92,11,0, 0.6) 0%, rgba(148,17,0, 0.6) 100%);
+	background: repeating-linear-gradient(-60deg, transparent, transparent 15px, #000 15px, #000 30px),
+				linear-gradient(to top, rgba(92,11,0, 0.6), rgba(148,17,0, 0.6));
 }
 .destroy:hover {
-	background-image: linear-gradient(to top, rgba(92,11,0, 0.8) 0%, rgba(148,17,0, 0.8) 100%);
+	background: repeating-linear-gradient(-60deg, transparent, transparent 15px, #000 15px, #000 30px),
+				linear-gradient(to top, rgba(92,11,0, 0.8), rgba(148,17,0, 0.8));
 }
 .warn {
 	background-image: linear-gradient(to top, rgba(92,11,0, 0.6) 0%, rgba(148,17,0, 0.6) 100%);

@@ -46,19 +46,42 @@ function listStudents($classname, $students, $selectable = true) {
 			<div class="object">
 		<?php } ?>
 			
-			<h3>
-			<?php 
-			
-			#Student information
-			echo "<div class='monospace'>[" . 
-			htmlentities($row["USERNAME"]) . "]:</div> " . 
-			htmlentities($row["LAST_NAME"]) . ", " . 
-			htmlentities($row["FIRST_NAME"]) . 
-			htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " ")); 
-			?> 
-			</h3>
+		<h3>
+		<?php 
+		
+		#Student information
+		echo "<div class='monospace'>[" . 
+		htmlentities($row["USERNAME"]) . "]:</div> " . 
+		htmlentities($row["LAST_NAME"]) . ", " . 
+		htmlentities($row["FIRST_NAME"]) . 
+		htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " ")); 
+		?> 
+		</h3>
 			
 		<?php echo ($selectable ? "</a>" : "</div>"); 
+	}
+}
+
+/**
+ * This function creates a formatted list of all of the rubrics.
+ *
+ * $classname The HTML class name for each button (used for JQuery binding in access.js)
+ * $rubrics 2D array output from the database (you must call the database yourself!)
+ */
+function listRubrics($classname, $rubrics) {
+	foreach($rubrics as $row) {  ?>
+		<a class="<?php echo $classname;?> object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><div class='arrow'></div>
+			<h3>
+			<?php 
+			#rubric information
+			echo "<div class='monospace'>[" . 
+			htmlentities($row["SUBTITLE"]) . "]:</div><br>" . 
+			$row["MAX_POINTS_PER_CRITERIA"] . " points per criteria, <br>" . 
+			$row["TOTAL_POINTS"] . " points possible.";
+			?> 
+			</h3>
+		</a>
+		<?php
 	}
 }
 ?>

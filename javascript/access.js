@@ -127,7 +127,7 @@ function appendServerResponse(tier, title, data, success, errorcode) {
 		log("AJAX/server", "Fatal error requesting data for " + title + ".");
 		
 	//else if the data does not have ther right header.
-	} else if(!(data.includes('<div class="object subtitle">'))) {
+	} else if(data.indexOf('<div class="object subtitle">') === -1) {
 		$("#tier" + tier).append(
 			'<div class="object subtitle"><h2>Undefined Error</h2></div>' +
 			'<div class="object subtext">' +
@@ -553,6 +553,31 @@ $(document).on('click', '#js_components', doComponents);
 			});
 			return false;
 		});
+		
+//Sidebar: Rubrics tab.
+//Function used during a JS-Redirect: rubrics
+function doRubrics(e) {
+	var tier = 0;
+	log("JQUERY/user", "Request rubrics tab.");
+	changeColor(tier, $(this));
+	createTier(tier, "Rubrics Editor");
+	callServer(tier, "/backend/rubrics.php", "rubrics");
+	return false;
+}
+$(document).on('click', '#js_rubrics', doRubrics);
+	//Rubrics tab: create
+	$(document).on('click', '#js_rubrics_create', function(e) {
+		var tier = 1;
+		log("JQUERY/user", "Request rubrics > create");
+		changeColor(tier, $(this));
+		createTier(tier, "Create New Rubric");
+		callServer(tier, "/backend/rubrics_create.php", "rubrics_create",
+		{
+			PARENT: $(this).data('num')
+		});
+		return false;
+	});
+
 //"View new messages" button.
 $(document).on('click', '#js_consolebottom', function(e) {
 	jumplog();
