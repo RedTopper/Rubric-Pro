@@ -51,8 +51,8 @@ if($count == 1) {
 	<a id="js_classes_edit_createprojects" class="object create" href="#"><div class="arrow"></div>
 		<h3>Create</h3>
 	</a>
-	<a id="js_classes_edit_removeprojects" class="object destroy" href="#"><div class="arrow"></div>
-		<h3>Remove</h3>
+	<a id="js_classes_edit_destroyprojects" class="object destroy" href="#"><div class="arrow"></div>
+		<h3>Destroy</h3>
 	</a>
 	<?php
 	

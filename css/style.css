@@ -184,6 +184,39 @@ body {
 	color: #1B96FE;
 }
 
+.objectborder {
+	display: block;
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
+	color: #EEE;
+	font-size: 16px;
+}
+.inlinelarge {
+	width: 70%;
+	display: inline-block;
+}
+.inlinesmall {
+	width: 30%;
+	display: inline-block;
+}
+.inlinelarge.left, .inlinesmall.left {
+	border-right: <?php echo $SEPERATION_BORDER; //esc:?>;
+	margin-right: -1px;
+	text-align: right;
+	font-weight: bold;
+}
+.inlinelarge .pad, .inlinesmall .pad {
+	padding: 10px 10px 10px 20px;
+	margin: 0;
+}
+
+@keyframes slide {
+	from {background-position: 0;}
+	to {background-position: -35px;}
+}
+
 .create {
 	background-image: linear-gradient(to top, rgba(0,92,11, 0.6) 0%, rgba(0,148,17, 0.6) 100%);
 }
@@ -193,10 +226,18 @@ body {
 .destroy {
 	background: repeating-linear-gradient(-60deg, transparent, transparent 15px, #000 15px, #000 30px),
 				linear-gradient(to top, rgba(92,11,0, 0.6), rgba(148,17,0, 0.6));
+	
+	background-size: 200%;
 }
 .destroy:hover {
 	background: repeating-linear-gradient(-60deg, transparent, transparent 15px, #000 15px, #000 30px),
 				linear-gradient(to top, rgba(92,11,0, 0.8), rgba(148,17,0, 0.8));
+	background-size: 200%;
+	animation-duration: 1s;
+	animation-name: slide;
+	animation-iteration-count: infinite;
+	animation-direction: normal;
+	animation-timing-function: linear;
 }
 .warn {
 	background-image: linear-gradient(to top, rgba(92,11,0, 0.6) 0%, rgba(148,17,0, 0.6) 100%);

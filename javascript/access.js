@@ -608,3 +608,42 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			});
 			return false;
 		});
+	//Rubrics tab: edit
+	$(document).on('click', '.js_rubrics_select', function(e) {
+		var tier = 1;
+		log("JQUERY/user", "Request rubrics > edit");
+		changeColor(tier, $(this));
+		createTier(tier, "Edit");
+		callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (VIEW)",
+		{
+			REQUEST: "VIEW",
+			NUM: $(this).data('num')
+		});
+		return false;
+	});
+		//edit: quality
+		$(document).on('click', '#js_rubrics_edit_quality', function(e) {
+			var tier = 2;
+			log("JQUERY/user", "Request rubrics > edit");
+			changeColor(tier, $(this));
+			createTier(tier, "Edit: Quality");
+			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (QUALITY)",
+			{
+				REQUEST: "QUALITY",
+				NUM: $(this).data('num')
+			});
+			return false;
+		});
+		//edit: criteria
+		$(document).on('click', '#js_rubrics_edit_criteria', function(e) {
+			var tier = 2;
+			log("JQUERY/user", "Request rubrics > edit");
+			changeColor(tier, $(this));
+			createTier(tier, "Criteria");
+			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (CRITERIA)",
+			{
+				REQUEST: "CRITERIA",
+				NUM: $(this).data('num')
+			});
+			return false;
+		});

@@ -84,4 +84,32 @@ function listRubrics($classname, $rubrics) {
 		<?php
 	}
 }
+
+/**
+ * This function creates a formatted list of all of the criterias.
+ *
+ * $classname The HTML class name for each button (used for JQuery binding in access.js)
+ * $criteria 2D array output from the database (you must call the database yourself!)
+ */
+function listCriteria($classname, $criteria) {
+	?>
+	<div class="objectborder">
+		<div class="inlinesmall left subtext">
+			<div class="pad">Points</div>
+		</div><div class="inlinelarge subtext">
+			<div class="pad">Name</div>
+		</div>
+	</div>
+	<?php
+	foreach($criteria as $row) {  ?>
+		<a class="<?php echo $classname;?> objectborder selectable" href="#" data-num="<?php echo $row["NUM"] ?>">
+			<div class="inlinesmall left">
+				<div class="pad"><?php echo $row["POINTS"]; ?></div>
+			</div><div class="inlinelarge">
+				<div class="pad"><?php echo htmlentities($row["QUALITY_TITLE"]); ?><div class='arrow'></div></div>
+			</div>
+		</a>
+		<?php
+	}
+}
 ?>

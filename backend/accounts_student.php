@@ -233,7 +233,7 @@ SQL
 				<p>Extra information: <?php if($row["EXTRA"] != "") {echo htmlentities($row["EXTRA"]);} else {echo "None given";} ?>.
 			</div>
 			<a id="js_accounts_student_addclass" class="object create" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div>
-				<h3>Add student to a class</h3>
+				<h3>Bind this student to a class</h3>
 			</a>
 			<?php
 			
@@ -259,7 +259,7 @@ SQL
 				#Show a header
 				?>
 				<div class="object subtitle">
-					<h2>Remove student from the class:</h2>
+					<h2>Unbind this student from a class:</h2>
 				</div>
 				<?php
 				
@@ -276,7 +276,7 @@ SQL
 					<li><b>WILL NOT</b> have any data lost</li>
 					<li><b>WILL NOT</b> be able to access their grades from this class</li>
 					</ul>
-					<p>To undo these changes, add them back to this class by selecting "Add student to a class"
+					<p>To undo these changes, add them back to this class by selecting "Bind this student to a class"
 				</div>
 				<?php
 			} else {
