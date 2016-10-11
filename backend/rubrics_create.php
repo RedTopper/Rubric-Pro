@@ -3,7 +3,6 @@ $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
 include "db.php";
-
 ?>
 <div class="object subtitle">
 	<h2>Information</h2>

@@ -1,5 +1,8 @@
 var currentTier = 0;
 
+//This variable controlls how long a user must wait at the redirect screen to be redirected (ms).
+var TIME_WAIT = 2000;
+
 //http://stackoverflow.com/a/12034334
 var entityMap = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': '&quot;', "'": '&#39;', "/": '&#x2F;'};
 
@@ -155,10 +158,6 @@ $( document ).ajaxStart(function() {
 	NProgress.start();
 });
 
-$( document ).ajaxSend(function() {
-	NProgress.set(0.4);
-});
-
 $( document ).ajaxComplete(function() {
 	NProgress.done();
 });
@@ -189,13 +188,16 @@ function callServer(tier, path, title, post) {
 			//Parse static header responses.
 			switch(xhr.getResponseHeader("JS-Redirect")) {
 				case "account":
-					setTimeout(doAccounts, 2000);
+					setTimeout(doAccounts, TIME_WAIT);
 					break;
 				case "classes":
-					setTimeout(doClass, 2000);
+					setTimeout(doClass, TIME_WAIT);
 					break;
 				case "components":
-					setTimeout(doComponents, 2000);
+					setTimeout(doComponents, TIME_WAIT);
+					break;
+				case "rubrics":
+					setTimeout(doRubrics, TIME_WAIT);
 					break;
 			}
 			
@@ -210,7 +212,7 @@ function callServer(tier, path, title, post) {
 				if(number > 0 && number < 999) {
 					setTimeout(function() {
 						removeToTier(number);
-					}, 2000);	
+					}, TIME_WAIT);	
 				}
 				
 				//If the tier we want to remove is some negative number, then
@@ -220,7 +222,7 @@ function callServer(tier, path, title, post) {
 				if(number < 0 && number > -999) {
 					setTimeout(function() {
 						removeToTier(currentTier + number); //note to self, number is negative
-					}, 2000);	
+					}, TIME_WAIT);	
 				}
 			}
 		},
@@ -276,6 +278,13 @@ function changeColor(tier, object) {
 		//object.css("background-image", "none");
 	}
 }
+
+//"View new messages" button.
+$(document).on('click', '#js_consolebottom', function(e) {
+	jumplog();
+	log("JQUERY/user", "New messages are above. The console will now automatically scroll as new messages appear.");
+	return false;
+});
 
 
 //======================================================================================================
@@ -583,16 +592,19 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		log("JQUERY/user", "Request rubrics > create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create New Rubric");
-		callServer(tier, "/backend/rubrics_create.php", "rubrics_create",
-		{
-			PARENT: $(this).data('num')
-		});
+		callServer(tier, "/backend/rubrics_create.php", "rubrics_create");
 		return false;
 	});
-
-//"View new messages" button.
-$(document).on('click', '#js_consolebottom', function(e) {
-	jumplog();
-	log("JQUERY/user", "New messages are above. The console will now automatically scroll as new messages appear.");
-	return false;
-});
+		//create: submit
+		$(document).on('click', '#js_rubrics_create_submit', function(e) {
+			var tier = 2;
+			log("JQUERY/user", "Request rubrics > create > submit");
+			changeColor(tier, $(this));
+			createTier(tier, "Submit");
+			callServer(tier, "/backend/rubrics_create_submit.php", "rubrics_create_submit",
+			{
+				MAX_POINTS_PER_CRITERIA: $("#maxpoints").val(),
+				SUBTITLE: $("#subtitle").val()
+			});
+			return false;
+		});
