@@ -221,10 +221,10 @@ body {
 }
 
 .create {
-	background-image: linear-gradient(to bottom, rgba(0,224,115, 0.6) 0%, rgba(0,150,70, 0.6) 100%);
+	background-image: linear-gradient(to top, rgba(0,92,30, 0.6) 0%, rgba(0,148,40, 0.6) 100%);
 }
 .create:hover {
-	background-image: linear-gradient(to bottom, rgba(0,224,115, 0.8) 0%, rgba(0,150,70, 0.8) 100%);
+	background-image: linear-gradient(to top, rgba(0,92,30, 0.8) 0%, rgba(0,148,40, 0.8) 100%);
 }
 .destroy {
 	background: repeating-linear-gradient(-60deg, transparent, transparent 15px, #000 15px, #000 30px),
