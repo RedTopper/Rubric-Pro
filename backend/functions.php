@@ -89,8 +89,9 @@ function listRubrics($classname, $rubrics) {
  *
  * $classname The HTML class name for each button (used for JQuery binding in access.js)
  * $qualities 2D array output from the database (you must call the database yourself!)
+ * $maxpointspercriteria Is the maximum points that a student can obtain per criteria.
  */
-function listQuality($classname, $qualities) {
+function listQuality($classname, $qualities, $maxpointspercriteria) {
 	?>
 	<div class="objectborder">
 		<div class="inlinesmall left subtext">
@@ -103,7 +104,12 @@ function listQuality($classname, $qualities) {
 	foreach($qualities as $row) {  ?>
 		<a class="<?php echo $classname;?> objectborder selectable" href="#" data-num="<?php echo $row["NUM"] ?>">
 			<div class="inlinesmall left">
-				<div class="pad"><?php echo $row["POINTS"]; ?></div>
+				<div class="pad"><?php echo 
+					"<div class='larger'>" . 
+						$row["POINTS"] . 
+					"</div><div class='smaller'>/" . 
+						$maxpointspercriteria . 
+					"</div>"; ?></div>
 			</div><div class="inlinelarge">
 				<div class="pad"><?php echo htmlentities($row["QUALITY_TITLE"]); ?><div class='arrow'></div></div>
 			</div>

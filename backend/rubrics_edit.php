@@ -78,7 +78,7 @@ SQL
 			$countqualities = $stmt->rowCount();
 			if($countqualities > 0) {
 				$data = $stmt->fetchAll();
-				listQuality("test", $data);
+				listQuality("test", $data, $row["MAX_POINTS_PER_CRITERIA"]);
 			} else {
 				?>
 				<div class="object subtext">

@@ -208,7 +208,6 @@ body {
 	border-right: <?php echo $SEPERATION_BORDER; //esc:?>;
 	margin-right: -1px;
 	text-align: right;
-	font-weight: bold;
 }
 .inlinelarge .pad, .inlinesmall .pad {
 	padding: 10px 10px 10px 20px;
@@ -364,4 +363,13 @@ body {
 }
 .example .selectedexample {
 	background-color: rgba(0,38,76,1);
+}
+
+.smaller {
+	display: inline-block;
+	font-size: 12px;
+}
+.larger {
+	display: inline-block;
+	font-size: 26px;
 }
