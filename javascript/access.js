@@ -621,28 +621,67 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		});
 		return false;
 	});
-		//edit: quality
-		$(document).on('click', '#js_rubrics_edit_qualityview', function(e) {
+		//edit: addquality
+		$(document).on('click', '#js_rubrics_edit_addquality', function(e) {
 			var tier = 2;
 			log("JQUERY/user", "Request rubrics > edit");
 			changeColor(tier, $(this));
-			createTier(tier, "Qualities");
-			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (QUALITY)",
+			createTier(tier, "New Quality");
+			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (ADDQUALITY)",
 			{
-				REQUEST: "QUALITY",
+				REQUEST: "ADDQUALITY",
 				NUM: $(this).data('num')
 			});
 			return false;
 		});
-		//edit: criteria
-		$(document).on('click', '#js_rubrics_edit_criteriaview', function(e) {
+		//edit: addcriteria
+		$(document).on('click', '#js_rubrics_edit_addcriteria', function(e) {
 			var tier = 2;
 			log("JQUERY/user", "Request rubrics > edit");
 			changeColor(tier, $(this));
-			createTier(tier, "Criteria");
-			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (CRITERIA)",
+			createTier(tier, "New Criterion");
+			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (ADDCRITERIA)",
 			{
-				REQUEST: "CRITERIA",
+				REQUEST: "ADDCRITERIA",
+				NUM: $(this).data('num')
+			});
+			return false;
+		});
+		//edit: destroyquality
+		$(document).on('click', '#js_rubrics_edit_destroyquality', function(e) {
+			var tier = 2;
+			log("JQUERY/user", "Request rubrics > edit");
+			changeColor(tier, $(this));
+			createTier(tier, "Quality Destruction");
+			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (DESTROYQUALITY)",
+			{
+				REQUEST: "DESTROYQUALITY",
+				NUM: $(this).data('num')
+			});
+			return false;
+		});
+		//edit: destroycriteria
+		$(document).on('click', '#js_rubrics_edit_destroycriteria', function(e) {
+			var tier = 2;
+			log("JQUERY/user", "Request rubrics > edit");
+			changeColor(tier, $(this));
+			createTier(tier, "Criterion Destruction");
+			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (DESTROYCRITERIA)",
+			{
+				REQUEST: "DESTROYCRITERIA",
+				NUM: $(this).data('num')
+			});
+			return false;
+		});
+		//edit: editrubric
+		$(document).on('click', '#js_rubrics_edit_editrubric', function(e) {
+			var tier = 2;
+			log("JQUERY/user", "Request rubrics > edit");
+			changeColor(tier, $(this));
+			createTier(tier, "Builder");
+			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (BUILD)",
+			{
+				REQUEST: "BUILD",
 				NUM: $(this).data('num')
 			});
 			return false;

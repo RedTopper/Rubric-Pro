@@ -115,7 +115,7 @@ body {
 
 .bar {
 	min-width: 250px;
-	width: 370px;
+	width: 380px;
 	max-width: 700px;
 	height: 100%;
 	overflow-y: auto;
@@ -247,15 +247,15 @@ body {
 .warn:hover {
 	background-image: linear-gradient(to top, rgba(92,11,0, 0.8) 0%, rgba(148,17,0, 0.8) 100%);
 }
-.warn.white h3, .selectable.white h3 {
-	color: #EEE !important;
-}
-
 .selectable {
 	background: rgba(85,85,85,0.3);
 }
 .selectable:hover {
 	background: rgba(85,85,85,0.6);
+}
+
+.white h3, .white h3 {
+	color: #EEE !important;
 }
 
 .query {

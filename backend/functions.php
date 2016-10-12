@@ -91,7 +91,9 @@ function listRubrics($classname, $rubrics) {
  * $qualities 2D array output from the database (you must call the database yourself!)
  * $maxpointspercriteria Is the maximum points that a student can obtain per criteria.
  */
-function listQuality($classname, $qualities, $maxpointspercriteria) {
+function listQuality($classname, $qualities, $maxpointspercriteria, $type = "") {
+	
+	#Show a header
 	?>
 	<div class="objectborder">
 		<div class="inlinesmall left subtext">
@@ -101,20 +103,29 @@ function listQuality($classname, $qualities, $maxpointspercriteria) {
 		</div>
 	</div>
 	<?php
-	foreach($qualities as $row) {  ?>
-		<a class="<?php echo $classname;?> objectborder selectable" href="#" data-num="<?php echo $row["NUM"] ?>">
+	
+	#Run through all of the entries and output them.
+	foreach($qualities as $row) {
+	
+		#Parse some of the parameters to deturmine how to encapsilate the data.
+		echo ($type=="" ? "<div" : "<a") . " class='$classname objectborder $type' href='#' data-qualitynum='" . $row["NUM"] . "'>"; 
+			
+			#Output the HTML body. ?>
 			<div class="inlinesmall left">
-				<div class="pad"><?php echo 
-					"<div class='larger'>" . 
-						$row["POINTS"] . 
-					"</div><div class='smaller'>/" . 
-						$maxpointspercriteria . 
-					"</div>"; ?></div>
+				<div class="pad">
+					<div class='larger'>
+						<?php echo $row["POINTS"]; ?>
+					</div><div class='smaller'>
+						/<?php echo $maxpointspercriteria; ?>
+					</div>
+				</div>
 			</div><div class="inlinelarge">
-				<div class="pad"><?php echo htmlentities($row["QUALITY_TITLE"]); ?><div class='arrow'></div></div>
+				<div class="pad">
+					<?php echo htmlentities($row["QUALITY_TITLE"]); ?>
+					<?php echo ($type=="" ? "" : "<div class='arrow'></div>");?>
+				</div>
 			</div>
-		</a>
-		<?php
+		<?php echo ($type=="" ? "</div>" : "</a>");
 	}
 }
 
@@ -125,12 +136,111 @@ function listQuality($classname, $qualities, $maxpointspercriteria) {
  * $classname The HTML class name for each button (used for JQuery binding in access.js)
  * $criterion 2D array output from the database (you must call the database yourself!)
  */
-function listCriterion($classname, $criterion) {
-	foreach($criterion as $row) {  ?>
-		<a class="<?php echo $classname;?> object selectable white" href="#" data-num="<?php echo $row["NUM"] ?>"><div class='arrow'></div>
-			<h3><?php echo htmlentities($row["CRITERIA_TITLE"]); ?></h3>
-		</a>
-		<?php
+function listCriterion($classname, $criterion, $type = "") {
+	foreach($criterion as $row) {  
+		
+		#Begin div or anchor if type is set
+		echo ($type=="" ? "<div" : "<a") . " class='$classname object white $type' href='#' data-criterionnum='" . $row["NUM"] . "'>";
+		
+			#output arrow if type is set.
+			echo ($type=="" ? "" : "<div class='arrow'></div>");
+			
+			#output contents
+			echo "<h3>" . htmlentities($row["CRITERIA_TITLE"]) . "</h3>";
+			
+		#End type.
+		echo ($type==""?"</div>":"</a>");
 	}
+}
+
+/**
+ * Function that prints a "rubric like" table to give an example
+ * to a user of the section they are editing. For example, with 
+ * a Qualities table, they'll see the top row of the example rubric
+ * hilighted. 
+ *
+ * When they are editing the qualities section, they'll 
+ * then see a hilighted example of the section they are editing.
+ */
+function createExampleTableQualities() {
+?>
+<div class="object subtext">
+	<p>In a normal rubric, this section represents the cells colored in blue, as pictured below:</p>
+</div>
+<div class="object subtext">
+	<table class="example">
+		<tr>
+			<td class="dark"></td>
+			<td class="selectedexample">👎</td>
+			<td class="selectedexample">👍</td>
+			<td class="selectedexample">💯</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+</div>
+<?php
+}
+
+/**
+ * Another function that creates an example table. See createExampleTableQualities()
+ */
+function createExampleTableCriteria() {
+?>
+<div class="object subtext">
+	<p>In a normal rubric, this section represents the cells colored in blue, as pictured below:</p>
+</div>
+<div class="object subtext">
+	<table class="example">
+		<tr>
+			<td class="dark"></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="selectedexample">📗</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="selectedexample">📘</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="selectedexample">📙</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+</div>
+<?php
+}
+
+/**
+ * Another function that creates an example table. See createExampleTableQualities()
+ */
+function createExampleTableCells() {
+	
 }
 ?>
