@@ -626,7 +626,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			var tier = 2;
 			log("JQUERY/user", "Request rubrics > edit");
 			changeColor(tier, $(this));
-			createTier(tier, "Quality");
+			createTier(tier, "Qualities");
 			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (QUALITY)",
 			{
 				REQUEST: "QUALITY",

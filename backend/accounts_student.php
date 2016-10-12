@@ -232,9 +232,6 @@ SQL
 				<p>Grade level: <?php echo $row["GRADE"]; ?>.
 				<p>Extra information: <?php if($row["EXTRA"] != "") {echo htmlentities($row["EXTRA"]);} else {echo "None given";} ?>.
 			</div>
-			<a id="js_accounts_student_addclass" class="object create" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div>
-				<h3>Bind this student to a class</h3>
-			</a>
 			<?php
 			
 			#Gets a list of classes that the student belongs to in relation to the currently logged in teacher.
@@ -265,20 +262,6 @@ SQL
 				
 				#Print every class.
 				listclasses("js_accounts_student_removeclass", $classes, "warn");
-				?>
-				<div class="object subtext">
-					<p>Here's what'll happen:
-					<p>The student...
-					<ul>
-					<li><b>CAN</b> be added back to this list</li>
-					<li><b>WILL</b> still effect your graded criteria</li>
-					<li><b>WILL NOT</b> be able to view their projects</li>
-					<li><b>WILL NOT</b> have any data lost</li>
-					<li><b>WILL NOT</b> be able to access their grades from this class</li>
-					</ul>
-					<p>To undo these changes, add them back to this class by selecting "Bind this student to a class"
-				</div>
-				<?php
 			} else {
 				
 				#Otherwise show a tip to add a student to a class.
@@ -297,8 +280,11 @@ SQL
 			<div class="object subtitle">
 				<h2>Other options:</h2>
 			</div>
+			<a id="js_accounts_student_addclass" class="object create" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div>
+				<h3>Bind this student to a class</h3>
+			</a>
+			
 			<?php
-
 			#Do not display the ability to reset the password if the password is reset already!
 			if($row["PASSWORD"] != "CHANGE") { ?>
 			<a id="js_accounts_student_reset" class="object selectable" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h3>Reset password</h3></a>
@@ -307,9 +293,27 @@ SQL
 
 			#Finally, add the ability to unbind the account from the teacher.
 			?>
-			<a id="js_accounts_student_unbind" class="object warn" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h3>Unbind account</h3></a>
-
-
+			<a id="js_accounts_student_unbind" class="object warn white" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div><h3>Unbind account</h3></a>
+			<div class="object subtext spacer"></div>
+			
+			<?php
+			#Some extra information about unbinding students 
+			?>
+			<div class="object subtitle">
+				<h2>About unbinding students from classes</h2>
+			</div>
+			<div class="object subtext">
+				<p>Here's what'll happen:
+				<p>The student...
+				<ul>
+				<li><b>CAN</b> be added back to this list</li>
+				<li><b>WILL</b> still effect your graded criteria</li>
+				<li><b>WILL NOT</b> be able to view their projects</li>
+				<li><b>WILL NOT</b> have any data lost</li>
+				<li><b>WILL NOT</b> be able to access their grades from this class</li>
+				</ul>
+				<p>To undo these changes, add them back to this class by selecting "Bind this student to a class"
+			</div>
 			<?php
 			break;
 	}

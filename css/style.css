@@ -180,8 +180,11 @@ body {
 	color: #EEE;
 	font-size: 16px;
 }
-.object:not(.create):not(.destroy):not(.query):not(.warn) h3 {
+.object:not(.create):not(.destroy):not(.query) h3 {
 	color: #1B96FE;
+}
+.object.spacer{
+	height: 80px;
 }
 
 .objectborder {
@@ -218,10 +221,10 @@ body {
 }
 
 .create {
-	background-image: linear-gradient(to top, rgba(0,92,11, 0.6) 0%, rgba(0,148,17, 0.6) 100%);
+	background-image: linear-gradient(to bottom, rgba(0,224,115, 0.6) 0%, rgba(0,150,70, 0.6) 100%);
 }
 .create:hover {
-	background-image: linear-gradient(to top, rgba(0,92,11, 0.8) 0%, rgba(0,148,17, 0.8) 100%);
+	background-image: linear-gradient(to bottom, rgba(0,224,115, 0.8) 0%, rgba(0,150,70, 0.8) 100%);
 }
 .destroy {
 	background: repeating-linear-gradient(-60deg, transparent, transparent 15px, #000 15px, #000 30px),
@@ -244,6 +247,9 @@ body {
 }
 .warn:hover {
 	background-image: linear-gradient(to top, rgba(92,11,0, 0.8) 0%, rgba(148,17,0, 0.8) 100%);
+}
+.warn.white h3, .selectable.white h3 {
+	color: #EEE !important;
 }
 
 .selectable {
@@ -332,9 +338,30 @@ body {
 	background-color: #64B8FC;
 	transition: background-color 0.3s ease;
 }
+
 .monospace {
 	font-family: 'Ubuntu Mono', monospace;
 	display: inline-block;
 	font-weight: 400;
 	color: #EEE;
+}
+
+.example {
+	border: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border-collapse: collapse;
+	margin: 30px auto;
+}
+.example td, .example tr {
+	border: <?php echo $SEPERATION_BORDER; //esc:?>;
+}
+.example td {
+	width: 40px;
+	height: 40px;
+	text-align: center;
+}
+.example .dark {
+	background-color: rgba(0,0,0,0.5);
+}
+.example .selectedexample {
+	background-color: rgba(0,38,76,1);
 }

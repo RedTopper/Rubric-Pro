@@ -17,12 +17,11 @@ function listclasses($classname, $data, $type = "selectable") {
 			<?php 
 
 			#Outputs the classes
-			echo "[" . 
-			htmlentities($row["NAME"]) . "]:<br> Year " . 
-			$row["YEAR"] . ", Term " . 
-			$row["TERM"] . ", " . 
+			echo htmlentities($row["NAME"]) . "<br><div class='monospace'>" .
+			"Year " . $row["YEAR"] . "<br>" .
+			"Term " . $row["TERM"] . "<br>" . 
 			htmlentities($row["PERIOD"]) . 
-			($row["DESCRIPTOR"] !== "" ? " <br><div class='monospace'>(" . htmlentities($row["DESCRIPTOR"]) . ")</div> " : " "); 
+			($row["DESCRIPTOR"] !== "" ? " <br>(" . htmlentities($row["DESCRIPTOR"]) . ")</div> " : " "); 
 			?>
 			</h3>
 		</a>
@@ -50,11 +49,12 @@ function listStudents($classname, $students, $selectable = true) {
 		<?php 
 		
 		#Student information
-		echo "<div class='monospace'>[" . 
-		htmlentities($row["USERNAME"]) . "]:</div> " . 
+		echo 
 		htmlentities($row["LAST_NAME"]) . ", " . 
 		htmlentities($row["FIRST_NAME"]) . 
-		htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " ")); 
+		htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " ")) .
+		"<br><div class='monospace'>[" . 
+		htmlentities($row["USERNAME"]) . "]</div> ";	
 		?> 
 		</h3>
 			
@@ -74,10 +74,9 @@ function listRubrics($classname, $rubrics) {
 			<h3>
 			<?php 
 			#rubric information
-			echo "<div class='monospace'>[" . 
-			htmlentities($row["SUBTITLE"]) . "]:</div><br>" . 
+			echo htmlentities($row["SUBTITLE"]) . "</div><br><div class='monospace'>" . 
 			$row["MAX_POINTS_PER_CRITERIA"] . " points per criteria, <br>" . 
-			$row["TOTAL_POINTS"] . " points possible.";
+			$row["TOTAL_POINTS"] . " points possible.</div>";
 			?> 
 			</h3>
 		</a>
@@ -86,12 +85,12 @@ function listRubrics($classname, $rubrics) {
 }
 
 /**
- * This function creates a formatted list of all of the qualities.
+ * This function creates a formatted list of all of the qualities in a rubric.
  *
  * $classname The HTML class name for each button (used for JQuery binding in access.js)
- * $criteria 2D array output from the database (you must call the database yourself!)
+ * $qualities 2D array output from the database (you must call the database yourself!)
  */
-function listQuality($classname, $criteria) {
+function listQuality($classname, $qualities) {
 	?>
 	<div class="objectborder">
 		<div class="inlinesmall left subtext">
@@ -101,13 +100,29 @@ function listQuality($classname, $criteria) {
 		</div>
 	</div>
 	<?php
-	foreach($criteria as $row) {  ?>
+	foreach($qualities as $row) {  ?>
 		<a class="<?php echo $classname;?> objectborder selectable" href="#" data-num="<?php echo $row["NUM"] ?>">
 			<div class="inlinesmall left">
 				<div class="pad"><?php echo $row["POINTS"]; ?></div>
 			</div><div class="inlinelarge">
 				<div class="pad"><?php echo htmlentities($row["QUALITY_TITLE"]); ?><div class='arrow'></div></div>
 			</div>
+		</a>
+		<?php
+	}
+}
+
+/**
+ * This function creates a formatted list of all of the criterion in a rubric.
+ * Very simple.
+ *
+ * $classname The HTML class name for each button (used for JQuery binding in access.js)
+ * $criterion 2D array output from the database (you must call the database yourself!)
+ */
+function listCriterion($classname, $criterion) {
+	foreach($criterion as $row) {  ?>
+		<a class="<?php echo $classname;?> object selectable white" href="#" data-num="<?php echo $row["NUM"] ?>"><div class='arrow'></div>
+			<h3><?php echo htmlentities($row["CRITERIA_TITLE"]); ?></h3>
 		</a>
 		<?php
 	}

@@ -115,7 +115,7 @@ foreach($data as $row) { ?>
 #If we are at root, then display help information to the user.
 if($COMPONENT === null) {
 ?>
-<div class="object subtext"><p>&nbsp;<p>&nbsp;<p>&nbsp;<p>&nbsp;<p>&nbsp;</div>
+<div class="object subtext spacer"></div>
 <div class="object subtitle">
 	<h2>How to use <br>"The Component Editor"</h2>
 </div>

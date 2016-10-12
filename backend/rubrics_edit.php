@@ -31,11 +31,40 @@ if($countRubrics == 1) {
 	switch ($REQUEST) {
 		case "QUALITY":
 			?>
-			
-			<div class="object subtitle">
-				<h2>Current Quality</h2>
+			<div class="object subtext">
+				<p>In a normal rubric, this section represents the cells colored in blue, as pictured below:</p>
 			</div>
-			
+			<div class="object subtext">
+				<table class="example">
+					<tr>
+						<td class="dark"></td>
+						<td class="selectedexample">👎</td>
+						<td class="selectedexample">👍</td>
+						<td class="selectedexample">💯</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+			<div class="object subtitle">
+				<h2>Your Qualities</h2>
+			</div>
 			<?php
 			$stmt = $conn->prepare(
 <<<SQL
@@ -66,7 +95,62 @@ SQL
 		
 		
 		case "CRITERIA":
-			
+			?>
+			<div class="object subtext">
+				<p>In a normal rubric, this section represents the cells colored in blue, as pictured below:</p>
+			</div>
+			<div class="object subtext">
+				<table class="example">
+					<tr>
+						<td class="dark"></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="selectedexample"> 📗 </td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="selectedexample"> 📘 </td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="selectedexample"> 📙 </td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+			<div class="object subtitle">
+				<h2>Your Criteria</h2>
+			</div>
+			<?php
+			$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, CRITERIA_TITLE
+FROM RUBRIC_CRITERIA
+WHERE
+RUBRIC_NUM = :rubric
+SQL
+			);
+			$stmt->execute(array('rubric' => $row["NUM"]));	
+			$countcriteria = $stmt->rowCount();
+			if($countcriteria > 0) {
+				$data = $stmt->fetchAll();
+				listCriterion("test", $data);
+			} else {
+				?>
+				<div class="object subtext">
+					<p>There's nothing here.</p>
+				</div>
+				<?php
+			}
 			break;
 		
 		
@@ -81,9 +165,9 @@ SQL
 <div class="object subtitle">
 	<h2><?php echo htmlentities($row["SUBTITLE"])?> </h2>
 </div>
-<a id="js_rubrics_edit_qualityview" class="object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Edit qualities</h3></a>
-<a id="js_rubrics_edit_criteriaview" class="object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Edit criteria</h3></a>
-<a id="js_rubrics_edit_mode" class="object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Edit rubric cells</h3></a>
+<a id="js_rubrics_edit_qualityview" class="object selectable white" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>View qualities</h3></a>
+<a id="js_rubrics_edit_criteriaview" class="object selectable white" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>View criteria</h3></a>
+<a id="js_rubrics_edit_mode" class="object selectable white" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Edit rubric cells</h3></a>
 <a id="js_rubrics_edit_quality" class="object create" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Create new quality</h3></a>
 <a id="js_rubrics_edit_criteria" class="object create" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Create new criteria</h3></a>
 <a id="js_rubrics_edit_destroy" class="object destroy" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Destroy this rubric</h3></a>
