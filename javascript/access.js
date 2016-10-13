@@ -185,6 +185,12 @@ function callServer(tier, path, title, post) {
 		success: function(data, textStatus, xhr) {
 			appendServerResponse(tier, title, data, true);
 			
+			//If the server says to resize this dynamically
+			if(xhr.getResponseHeader("JS-Resize") == "auto") {
+				$("#tier" + tier).css("max-width", "none");
+				$("#tier" + tier).css("width", "auto");
+			}
+			
 			//Parse static header responses.
 			switch(xhr.getResponseHeader("JS-Redirect")) {
 				case "account":

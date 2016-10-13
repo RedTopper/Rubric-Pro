@@ -29,27 +29,98 @@ if($countRubrics == 1) {
 	
 	#Check how we are viewing the edit.
 	switch ($REQUEST) {
-		case "BUILD": ?>
-			<div class="object subtitle">
-				<h2>Rubric Editor BETA!</h2>
-			</div>
+		case "BUILD": 
+		
+			#We need the qualities so we can populate the top of the rubric.
+			#Make sure to sort by the points!
+			$stmt = $conn->prepare("SELECT POINTS, QUALITY_TITLE FROM RUBRIC_QUALITY WHERE RUBRIC_NUM = :rubric ORDER BY RUBRIC_QUALITY.POINTS");
+			$stmt->execute(array('rubric' => $row["NUM"]));
+			$qualities = $stmt->fetchAll();
+			$countQualities = $stmt->rowCount();
 			
-			<?php
+			#Next, to complete our masterpeice, we need the criteria of each row.
+			$stmt = $conn->prepare("SELECT CRITERIA_TITLE FROM RUBRIC_CRITERIA WHERE RUBRIC_NUM = :rubric");
+			$stmt->execute(array('rubric' => $row["NUM"]));
+			$criteria = $stmt->fetchAll();
+			$countCriteria = $stmt->rowCount();
+			
+			#check to make sure that contents actually exist within the table
+			if($countQualities == 0 || $countCriteria == 0) {
+				showError("Whoops!", "You'll need at least one quality and criterium before you can edit anything.", "It's easy, try adding a few to the left!", 400);
+			}
+				
+			#Ok, now get the actual cell data
 			$stmt = $conn->prepare(
 <<<SQL
 SELECT RUBRIC_CRITERIA_NUM, RUBRIC_QUALITY_NUM, CONTENTS
 FROM RUBRIC_CELL, RUBRIC_CRITERIA, RUBRIC_QUALITY
 WHERE
+RUBRIC_CRITERIA.RUBRIC_NUM = :rubric AND
+RUBRIC_QUALITY.RUBRIC_NUM = :rubric AND
 RUBRIC_CELL.RUBRIC_QUALITY_NUM = RUBRIC_QUALITY.NUM AND
 RUBRIC_CELL.RUBRIC_CRITERIA_NUM = RUBRIC_CRITERIA.NUM
 ORDER BY RUBRIC_CRITERIA_NUM, RUBRIC_QUALITY.POINTS
 SQL
 			);
-			$stmt->execute();
+			$stmt->execute(array('rubric' => $row["NUM"]));
 			$cells = $stmt->fetchAll();
-			echo '<pre style="color: white">';
-			var_dump($cells);
-			echo '</pre>';
+			
+			#Tell access.js that we need to be able to make this col huuuuge.
+			header("JS-Resize: auto");
+			
+			#Now, output the table for the rubric. We'll start with a fancy header. ?>
+			<div class="object subtitle">
+				<h2>Rubric Editor</h2>
+			</div>
+			<table class="rubric">
+				<tr>
+					<th class="corner"></th>
+					<?php
+					foreach($qualities as $quality) {
+						echo 
+						"<th>" . 
+							$quality["QUALITY_TITLE"] . "<br>" . $quality["POINTS"] . " points" .
+						"</th>";
+					}
+					?>
+				</tr>
+				<?php
+				
+				$col = 0;
+				$row = 0;
+				foreach($cells as $cell) {
+					if($col == 0) {
+						#Begin a new col every 0.
+						echo "<tr>";
+						
+						#Output the criteria for the row.
+						echo 
+						"<th>" . 
+							$criteria[$row]["CRITERIA_TITLE"] . 
+						"</th>";
+						
+						#Go to the next row.
+						$row++;
+					}
+					
+					#Output all of the data.
+					echo "<td><textarea rows='8' cols='18' class='rubricbox'>" . $cell["CONTENTS"] . "</textarea></td>";
+					
+					#When we hit the end, finish the row and reset the col.
+					if($col == $countQualities - 1) {
+						echo "</tr>";
+						$col = -1;
+					}
+					
+					#Go to the next col.
+					$col++;
+				}
+				?>
+			</table>
+			<?php
+			#echo '<pre style="color: white">';
+			#var_dump($cells);
+			#echo '</pre>';
 			break;
 			
 			
@@ -66,7 +137,7 @@ SQL
 			</div>
 			<div class="editor">
 				<label for="qualityname">Quality name: </label>
-				<input id="qualityname" type="text" name="QUALITY_NAME" placeholder="Proficient"><br>
+				<input id="qualityname" type="text" name="QUALITY_TITLE" placeholder="Proficient"><br>
 				<label for="qualitypoints">Points out of <?php echo $row["MAX_POINTS_PER_CRITERIA"] ?>: </label>
 				<input id="qualitypoints" type="number" name="QUALITY_POINTS" placeholder="<?php echo $row["MAX_POINTS_PER_CRITERIA"] ?>"><br>
 			</div>
@@ -117,7 +188,7 @@ SQL
 			</div>
 			<div class="editor">
 				<label for="criterianame">Criteria name: </label>
-				<input id="criterianame" type="text" name="CRITERIA_NAME" placeholder="Spelling and Accuracy"><br>
+				<input id="criterianame" type="text" name="CRITERIA_TITLE" placeholder="Spelling and Accuracy"><br>
 			</div>
 			<a id="js_rubrics_edit_criteriasubmit" class="object create white" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php 
 			

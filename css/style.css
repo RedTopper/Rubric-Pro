@@ -112,6 +112,9 @@ body {
 #content {
 	height: 100%;
 }
+#content>:last-child {
+	margin-right: 100px;
+}
 
 .bar {
 	min-width: 250px;
@@ -372,4 +375,30 @@ body {
 .larger {
 	display: inline-block;
 	font-size: 26px;
+}
+
+.rubric {
+	border: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border-collapse: collapse;
+	margin: 20px;
+}
+.rubric td, .rubric tr, .rubric th {
+	border: <?php echo $SEPERATION_BORDER; //esc:?>;
+	padding: 0;
+	margin: 0;
+}
+.rubric th {
+	padding: 10px;
+	background-color: #000;
+	color: #fff;
+}
+.rubric .rubricbox {
+	resize: none;
+	margin: 0;
+}
+.rubric .rubricbox:hover {
+	background-color: #EEE;
+}
+.rubric .rubricbox:focus {
+	background-color: #DDD;
 }
