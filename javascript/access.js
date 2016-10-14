@@ -1,10 +1,23 @@
+//The current tier the application is working with.
 var currentTier = 0;
+
+//The text of a rubric editor cell when the user first clicks on the cell.
+var rubricEditStartText = "";
 
 //This variable controlls how long a user must wait at the redirect screen to be redirected (ms).
 var TIME_WAIT = 2000;
 
 //http://stackoverflow.com/a/12034334
 var entityMap = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': '&quot;', "'": '&#39;', "/": '&#x2F;'};
+
+//Progress bar.
+$( document ).ajaxStart(function() {
+	NProgress.start();
+});
+
+$( document ).ajaxComplete(function() {
+	NProgress.done();
+});
 
 /**
  * Removes bad user input to prevent accidental html from being parsed into the console.
@@ -106,44 +119,76 @@ function createTier(tier, name) {
 	$("#content").contents().filter(function () {
 		return this.nodeType === 3;
 	}).remove();
-	
-	$('#contentscroller').animate({scrollLeft: "+=401px"});
 }
 
 /**
- * Takes a server response, does some loose parsing, then appends it to a tier.
+ * Appends a server response to a tier and scroll page.
+ *
+ * tier: The tier we wish to append to.
+ * data: The data we wish to append.
  */
-function appendServerResponse(tier, title, data, success, errorcode) {
+function appendServerResponse(tier, data) {
+	$("#tier" + tier).append(data);
+	
+	//get full width of page
+	var innerwidth = 0;
+	$('#content').children().each(function() {
+		innerwidth += $(this).outerWidth(false);
+	});
+	
+	//get position I need to set
+	var delta = innerwidth - $('#contentscroller').outerWidth(false);
+	if(delta < 0) delta = 0;
+	
+	//scroll the page.
+	$('#contentscroller').animate({scrollLeft: delta});
+}
+ 
+/**
+ * Takes a server response and does some loose parsing.
+ *
+ * title: The title we wish to log. This makes it easier for the user to see what is happening.
+ * data: The data we wish to parse.
+ * success: True if the html response code was 200 OK.
+ * errorcode: The HTML error code.
+ *
+ * Returns an object with the raw HTML as "html", a boolean error as "error"
+ * and a human readable form of the error code as "readable". 
+ */
+function parseServerResponse(title, data, success, errorcode) {
+	
+	//Set up the errorcode if the message from 200 OK is not actually ok :(
 	if(success) {
 		errorcode = "Invalid response. The server sent data, but the format was not standard.";
 	}
 	
 	//If the data is too short
 	if(data.length < 30) {
-		$("#tier" + tier).append(
-			'<div class="object subtitle"><h2>Programming Error</h2></div>' +
-			'<div class="object subtext">' +
-				'<p>An error in the programming occured.' +
-				'<p>The server returned an empty response.' +
-			'</div>'
-		);
 		log("AJAX/server", "Fatal error requesting data for " + title + ".");
+		return {html: 
+		'<div class="object subtitle"><h2>Programming Error</h2></div>' +
+		'<div class="object subtext">' +
+			'<p>An error in the programming occured.' +
+			'<p>The server returned an empty response.' +
+		'</div>', 
+		error: true,
+		readable: ["An error in the programming occured.", "The server returned an empty response."]};
 		
 	//else if the data does not have ther right header.
 	} else if(data.indexOf('<div class="object subtitle">') === -1) {
-		$("#tier" + tier).append(
-			'<div class="object subtitle"><h2>Undefined Error</h2></div>' +
-			'<div class="object subtext">' +
-				'<p>An undefined error in the application occured.' +
-				'<p>The server returned a non-empty and non-standard response.' +
-				'<p>General information: ' + errorcode +
-			'</div>'
-		);
 		log("AJAX/server", "Fatal error requesting data for " + title + ".");
+		return {html: 
+		'<div class="object subtitle"><h2>Undefined Error</h2></div>' +
+		'<div class="object subtext">' +
+			'<p>An undefined error in the application occured.' +
+			'<p>The server returned a non-empty and non-standard response.' +
+			'<p>General information: ' + errorcode +
+		'</div>',
+		error: true,
+		readable: ["An undefined error in the application occured.", "The server returned a non-empty and non-standard response.", "General information: " + errorcode]};
 		
 	//else the data has the right header...
 	} else {
-		$("#tier" + tier).append(data);
 		
 		//and it's successfull
 		if(success) {
@@ -151,16 +196,65 @@ function appendServerResponse(tier, title, data, success, errorcode) {
 		} else {
 			log("AJAX/server", "Fatal error requesting data for " + title + ".");
 		}
+		return {html: data,
+		error: false,
+		readable: ["Success!"]};
 	}
 }
 
-$( document ).ajaxStart(function() {
-	NProgress.start();
-});
-
-$( document ).ajaxComplete(function() {
-	NProgress.done();
-});
+/**
+ * Parses the PHP headers of the obtained data.
+ * xhr: The AJAX response.
+ */
+function parseServerHeaders(tier, xhr) {
+				
+	//If the server says to resize this dynamically
+	if(xhr.getResponseHeader("JS-Resize") == "auto") {
+		$("#tier" + tier).css("max-width", "none");
+		$("#tier" + tier).css("width", "auto");
+	}
+	
+	//Parse static header responses.
+	switch(xhr.getResponseHeader("JS-Redirect")) {
+		case "account":
+			setTimeout(doAccounts, TIME_WAIT);
+			break;
+		case "classes":
+			setTimeout(doClass, TIME_WAIT);
+			break;
+		case "components":
+			setTimeout(doComponents, TIME_WAIT);
+			break;
+		case "rubrics":
+			setTimeout(doRubrics, TIME_WAIT);
+			break;
+	}
+	
+	//Parse dynamic tier removal tool.
+	if(xhr.getResponseHeader("JS-Redirect") != undefined &&
+	   xhr.getResponseHeader("JS-Redirect").substring(0,8) == "removeto") {
+		var removeTier = xhr.getResponseHeader("JS-Redirect").substring(8);
+		var number = parseInt(removeTier);
+		
+		//If the tier we want to remove is some positive number, then 
+		//we remove everything AFTER that tier.
+		if(number > 0 && number < 999) {
+			setTimeout(function() {
+				removeToTier(number);
+			}, TIME_WAIT);	
+		}
+		
+		//If the tier we want to remove is some negative number, then
+		//we remove the amount of tiers leftwards from the current tier.
+		//For example, if we are at tier 4, and we get -1, then we remove everything
+		//up to tier 3.
+		if(number < 0 && number > -999) {
+			setTimeout(function() {
+				removeToTier(currentTier + number); //note to self, number is negative
+			}, TIME_WAIT);	
+		}
+	}
+}
 
 /**
  * Performs an AJAX request on the server.
@@ -169,8 +263,12 @@ $( document ).ajaxComplete(function() {
  * path: The path in the webserver.
  * title: The title to write in the log.
  * post: Extra server params.
+ * callback: Instead of writing the contents of the response to a new tier, write the 
+ *           parsed server response to first parameter of this method instead. Leave 
+ *			 undefined if you wish to create a new tier.
  */
-function callServer(tier, path, title, post) {
+function callServer(tier, path, title, post, callback) {
+	
 	//procede to next tier.
 	tier = tier + 1;
 	params = {AJAX: true};
@@ -183,57 +281,26 @@ function callServer(tier, path, title, post) {
 		url: path,
 		data: params,
 		success: function(data, textStatus, xhr) {
-			appendServerResponse(tier, title, data, true);
 			
-			//If the server says to resize this dynamically
-			if(xhr.getResponseHeader("JS-Resize") == "auto") {
-				$("#tier" + tier).css("max-width", "none");
-				$("#tier" + tier).css("width", "auto");
-			}
-			
-			//Parse static header responses.
-			switch(xhr.getResponseHeader("JS-Redirect")) {
-				case "account":
-					setTimeout(doAccounts, TIME_WAIT);
-					break;
-				case "classes":
-					setTimeout(doClass, TIME_WAIT);
-					break;
-				case "components":
-					setTimeout(doComponents, TIME_WAIT);
-					break;
-				case "rubrics":
-					setTimeout(doRubrics, TIME_WAIT);
-					break;
-			}
-			
-			//Parse dynamic tier removal tool.
-			if(xhr.getResponseHeader("JS-Redirect") != null &&
-			   xhr.getResponseHeader("JS-Redirect").substring(0,8) == "removeto") {
-				var removeTier = xhr.getResponseHeader("JS-Redirect").substring(8);
-				var number = parseInt(removeTier);
-				
-				//If the tier we want to remove is some positive number, then 
-				//we remove everything AFTER that tier.
-				if(number > 0 && number < 999) {
-					setTimeout(function() {
-						removeToTier(number);
-					}, TIME_WAIT);	
-				}
-				
-				//If the tier we want to remove is some negative number, then
-				//we remove the amount of tiers leftwards from the current tier.
-				//For example, if we are at tier 4, and we get -1, then we remove everything
-				//up to tier 3.
-				if(number < 0 && number > -999) {
-					setTimeout(function() {
-						removeToTier(currentTier + number); //note to self, number is negative
-					}, TIME_WAIT);	
-				}
+			//parse headers and server response.
+			parseServerHeaders(tier, xhr);
+			var parse = parseServerResponse(title, data, true);
+			if(callback == undefined) {
+				appendServerResponse(tier, parse.html);
+			} else {
+				callback(parse);
 			}
 		},
 		error: function(xhr, status, error) {
-			appendServerResponse(tier, title, xhr.responseText, false, error);
+			alert(error);
+			
+			//only parse server response.
+			var parse = parseServerResponse(title, xhr.responseText, false, error);
+			if(callback == undefined) {
+				appendServerResponse(tier, parse.html);
+			} else {
+				callback(parse);
+			}
 		}
 	});
 }
@@ -640,6 +707,21 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			});
 			return false;
 		});
+			//addquality: submit
+			$(document).on('click', '#js_rubrics_edit_addquality_submit', function(e) {
+				var tier = 3;
+				log("JQUERY/user", "Request rubrics > edit");
+				changeColor(tier, $(this));
+				createTier(tier, "Submit");
+				callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (ADDQUALITYSUBMIT)",
+				{
+					REQUEST: "ADDQUALITYSUBMIT",
+					NUM: $(this).data('num'),
+					QUALITY_TITLE: $("#qualityname").val(),
+					POINTS: $("#qualitypoints").val(),
+				});
+				return false;
+			});
 		//edit: addcriteria
 		$(document).on('click', '#js_rubrics_edit_addcriteria', function(e) {
 			var tier = 2;
@@ -653,6 +735,20 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			});
 			return false;
 		});
+			//addcriteria: submit
+			$(document).on('click', '#js_rubrics_edit_addcriteria_submit', function(e) {
+				var tier = 3;
+				log("JQUERY/user", "Request rubrics > edit");
+				changeColor(tier, $(this));
+				createTier(tier, "Submit");
+				callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (ADDCRITERIASUBMIT)",
+				{
+					REQUEST: "ADDCRITERIASUBMIT",
+					NUM: $(this).data('num'),
+					CRITERIA_TITLE: $("#criterianame").val()
+				});
+				return false;
+			});
 		//edit: destroyquality
 		$(document).on('click', '#js_rubrics_edit_destroyquality', function(e) {
 			var tier = 2;
@@ -692,3 +788,34 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			});
 			return false;
 		});
+			//editrubric: click into any box.
+			$(document).on('focus', '.rubricbox', function(e) {
+				log("EDIT/user", "Editing box at quality " + $(this).data('quality') + " and criteria " + $(this).data('criteria') + ".");
+				
+				//Update the starting text so we can see if it changed later.
+				rubricEditStartText = $(this).val();
+				return false;
+			});
+			//editrubric: click outside of any box.
+			$(document).on('focusout', '.rubricbox', function(e) {
+				
+				//check if changed.
+				if(rubricEditStartText == $(this).val()) {
+					log("EDIT/user", "Box remained unchanged.");
+					return false;
+				} else {
+					log("EDIT/user", "Publishing changes at quality " + $(this).data('quality') + " and criteria " + $(this).data('criteria') + ".");
+				}
+				
+				//if changed, publish to the server.
+				callServer(0, "/backend/rubrics_edit.php", "rubrics_edit (UPDATE)",
+				{
+					REQUEST: "UPDATE",
+					NUM: $(this).data('num'),
+					RUBRIC_QUALITY_NUM: $(this).data('num'),
+					RUBRIC_CRITERIA_NUM: $(this).data('num')
+				}, function(data) {
+					alert(data);
+				});
+				return false;
+			});

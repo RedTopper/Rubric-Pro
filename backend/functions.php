@@ -167,7 +167,7 @@ function createExampleTableQualities() {
 <div class="object subtext">
 	<p>In a normal rubric, this section represents the cells colored in blue, as pictured below:</p>
 </div>
-<div class="object subtext">
+<div class="padbox">
 	<table class="example">
 		<tr>
 			<td class="dark"></td>
@@ -206,7 +206,7 @@ function createExampleTableCriteria() {
 <div class="object subtext">
 	<p>In a normal rubric, this section represents the cells colored in blue, as pictured below:</p>
 </div>
-<div class="object subtext">
+<div class="padbox">
 	<table class="example">
 		<tr>
 			<td class="dark"></td>

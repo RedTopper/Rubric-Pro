@@ -8,6 +8,11 @@ $needsFunction = true;
 include "functions.php";
 $NUM = isset($_POST["NUM"]) ? $_POST["NUM"] : null;
 $REQUEST = isset($_POST["REQUEST"]) ? $_POST["REQUEST"] : "";
+$POINTS = isset($_POST["POINTS"]) ? $_POST["POINTS"] : "";
+$QUALITY_TITLE = isset($_POST["QUALITY_TITLE"]) ? $_POST["QUALITY_TITLE"] : "";
+$CRITERIA_TITLE = isset($_POST["CRITERIA_TITLE"]) ? $_POST["CRITERIA_TITLE"] : "";
+$RUBRIC_QUALITY_NUM = isset($_POST["RUBRIC_QUALITY_NUM"]) ? $_POST["RUBRIC_QUALITY_NUM"] : "";
+$RUBRIC_CRITERIA_NUM = isset($_POST["RUBRIC_CRITERIA_NUM"]) ? $_POST["RUBRIC_CRITERIA_NUM"] : "";
 
 #Makes sure the teacher owns the rubric we are editing.
 $stmt = $conn->prepare(
@@ -29,6 +34,8 @@ if($countRubrics == 1) {
 	
 	#Check how we are viewing the edit.
 	switch ($REQUEST) {
+		
+		#The main editor of this file.
 		case "BUILD": 
 		
 			#We need the qualities so we can populate the top of the rubric.
@@ -72,51 +79,69 @@ SQL
 			<div class="object subtitle">
 				<h2>Rubric Editor</h2>
 			</div>
-			<table class="rubric">
+			<table class="rubriceditor">
 				<tr>
 					<th class="corner"></th>
 					<?php
-					foreach($qualities as $quality) {
-						echo 
-						"<th>" . 
-							$quality["QUALITY_TITLE"] . "<br>" . $quality["POINTS"] . " points" .
-						"</th>";
-					}
-					?>
+					
+					#Print out each quality at the top
+					foreach($qualities as $quality) { ?>
+					<th>
+						<?php echo $quality["QUALITY_TITLE"] . "<br>" . $quality["POINTS"] . " points"; ?> 
+					</th>
+					
+					<?php 
+					#end
+					} ?>
 				</tr>
 				<?php
 				
-				$col = 0;
-				$row = 0;
+				$intcol = 0;
+				$introw = 0;
 				foreach($cells as $cell) {
-					if($col == 0) {
-						#Begin a new col every 0.
+					if($intcol == 0) {
+						#Begin a new column every 0.
 						echo "<tr>";
 						
 						#Output the criteria for the row.
 						echo 
 						"<th>" . 
-							$criteria[$row]["CRITERIA_TITLE"] . 
+							$criteria[$introw]["CRITERIA_TITLE"] . 
 						"</th>";
 						
 						#Go to the next row.
-						$row++;
+						$introw++;
 					}
 					
 					#Output all of the data.
-					echo "<td><textarea rows='8' cols='18' class='rubricbox'>" . $cell["CONTENTS"] . "</textarea></td>";
+					echo "<td><textarea rows='8' cols='18' class='rubricbox" .
 					
-					#When we hit the end, finish the row and reset the col.
-					if($col == $countQualities - 1) {
+					#rubric number
+					"' data-num='" . $row["NUM"] . 
+					
+					#quality number of cell
+					"' data-quality='" . $cell["RUBRIC_QUALITY_NUM"] . 
+					
+					#criteria number of cell
+					"' data-criteria='" . $cell["RUBRIC_CRITERIA_NUM"] . 
+					
+					#actual contents of cell
+					"'>" . $cell["CONTENTS"] . "</textarea></td>";
+					
+					#When we hit the end, finish the row and reset the column.
+					if($intcol == $countQualities - 1) {
 						echo "</tr>";
-						$col = -1;
+						$intcol = -1;
 					}
 					
-					#Go to the next col.
-					$col++;
+					#Go to the next column.
+					$intcol++;
 				}
 				?>
 			</table>
+			<div class="padbox" >
+				<textarea placeholder="This is a temporary box that you can use when you need to move text to other boxes. It won't be saved." style="width: 100%; resize: none; box-sizing: border-box;" rows="10"></textarea>
+			</div>
 			<?php
 			#echo '<pre style="color: white">';
 			#var_dump($cells);
@@ -126,8 +151,53 @@ SQL
 			
 			
 			
+		#Called when a user adds a quality.
+		case "ADDQUALITYSUBMIT":
+			
+			#Quick verification of input.
+			if(strlen($POINTS) < 1 || !is_numeric($POINTS)) {
+				showError("Error creating quality!", "The points must be numerical.", "Check what you typed, then try again.", 400);
+			}
+			
+			#Verification of name.
+			if(strlen($QUALITY_TITLE) < 2) {
+				showError("Error creating quality!", "The name must be longer than 1 character.", "Check what you typed, then try again.", 400);
+			}
+		
+			#First, insert the quality as normal. We'll use this to get the number we just inserted.
+			$stmt = $conn->prepare("INSERT INTO RUBRIC_QUALITY (RUBRIC_NUM, POINTS, QUALITY_TITLE) VALUES (:rubric, :points, :title)");
+			$stmt->execute(array('rubric' => $row["NUM"],
+								 'points' => $POINTS,
+								 'title' => $QUALITY_TITLE));
+			$qualitynum = $conn->lastInsertId();
+			
+			#If we are adding a quality, we need to initialize a cell for every criteria.
+			$stmt = $conn->prepare("SELECT NUM FROM RUBRIC_CRITERIA WHERE RUBRIC_NUM = :rubric");
+			$stmt->execute(array('rubric' => $row["NUM"]));
+			$criteria = $stmt->fetchAll();
+			$countCriteria = $stmt->rowCount();
+			
+			#Now that we have the inserted id and each criteria, let's initialize the cells.
+			#We'll create the staement to do so.
+			$stmt = $conn->prepare("INSERT INTO RUBRIC_CELL (RUBRIC_CRITERIA_NUM, RUBRIC_QUALITY_NUM, CONTENTS) VALUES (:criteria, :quality, '')");
+			
+			#And we'll insert in a foreach loop.
+			foreach($criteria as $criterium) {
+				$stmt->execute(array('criteria' => $criterium["NUM"],
+									 'quality' => $qualitynum));
+			}
+			
+			header("JS-Redirect: removeto-2");
+			
+			#We're done here.
+			showError("Ok!", "The quality has been added to your rubric.", "We'll automatically redirect you now...", 201);
+			break;
 			
 			
+		
+		
+		
+		
 		#List all of the quality in a rubric.
 		case "ADDQUALITY": 
 			
@@ -139,9 +209,9 @@ SQL
 				<label for="qualityname">Quality name: </label>
 				<input id="qualityname" type="text" name="QUALITY_TITLE" placeholder="Proficient"><br>
 				<label for="qualitypoints">Points out of <?php echo $row["MAX_POINTS_PER_CRITERIA"] ?>: </label>
-				<input id="qualitypoints" type="number" name="QUALITY_POINTS" placeholder="<?php echo $row["MAX_POINTS_PER_CRITERIA"] ?>"><br>
+				<input id="qualitypoints" type="number" name="POINTS" placeholder="<?php echo $row["MAX_POINTS_PER_CRITERIA"] ?>"><br>
 			</div>
-			<a id="js_rubrics_edit_qualitysubmit" class="object create white" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php
+			<a id="js_rubrics_edit_addquality_submit" class="object create white" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php
 
 			#Quick table to show the user what they are editing.
 			createExampleTableQualities(); 
@@ -177,8 +247,46 @@ SQL
 			
 			
 			
+		#Called when a user adds a criteria
+		case "ADDCRITERIASUBMIT":
+			
+			#Verification of name.
+			if(strlen($CRITERIA_TITLE) < 2) {
+				showError("Error creating criteria!", "The name must be longer than 1 character.", "Check what you typed, then try again.", 400);
+			}
+		
+			#You can see the steps of quality submit for more details.
+			#Basically, insert....... 
+			$stmt = $conn->prepare("INSERT INTO RUBRIC_CRITERIA (RUBRIC_NUM, CRITERIA_TITLE) VALUES (:rubric, :title)");
+			$stmt->execute(array('rubric' => $row["NUM"],
+								 'title' => $CRITERIA_TITLE));
+			$criterium = $conn->lastInsertId();
+			
+			#......then select the qualities.......
+			$stmt = $conn->prepare("SELECT NUM FROM RUBRIC_QUALITY WHERE RUBRIC_NUM = :rubric");
+			$stmt->execute(array('rubric' => $row["NUM"]));
+			$qualities = $stmt->fetchAll();
+			$countQualities = $stmt->rowCount();
+			
+			#......and initialize the cells.....
+			$stmt = $conn->prepare("INSERT INTO RUBRIC_CELL (RUBRIC_CRITERIA_NUM, RUBRIC_QUALITY_NUM, CONTENTS) VALUES (:criteria, :quality, '')");
+			
+			#......in a foreach loop.
+			foreach($qualities as $quality) {
+				$stmt->execute(array('criteria' => $criterium,
+									 'quality' => $quality["NUM"]));
+			}
+			
+			header("JS-Redirect: removeto-2");
+			
+			#We're done here.... again!
+			showError("Ok!", "The criteria has been added to your rubric.", "We'll automatically redirect you now...", 201);
+			break;
 			
 			
+			
+			
+		
 		#List all of the criteria in a rubric.
 		case "ADDCRITERIA": 
 		
@@ -190,7 +298,7 @@ SQL
 				<label for="criterianame">Criteria name: </label>
 				<input id="criterianame" type="text" name="CRITERIA_TITLE" placeholder="Spelling and Accuracy"><br>
 			</div>
-			<a id="js_rubrics_edit_criteriasubmit" class="object create white" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php 
+			<a id="js_rubrics_edit_addcriteria_submit" class="object create white" href="#" data-num="<?php echo $row["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php 
 			
 			#Quick table to show the user what they are editing
 			createExampleTableCriteria(); 
