@@ -31,6 +31,7 @@ if(!file_exists("version")) {
 				<p id="name">Crafted with &lt;3 by<br> Aaron Walter</p>
 				<div id="logowrapper">
 					<img id="logo" src="images/logo.png" alt="Rubric Pro">
+					<div id="version"><?php echo $version; ?></div>
 				</div>
 				<div id="navigation">
 					<a href="#" id="js_dashboard"><span>Dashboard</span></a>
