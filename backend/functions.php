@@ -239,9 +239,14 @@ function createExampleTableCriteria() {
 }
 
 /**
- * Another function that creates an example table. See createExampleTableQualities()
+ * This function takes some component number and creates a compiled symbol tree from it.
+ * A compiled symbol tree is "CSASPC.I.A.1.i" for example. This method will look at the
+ * symbol of the passed number, then it's parent, then the parent of it's parent, and so
+ * on, until it reaches the root.
+ *
+ * It's possible that this method could strain the database. I honestly have no idea.
  */
-function createExampleTableCells() {
+function getCompiledSymbolTree($teacherNum, $symbolNum) {
 	
 }
 ?>

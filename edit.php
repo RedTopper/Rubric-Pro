@@ -3,6 +3,12 @@ $needsAuthentication = true;
 $needsAJAX = false;
 $needsTeacher = true;
 include "backend/db.php";
+
+if(!file_exists("version")) {
+	$version = shell_exec('version.sh');
+} else {
+	$version = fgets(fopen("version", 'r'));
+}
 ?>
 <!DOCTYPE html>
 <head>
