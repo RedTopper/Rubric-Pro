@@ -41,8 +41,6 @@ include "backend/db.php";
 		<div id="console">
 		</div>
 	</div>
-	<a href="#" id="js_consolebottom">View new message(s)</a>
-	<script>
-	log("WELCOME/user", "Welcome to Rubric Pro! Actions you perform will appear down here.");
-	</script>
+	<a href="#" class="consolebutton" id="js_consolebottom">View new message(s)</a>
+	<a href="#" class="consolebutton" id="js_consoleshow" style="display: block">Show developer console</a>
 </body>

@@ -4,6 +4,11 @@ $needsAJAX = true;
 $needsTeacher = true;
 include "db.php";
 $COMPONENT = isset($_POST["COMPONENT"]) ? $_POST["COMPONENT"] : null;
+$RUBRIC_NUM = isset($_POST["RUBRIC_NUM"]) ? $_POST["RUBRIC_NUM"] : null;
+$CRITERIA_NUM = isset($_POST["CRITERIA_NUM"]) ? $_POST["CRITERIA_NUM"] : null;
+
+$MODIFICATION_MODE = $RUBRIC_NUM === null && $CRITERIA_NUM === null;
+
 
 #Validate that the component can be null or a number greater than 0
 if(!($COMPONENT == null || is_numeric($COMPONENT) && $COMPONENT > 0)) {
@@ -66,11 +71,16 @@ if($COMPONENT === null) {
 <div class="object subtitle">
 	<h2>Your root components:</h2>
 </div>
+
+<?php
+#If we are requesting the components from the rubric editor, restrict creation and
+#deletion of components.
+if($MODIFICATION_MODE) { ?>
 <a class="js_component_create object create" href="#"><div class="arrow"></div>
-	<h3>Create new <br>"Root Component"</h3>
+	<h3>Create new "Root Component"</h3>
 </a>
 <?php
-
+}
 } else {
 	
 #Title for the sub components.
@@ -81,18 +91,35 @@ if($COMPONENT === null) {
 <div class="object subtitle">
 	<h2>Components</h2>
 </div>
+
+<?php
+if($MODIFICATION_MODE) { ?>
 <a class="js_component_create object create" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
-	<h3>Create new component in <br>"<?php echo htmlentities($parent["NAME"]); ?>"</h3>
+	<h3>New component in "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
 </a>
 <a class="js_component_destroy object destroy" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
-	<h3>Destroy <br>"<?php echo htmlentities($parent["NAME"]); ?>"</h3>
+	<h3>Destroy "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
+</a>
+<?php } else { ?>
+<a class="js_rubrics_edit_addcriteria_addcomponent_select object create" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
+	<h3>Select "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
 </a>
 <?php
 }
+}
 
 #Display all components from the data array.
-foreach($data as $row) { ?>
+foreach($data as $row) { 
+	if($MODIFICATION_MODE) {
+		
+	#If we are modifying the components, then we don't need to relay the rubric and component number. ?>
 	<a class="js_components_select object selectable" href="#" data-num="<?php echo $row["NUM"] ?>">
+	<?php } else { 
+	
+	#Otherwise, relay all the things. ?>
+	<a class="js_components_select object selectable" href="#" 
+	data-num="<?php echo $row["NUM"] ?>" data-rubricnum="<?php echo $RUBRIC_NUM ?>" data-criterionnum="<?php echo $CRITERIA_NUM ?>">
+	<?php } ?>
 	<div class="arrow"></div>
 		<h3>
 		<?php 
@@ -113,7 +140,7 @@ foreach($data as $row) { ?>
 }
 
 #If we are at root, then display help information to the user.
-if($COMPONENT === null) {
+if($COMPONENT === null && $MODIFICATION_MODE) {
 ?>
 <div class="object subtext spacer"></div>
 <div class="object subtitle">

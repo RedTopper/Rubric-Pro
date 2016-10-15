@@ -12,7 +12,13 @@
 	different places to keep the same layout.
 	*/
 	header("Content-type: text/css; charset: UTF-8");
-	$LOG_BAR_HEIGHT = "90px";
+	
+	//use this to globally enable the dev console.
+	//If you change the values here, update it in access.js!
+	$LOG_BAR_HEIGHT = "0px";
+	$LOG_BAR_DISPLAY = "none";
+	
+	//others
 	$NAV_LINK_HEIGHT = "50px";
 	$NAV_BAR_WIDTH = "160px";
 	$SEPERATION_BORDER = "1px solid #777";

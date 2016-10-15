@@ -14,6 +14,7 @@ body {
 
 /* Console that appears at the bottom of the screen. */
 #logbar {
+	display: <?php echo $LOG_BAR_DISPLAY; //esc:?>;
 	position: absolute;
 	width: 100%;
 	height: <?php echo $LOG_BAR_HEIGHT; //esc:?>;
@@ -29,13 +30,14 @@ body {
 #console {
 	margin: 5px;
 }
-#js_consolebottom {
+.consolebutton {
 	display: none;
-	position: fixed;
+	position: absolute;
 	bottom: 0;
 	right: 36px;
 	width: 200px;
-	height: 24px;
+	height: 36px;
+	line-height: 36px;
 	background-color: rgba(0,0,0,0.5);
 	color: #999;
 	text-align: center;
@@ -99,7 +101,7 @@ body {
 }
 
 #contentscroller {
-	position: absolute;
+	position: absolute; 
 	white-space: nowrap;
 	overflow-x: auto;
 	overflow-y: hidden;
@@ -112,14 +114,17 @@ body {
 #content {
 	height: 100%;
 }
-/*#content>:last-child {
-	margin-right: 100px;
-}*/
+#content>:last-child {
+	
+	/* WARNING: If you update this value here, you'll need to   *
+	 * fix the JS variable RIGHT_SPACE_MULTIPLYER in access.js! */
+	margin-right: 20%;
+}
 
 .bar {
 	min-width: 250px;
-	width: 380px;
-	max-width: 700px;
+	/*width: 380px;*/
+	max-width: 500px;
 	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -179,7 +184,7 @@ body {
 }
 .object h3 {
 	margin: 0;
-	padding: 0;
+	padding: 0 20px 0 0;
 	color: #EEE;
 	font-size: 16px;
 }

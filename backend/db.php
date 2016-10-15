@@ -40,7 +40,7 @@ function showError($title = "Error", $header = "An unknown error occured.", $sub
 	<p><?php echo $subheader; ?>
 </div>
 <?php 	if($returnToLogin) { ?>
-<a class="object destroy" href="/"><div class="arrow"></div><h3>Return to login.</h3></a>
+<a class="object warn white" href="/"><div class="arrow"></div><h3>Return to login.</h3></a>
 <?php
 		}
 	}

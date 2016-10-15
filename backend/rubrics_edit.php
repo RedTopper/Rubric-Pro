@@ -6,7 +6,7 @@ include "db.php";
 
 $needsFunction = true;
 include "functions.php";
-$NUM = isset($_POST["NUM"]) ? $_POST["NUM"] : null;
+$NUM = isset($_POST["NUM"]) ? $_POST["NUM"] : "";
 $REQUEST = isset($_POST["REQUEST"]) ? $_POST["REQUEST"] : "";
 $POINTS = isset($_POST["POINTS"]) ? $_POST["POINTS"] : "";
 $QUALITY_TITLE = isset($_POST["QUALITY_TITLE"]) ? $_POST["QUALITY_TITLE"] : "";
@@ -79,7 +79,7 @@ if($countRubrics == 1) {
 			
 			#check to make sure that contents actually exist within the table
 			if($countQualities == 0 || $countCriteria == 0) {
-				showError("Whoops!", "You'll need at least one quality and criterium before you can edit anything.", "It's easy, try adding a few to the left!", 400);
+				showError("Whoops!", "You'll need at least one quality and criterion before you can edit anything.", "It's easy, try adding a few to the left!", 400);
 			}
 				
 			#Ok, now get the actual cell data
@@ -208,8 +208,8 @@ SQL
 			$stmt = $conn->prepare("INSERT INTO RUBRIC_CELL (RUBRIC_CRITERIA_NUM, RUBRIC_QUALITY_NUM, CONTENTS) VALUES (:criteria, :quality, '')");
 			
 			#And we'll insert in a foreach loop.
-			foreach($criteria as $criterium) {
-				$stmt->execute(array('criteria' => $criterium["NUM"],
+			foreach($criteria as $criterion) {
+				$stmt->execute(array('criteria' => $criterion["NUM"],
 									 'quality' => $qualitynum));
 			}
 			
@@ -238,9 +238,6 @@ SQL
 				<input id="qualitypoints" type="number" name="POINTS" placeholder="<?php echo $rubric["MAX_POINTS_PER_CRITERIA"] ?>"><br>
 			</div>
 			<a id="js_rubrics_edit_addquality_submit" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php
-
-			#Quick table to show the user what they are editing.
-			createExampleTableQualities(); 
 			
 			#Then, output the qualities that are already in the table. ?>
 			<div class="object subtitle">
@@ -268,6 +265,9 @@ SQL
 			} else {
 				?><div class="object subtext"><p>There's nothing here.</p></div><?php
 			}
+			
+			#Quick table to show the user what they are editing.
+			createExampleTableQualities(); 
 			break;
 			
 			
@@ -286,7 +286,7 @@ SQL
 			$stmt = $conn->prepare("INSERT INTO RUBRIC_CRITERIA (RUBRIC_NUM, CRITERIA_TITLE) VALUES (:rubric, :title)");
 			$stmt->execute(array('rubric' => $rubric["NUM"],
 								 'title' => $CRITERIA_TITLE));
-			$criterium = $conn->lastInsertId();
+			$criterion = $conn->lastInsertId();
 			
 			#......then select the qualities.......
 			$stmt = $conn->prepare("SELECT NUM FROM RUBRIC_QUALITY WHERE RUBRIC_NUM = :rubric");
@@ -299,7 +299,7 @@ SQL
 			
 			#......in a foreach loop.
 			foreach($qualities as $quality) {
-				$stmt->execute(array('criteria' => $criterium,
+				$stmt->execute(array('criteria' => $criterion,
 									 'quality' => $quality["NUM"]));
 			}
 			
@@ -326,12 +326,9 @@ SQL
 			</div>
 			<a id="js_rubrics_edit_addcriteria_submit" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php 
 			
-			#Quick table to show the user what they are editing
-			createExampleTableCriteria(); 
-			
 			#Show contents of the rubric. ?>
 			<div class="object subtitle">
-				<h2>Your Criteria</h2>
+				<h2>Add Components to Criteria</h2>
 			</div>
 			<?php
 			$stmt = $conn->prepare("SELECT NUM, CRITERIA_TITLE FROM RUBRIC_CRITERIA WHERE RUBRIC_NUM = :rubric");
@@ -339,10 +336,13 @@ SQL
 			$countcriteria = $stmt->rowCount();
 			if($countcriteria > 0) {
 				$data = $stmt->fetchAll();
-				listCriterion("test", $data);
+				listCriterion("js_rubrics_edit_addcriteria_addcomponent", $data, "selectable", $rubric["NUM"]);
 			} else {
 				?><div class="object subtext"><p>There's nothing here.</p></div><?php
 			}
+			
+			#Quick table to show the user what they are editing
+			createExampleTableCriteria(); 
 			break;
 		
 		
@@ -356,9 +356,9 @@ SQL
 			<div class="object subtitle">
 				<h2><?php echo htmlentities($rubric["SUBTITLE"])?> </h2>
 			</div>
-			<a id="js_rubrics_edit_editrubric" class="object selectable white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Edit this rubric</h3></a>
 			<a id="js_rubrics_edit_addquality" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Create or view qualities</h3></a>
-			<a id="js_rubrics_edit_addcriteria" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Create or view criteria</h3></a>
+			<a id="js_rubrics_edit_addcriteria" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Create, edit, or view criteria</h3></a>
+			<a id="js_rubrics_edit_editrubric" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Edit this rubric</h3></a>
 			<a id="js_rubrics_edit_destroyquality" class="object warn white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Choose and destroy qualities</h3></a>
 			<a id="js_rubrics_edit_destroycriteria" class="object warn create" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Choose and destroy criteria</h3></a>
 			<a id="js_rubrics_edit_destroyrubric" class="object destroy" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Destroy this rubric</h3></a><?php

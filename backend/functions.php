@@ -135,12 +135,13 @@ function listQuality($classname, $qualities, $maxpointspercriteria, $type = "") 
  *
  * $classname The HTML class name for each button (used for JQuery binding in access.js)
  * $criterion 2D array output from the database (you must call the database yourself!)
+ * $rubricnum The number of the rubric that we got the criteria from.
  */
-function listCriterion($classname, $criterion, $type = "") {
+function listCriterion($classname, $criterion, $type = "", $rubricnum) {
 	foreach($criterion as $row) {  
 		
 		#Begin div or anchor if type is set
-		echo ($type=="" ? "<div" : "<a") . " class='$classname object white $type' href='#' data-criterionnum='" . $row["NUM"] . "'>";
+		echo ($type=="" ? "<div" : "<a") . " class='$classname object white $type' href='#' data-rubricnum='" . $rubricnum . "' data-criterionnum='" . $row["NUM"] . "'>";
 		
 			#output arrow if type is set.
 			echo ($type=="" ? "" : "<div class='arrow'></div>");

@@ -8,8 +8,8 @@ var currentTier = 0;
 //The text of a rubric editor cell when the user first clicks on the cell.
 var rubricEditStartText = "";
 
-
-
+//true if the console is being shown.
+var consoleShown = false;
 
 
 //======================================================================================================
@@ -48,6 +48,13 @@ var BACKGROUND_EDIT_IMAGE_SUCCESS = "url('/images/success.svg')";
 
 //Time to wait until green check is hidden.
 var TIME_HIDE_SUCCESS = 1500; 
+
+//Amount of padding that appears to the right of the last tier. Needs to be the inverse
+//of the value that appears in the CSS value "#content>:last-child". 1.0 = no change.
+var RIGHT_SPACE_MULTIPLYER = 0.8;
+
+//If you change the value here, update it in style.PHP as well!
+var CONSOLE_HEIGHT = 90;
 
 
 
@@ -179,7 +186,7 @@ function appendServerResponse(tier, data) {
 	});
 	
 	//get position I need to set
-	var delta = innerwidth - $('#contentscroller').outerWidth(false);
+	var delta = innerwidth - $('#contentscroller').outerWidth(false) * RIGHT_SPACE_MULTIPLYER;
 	if(delta < 0) delta = 0;
 	
 	//scroll the page.
@@ -403,6 +410,27 @@ function changeColor(tier, object) {
 $(document).on('click', '#js_consolebottom', function(e) {
 	jumplog();
 	log("JQUERY/user", "New messages are above. The console will now automatically scroll as new messages appear.");
+	return false;
+});
+
+//"Show dev console" button.
+$(document).on('click', '#js_consoleshow', function(e) {
+	if(consoleShown == false) {
+		$("#logbar").animate({"height": CONSOLE_HEIGHT + "px"});
+		$("#logbar").css("display", "block");
+		$("#contentscroller").animate({"bottom": CONSOLE_HEIGHT + "px"});
+		$("#js_consoleshow").animate({"bottom": (CONSOLE_HEIGHT + 1) + "px"});
+		$("#js_consoleshow").html("Hide developer console");
+		jumplog();
+		log("WELCOME/user", "Welcome to Rubric Pro! Actions you perform will appear down here.");
+		consoleShown = true;
+	} else {
+		$("#logbar").animate({"height": "0"});
+		$("#contentscroller").animate({"bottom": "0"});
+		$("#js_consoleshow").animate({"bottom": "0"}, 400, "swing", function() {$("#logbar").css("display", "none");});
+		$("#js_consoleshow").html("Show developer console");
+		consoleShown = false;
+	}
 	return false;
 });
 
@@ -663,7 +691,9 @@ $(document).on('click', '#js_components', doComponents);
 		createTier(tier, "");
 		callServer(tier, "/backend/component.php", "component (sent parent component)",
 		{
-			COMPONENT: $(this).data('num')
+			COMPONENT: $(this).data('num'),
+			CRITERIA_NUM: $(this).data('criterionnum'),
+			RUBRIC_NUM: $(this).data('rubricnum')
 		});
 		return false;
 	});
@@ -793,6 +823,19 @@ $(document).on('click', '#js_rubrics', doRubrics);
 					REQUEST: "ADDCRITERIASUBMIT",
 					NUM: $(this).data('num'),
 					CRITERIA_TITLE: $("#criterianame").val()
+				});
+				return false;
+			});
+			//addcriteria: addcomponent
+			$(document).on('click', '.js_rubrics_edit_addcriteria_addcomponent', function(e) {
+				//Basically like the regular components function.
+				var tier = parseInt($(this).parent().attr('id').substring(4)); 
+				log("JQUERY/user", "Request rubrics > edit > components");
+				changeColor(tier, $(this));
+				createTier(tier, "Add Component");
+				callServer(tier, "/backend/component.php", "components. NOTICE: Entering component selection mode", {
+					RUBRIC_NUM: $(this).data('rubricnum'),
+					CRITERIA_NUM: $(this).data('criterionnum'),
 				});
 				return false;
 			});
