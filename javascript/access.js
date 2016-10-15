@@ -1,23 +1,64 @@
+//======================================================================================================
+//======================================= GLOBAL VARIABLES BELOW =======================================
+//======================================================================================================
+
 //The current tier the application is working with.
 var currentTier = 0;
 
 //The text of a rubric editor cell when the user first clicks on the cell.
 var rubricEditStartText = "";
 
+
+
+
+
+//======================================================================================================
+//======================================= STATIC VARIABLES BELOW =======================================
+//======================================================================================================
+
 //This variable controlls how long a user must wait at the redirect screen to be redirected (ms).
 var TIME_WAIT = 2000;
 
+//50px to correct slight scroll ups.
+var LOG_DEADZONE = 50;
+
+//The shortest the body of a response ccan be before being considered an "Error".
+var MINIMUM_BODY_LENGTH = 30;
+
+//Requiered header in all HTML responses. 
+var DIV_REQUIRED = '<div class="object subtitle">';
+
+//Header sent by PHP for deturmining the size of a tier.
+var HEADER_RESIZE = "JS-Resize";
+
+//Header sent by PHP for redirecting a user.
+var HEADER_REDIRECT = "JS-Redirect";
+
+//If this needs to be a color, remove bkg as well. You'll need to update that in code.
+var BACKGROUND_FOR_SELECT = "linear-gradient(to bottom, rgba(0,75,150,1) 0%,rgba(0,38,76,1) 100%)";
+
+//Default of blue gears.
+var BACKGROUND_EDIT_IMAGE_LOAD = "url('/images/gears.svg')";
+
+//Default of a red X.
+var BACKGROUND_EDIT_IMAGE_ERROR = "url('/images/error.svg')"; 
+
+//Default of a green Check.
+var BACKGROUND_EDIT_IMAGE_SUCCESS = "url('/images/success.svg')";
+
+//Time to wait until green check is hidden.
+var TIME_HIDE_SUCCESS = 1500; 
+
+
+
+
+
+//======================================================================================================
+//========================================== MAIN CODE BELOW ===========================================
+//======================================================================================================
+
 //http://stackoverflow.com/a/12034334
 var entityMap = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': '&quot;', "'": '&#39;', "/": '&#x2F;'};
-
-//Progress bar.
-$( document ).ajaxStart(function() {
-	NProgress.start();
-});
-
-$( document ).ajaxComplete(function() {
-	NProgress.done();
-});
 
 /**
  * Removes bad user input to prevent accidental html from being parsed into the console.
@@ -48,7 +89,7 @@ function jumplog() {
  * Check to see if the console window is already at the bottom.
  */
 function isAtBottom() {
-    return $("#logbar").scrollTop() + $("#logbar").innerHeight() >= $("#console").outerHeight(true) - 50; //50px to correct slight scroll ups.
+    return $("#logbar").scrollTop() + $("#logbar").innerHeight() >= $("#console").outerHeight(true) - LOG_DEADZONE;
 }
 
 /**
@@ -97,6 +138,7 @@ function removeToTier(tier) {
  * by calling removeToTier().
  *
  * tier: The tier is the tier of the caller, if we are calling from tier "0", then data will be created in tier1.
+ * name: The title that will appear at the top of the tier.
  */
 function createTier(tier, name) {
 	
@@ -149,21 +191,15 @@ function appendServerResponse(tier, data) {
  *
  * title: The title we wish to log. This makes it easier for the user to see what is happening.
  * data: The data we wish to parse.
- * success: True if the html response code was 200 OK.
  * errorcode: The HTML error code.
  *
  * Returns an object with the raw HTML as "html", a boolean error as "error"
- * and a human readable form of the error code as "readable". 
+ * and a human readable form of the error code as "human". 
  */
-function parseServerResponse(title, data, success, errorcode) {
-	
-	//Set up the errorcode if the message from 200 OK is not actually ok :(
-	if(success) {
-		errorcode = "Invalid response. The server sent data, but the format was not standard.";
-	}
-	
+function parseServerResponse(title, data, errorcode) {
+
 	//If the data is too short
-	if(data.length < 30) {
+	if(data.length < MINIMUM_BODY_LENGTH) {
 		log("AJAX/server", "Fatal error requesting data for " + title + ".");
 		return {html: 
 		'<div class="object subtitle"><h2>Programming Error</h2></div>' +
@@ -172,10 +208,16 @@ function parseServerResponse(title, data, success, errorcode) {
 			'<p>The server returned an empty response.' +
 		'</div>', 
 		error: true,
-		readable: ["An error in the programming occured.", "The server returned an empty response."]};
+		human: ["An error in the programming occured.", "The server returned an empty response."]};
 		
-	//else if the data does not have ther right header.
-	} else if(data.indexOf('<div class="object subtitle">') === -1) {
+	//else if the data does not have ther right div header.
+	} else if(data.indexOf(DIV_REQUIRED) === -1) {
+		
+		//If the server sent 200 OK but the div was not sent, change the errorcode.
+		if(errorcode == "OK") {
+			errorcode = "Invalid response. The server sent data, but the format was not standard.";
+		}
+		
 		log("AJAX/server", "Fatal error requesting data for " + title + ".");
 		return {html: 
 		'<div class="object subtitle"><h2>Undefined Error</h2></div>' +
@@ -185,20 +227,25 @@ function parseServerResponse(title, data, success, errorcode) {
 			'<p>General information: ' + errorcode +
 		'</div>',
 		error: true,
-		readable: ["An undefined error in the application occured.", "The server returned a non-empty and non-standard response.", "General information: " + errorcode]};
+		human: ["An undefined error in the application occured.", 
+				"The server returned a non-empty and non-standard response.", 
+				"General information: " + errorcode]};
 		
 	//else the data has the right header...
 	} else {
 		
 		//and it's successfull
-		if(success) {
+		if(errorcode == "OK") {
 			log("AJAX/server", "Obtained data successfully for " + title + ".");
+			return {html: data,
+			error: false,
+			human: ["Success!"]};
 		} else {
 			log("AJAX/server", "Fatal error requesting data for " + title + ".");
+			return {html: data,
+			error: true,
+			human: [errorcode]};
 		}
-		return {html: data,
-		error: false,
-		readable: ["Success!"]};
 	}
 }
 
@@ -209,13 +256,13 @@ function parseServerResponse(title, data, success, errorcode) {
 function parseServerHeaders(tier, xhr) {
 				
 	//If the server says to resize this dynamically
-	if(xhr.getResponseHeader("JS-Resize") == "auto") {
+	if(xhr.getResponseHeader(HEADER_RESIZE) == "auto") {
 		$("#tier" + tier).css("max-width", "none");
 		$("#tier" + tier).css("width", "auto");
 	}
 	
 	//Parse static header responses.
-	switch(xhr.getResponseHeader("JS-Redirect")) {
+	switch(xhr.getResponseHeader(HEADER_REDIRECT)) {
 		case "account":
 			setTimeout(doAccounts, TIME_WAIT);
 			break;
@@ -231,9 +278,9 @@ function parseServerHeaders(tier, xhr) {
 	}
 	
 	//Parse dynamic tier removal tool.
-	if(xhr.getResponseHeader("JS-Redirect") != undefined &&
-	   xhr.getResponseHeader("JS-Redirect").substring(0,8) == "removeto") {
-		var removeTier = xhr.getResponseHeader("JS-Redirect").substring(8);
+	if(xhr.getResponseHeader(HEADER_REDIRECT) != undefined &&
+	   xhr.getResponseHeader(HEADER_REDIRECT).substring(0,8) == "removeto") {
+		var removeTier = xhr.getResponseHeader(HEADER_REDIRECT).substring(8);
 		var number = parseInt(removeTier);
 		
 		//If the tier we want to remove is some positive number, then 
@@ -268,6 +315,7 @@ function parseServerHeaders(tier, xhr) {
  *			 undefined if you wish to create a new tier.
  */
 function callServer(tier, path, title, post, callback) {
+	NProgress.start();
 	
 	//procede to next tier.
 	tier = tier + 1;
@@ -282,25 +330,28 @@ function callServer(tier, path, title, post, callback) {
 		data: params,
 		success: function(data, textStatus, xhr) {
 			
-			//parse headers and server response.
+			//parse headers.
 			parseServerHeaders(tier, xhr);
-			var parse = parseServerResponse(title, data, true);
+			
+			//parse server response.
+			var parse = parseServerResponse(title, data, "OK");
 			if(callback == undefined) {
 				appendServerResponse(tier, parse.html);
 			} else {
 				callback(parse);
 			}
+			NProgress.done();
 		},
 		error: function(xhr, status, error) {
-			alert(error);
 			
 			//only parse server response.
-			var parse = parseServerResponse(title, xhr.responseText, false, error);
+			var parse = parseServerResponse(title, xhr.responseText, error);
 			if(callback == undefined) {
 				appendServerResponse(tier, parse.html);
 			} else {
 				callback(parse);
 			}
+			NProgress.done();
 		}
 	});
 }
@@ -343,12 +394,8 @@ function changeColor(tier, object) {
 			$(this).removeAttr('style');
 		});
 		
-		//Blue gradient.
-		object.css("background", "linear-gradient(to bottom, rgba(0,75,150,1) 0%,rgba(0,38,76,1) 100%)");
-		
-		//Solid black.
-		//object.css("background-color", "#000");
-		//object.css("background-image", "none");
+		//Gradient.
+		object.css("background", BACKGROUND_FOR_SELECT);
 	}
 }
 
@@ -790,32 +837,53 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		});
 			//editrubric: click into any box.
 			$(document).on('focus', '.rubricbox', function(e) {
-				log("EDIT/user", "Editing box at quality " + $(this).data('quality') + " and criteria " + $(this).data('criteria') + ".");
+				log("EDIT/user", "Editing box at quality " + $(this).data('quality') + " and criteria " + $(this).data('criteria') + 
+				" with contents '" +  $(this).val() + "'.");
 				
 				//Update the starting text so we can see if it changed later.
 				rubricEditStartText = $(this).val();
 				return false;
 			});
 			//editrubric: click outside of any box.
-			$(document).on('focusout', '.rubricbox', function(e) {
+			$(document).on('blur', '.rubricbox', function(e) {
+				var tier = 3;
+				var textbox = $(this);
 				
 				//check if changed.
-				if(rubricEditStartText == $(this).val()) {
-					log("EDIT/user", "Box remained unchanged.");
+				if(rubricEditStartText == textbox.val()) {
 					return false;
 				} else {
-					log("EDIT/user", "Publishing changes at quality " + $(this).data('quality') + " and criteria " + $(this).data('criteria') + ".");
+					log("EDIT/user", "Publishing changes at quality " + textbox.data('quality') + " and criteria " + textbox.data('criteria') + 
+					" with contents '" +  textbox.val() + "'.");
+					
+					//change to gear icon
+					textbox.css("background-repeat", "no-repeat");
+					textbox.css("background-position", "center");
+					textbox.css("background-size", "70px");
+					textbox.css("background-image", BACKGROUND_EDIT_IMAGE_LOAD);
 				}
 				
 				//if changed, publish to the server.
 				callServer(0, "/backend/rubrics_edit.php", "rubrics_edit (UPDATE)",
 				{
 					REQUEST: "UPDATE",
-					NUM: $(this).data('num'),
-					RUBRIC_QUALITY_NUM: $(this).data('num'),
-					RUBRIC_CRITERIA_NUM: $(this).data('num')
-				}, function(data) {
-					alert(data);
+					NUM: textbox.data('num'),
+					RUBRIC_QUALITY_NUM: textbox.data('quality'),
+					RUBRIC_CRITERIA_NUM: textbox.data('criteria'),
+					CONTENTS: textbox.val()
+				}, function(parse) {
+					if(parse.error == true) {
+						textbox.css("background-image", BACKGROUND_EDIT_IMAGE_ERROR);
+						
+						//In case we hit an error code
+						createTier(tier, "Error!");
+						appendServerResponse(tier + 1, parse.html);
+					} else {
+						textbox.css("background-image", BACKGROUND_EDIT_IMAGE_SUCCESS);
+						setTimeout(function() {
+							textbox.css("background-image", "");
+						}, TIME_HIDE_SUCCESS);	
+					}
 				});
 				return false;
 			});
