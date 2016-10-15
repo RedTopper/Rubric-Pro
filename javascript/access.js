@@ -67,10 +67,22 @@ var CONSOLE_HEIGHT = 90;
 //http://stackoverflow.com/a/12034334
 var entityMap = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': '&quot;', "'": '&#39;', "/": '&#x2F;'};
 
+/**
+ * Because all browsers are special snowflakes, I use this method to get the
+ * height of the MAIN bottom scrollbar in the application.
+ */
 function getScrollerHeight() {
 	return $("#contentscroller").height() - $("#content").height();
 }
 
+/**
+ * This function fixes the position of the "Show developer console" button.
+ */
+function fixDevConsoleHeight() {
+	setTimeout(function(){
+		$("#js_consoleshow").css("bottom", ((consoleShown ? CONSOLE_HEIGHT : -1) + 1 + getScrollerHeight()) + "px");
+	}, 20); //Wait 20ms because Internet Explorer is special.
+}
 
 /**
  * Removes bad user input to prevent accidental html from being parsed into the console.
@@ -135,7 +147,17 @@ function log(caller, message) {
  * You get the point.
  */
 function removeToTier(tier) {
-	//remove tiers
+
+	//get full width of page to we can lock the content div to that width at minimum
+	//We'll unlock this in the append server response section.
+	var innerwidth = 0;
+	$('#content').children().each(function() {
+		innerwidth += $(this).outerWidth(true);
+	});
+	$('#content').css("min-width", innerwidth + "px");
+
+	
+	//remove tiers.
 	for(var remove = currentTier; remove > tier; remove--) {
 		$("#tier" + remove).remove();
 	}
@@ -174,7 +196,8 @@ function createTier(tier, name) {
 		return this.nodeType === 3;
 	}).remove();
 	
-	$("#js_consoleshow").css("bottom", ((consoleShown ? CONSOLE_HEIGHT : -1) + 1 + getScrollerHeight()) + "px");
+	//New tier might create a scrollbar before contents arrive!
+	fixDevConsoleHeight();
 }
 
 /**
@@ -197,7 +220,17 @@ function appendServerResponse(tier, data) {
 	if(delta < 0) delta = 0;
 	
 	//scroll the page.
-	$('#contentscroller').animate({scrollLeft: delta});
+	$('#contentscroller').animate({scrollLeft: delta}, 400, "swing", function() {
+		
+		//we need to remove that temporary padding.
+		$('#content').css("min-width", "");
+		
+		//Removing min width may remove a scrollbar!
+		fixDevConsoleHeight();
+	});
+	
+	//Adding contents may create a scrollbar!
+	fixDevConsoleHeight();
 }
  
 /**

@@ -120,6 +120,8 @@ foreach($data as $row) {
 	<a class="js_components_select object selectable" href="#" 
 	data-num="<?php echo $row["NUM"] ?>" data-rubricnum="<?php echo $RUBRIC_NUM ?>" data-criterionnum="<?php echo $CRITERIA_NUM ?>">
 	<?php } ?>
+	
+	
 	<div class="arrow"></div>
 		<h3>
 		<?php 
