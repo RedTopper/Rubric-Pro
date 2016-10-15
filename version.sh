@@ -1,1 +1,1 @@
-git describe --long --tags --dirty --always > version
+git describe --long --tags --dirty --always | tee "version"

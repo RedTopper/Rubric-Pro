@@ -4,9 +4,17 @@ $needsAJAX = false;
 $needsTeacher = true;
 include "backend/db.php";
 
+$version = "Unknown";
+
+//If the version file does not exist, run the version command.
 if(!file_exists("version")) {
-	$version = shell_exec('version.sh');
-} else {
+	exec('version.sh');
+} 
+
+//If it does, output it. It's possible that the shell file will never
+//output anything. In that case, the first if statement will run but
+//not the second.
+if(file_exists("version")) {
 	$version = fgets(fopen("version", 'r'));
 }
 ?>
