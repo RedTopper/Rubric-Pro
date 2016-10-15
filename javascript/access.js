@@ -67,6 +67,11 @@ var CONSOLE_HEIGHT = 90;
 //http://stackoverflow.com/a/12034334
 var entityMap = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': '&quot;', "'": '&#39;', "/": '&#x2F;'};
 
+function getScrollerHeight() {
+	return $("#contentscroller").height() - $("#content").height();
+}
+
+
 /**
  * Removes bad user input to prevent accidental html from being parsed into the console.
  */
@@ -168,6 +173,8 @@ function createTier(tier, name) {
 	$("#content").contents().filter(function () {
 		return this.nodeType === 3;
 	}).remove();
+	
+	$("#js_consoleshow").css("bottom", ((consoleShown ? CONSOLE_HEIGHT : -1) + 1 + getScrollerHeight()) + "px");
 }
 
 /**
@@ -419,15 +426,15 @@ $(document).on('click', '#js_consoleshow', function(e) {
 		$("#logbar").animate({"height": CONSOLE_HEIGHT + "px"});
 		$("#logbar").css("display", "block");
 		$("#contentscroller").animate({"bottom": CONSOLE_HEIGHT + "px"});
-		$("#js_consoleshow").animate({"bottom": (CONSOLE_HEIGHT + 1) + "px"});
+		$("#js_consoleshow").animate({"bottom": (CONSOLE_HEIGHT + 1 + getScrollerHeight()) + "px"});
 		$("#js_consoleshow").html("Hide developer console");
 		jumplog();
 		log("WELCOME/user", "Welcome to Rubric Pro! Actions you perform will appear down here.");
 		consoleShown = true;
 	} else {
 		$("#logbar").animate({"height": "0"});
-		$("#contentscroller").animate({"bottom": "0"});
-		$("#js_consoleshow").animate({"bottom": "0"}, 400, "swing", function() {$("#logbar").css("display", "none");});
+		$("#contentscroller").animate({"bottom": "0"}, 400, "swing", function() {$("#logbar").css("display", "none");});
+		$("#js_consoleshow").animate({"bottom": getScrollerHeight() + "px"});
 		$("#js_consoleshow").html("Show developer console");
 		consoleShown = false;
 	}
