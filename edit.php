@@ -4,7 +4,9 @@ $needsAJAX = false;
 $needsTeacher = true;
 include "backend/db.php";
 
-$version = shell_exec("git describe --long --tags --dirty --always");
+$version = shell_exec("git describe --long --tags --dirty --alwayasds");
+$version = ($version != null ? $version : (file_exists("version") ? fgets(fopen("version", 'r')) : "Unknown Version"));
+
 ?>
 <!DOCTYPE html>
 <head>
