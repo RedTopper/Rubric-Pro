@@ -297,15 +297,27 @@ function parseServerHeaders(tier, xhr) {
 		
 		//If the tier we want to remove is some negative number, then
 		//we remove the amount of tiers leftwards from the current tier.
-		//For example, if we are at tier 4, and we get -1, then we remove everything
+		//For example, if we are at tier 4, and we get -1, then we keep everything
 		//up to tier 3.
 		if(number < 0 && number > -999) {
 			removeToTier(currentTier + number); //note to self, number is negative
-			$("#tier" + (currentTier - 1)).children().each(function(){ //note to self, removeToTier changes currentTier
-				if($(this).attr("select") == "true") {
-					$(this).trigger("click");
-				}
-			});
+			if((currentTier - 1) <= 0) {
+				
+				//If we are removing something that takes us to the sidebar or beyond, select the sidebar.
+				$("#navigation").children().each(function(){
+					if($(this).attr("select") == "true") {
+						$(this).trigger("click");
+					}
+				});
+			} else {
+				
+				//Otherwise, just select the current tier.
+				$("#tier" + (currentTier - 1)).children().each(function(){ //note to self, removeToTier changes currentTier
+					if($(this).attr("select") == "true") {
+						$(this).trigger("click");
+					}
+				});
+			}
 			
 			supressMessage = true;
 		}
