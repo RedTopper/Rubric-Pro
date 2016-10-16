@@ -85,6 +85,34 @@ function fixDevConsoleHeight() {
 }
 
 /**
+ * Scrolls the whole page to 
+ */
+function scrollPage() {
+	//get full width of page
+	var innerwidth = 0;
+	$('#content').children().each(function() {
+		innerwidth += $(this).outerWidth(false);
+	});
+	
+	//get position I need to set
+	var delta = innerwidth - $('#contentscroller').outerWidth(false) * RIGHT_SPACE_MULTIPLYER;
+	if(delta < 0) delta = 0;
+	
+	//scroll the page.
+	$('#contentscroller').animate({scrollLeft: delta}, 400, "swing", function() {
+		
+		//we need to remove that temporary padding.
+		$('#content').css("min-width", "");
+		
+		//Removing min width may remove a scrollbar!
+		fixDevConsoleHeight();
+	});
+	
+	//Adding contents may create a scrollbar!
+	fixDevConsoleHeight();
+}
+
+/**
  * Removes bad user input to prevent accidental html from being parsed into the console.
  */
 function escapeHtml(string) {
@@ -209,28 +237,7 @@ function createTier(tier, name) {
 function appendServerResponse(tier, data) {
 	$("#tier" + tier).append(data);
 	
-	//get full width of page
-	var innerwidth = 0;
-	$('#content').children().each(function() {
-		innerwidth += $(this).outerWidth(false);
-	});
-	
-	//get position I need to set
-	var delta = innerwidth - $('#contentscroller').outerWidth(false) * RIGHT_SPACE_MULTIPLYER;
-	if(delta < 0) delta = 0;
-	
-	//scroll the page.
-	$('#contentscroller').animate({scrollLeft: delta}, 400, "swing", function() {
-		
-		//we need to remove that temporary padding.
-		$('#content').css("min-width", "");
-		
-		//Removing min width may remove a scrollbar!
-		fixDevConsoleHeight();
-	});
-	
-	//Adding contents may create a scrollbar!
-	fixDevConsoleHeight();
+	scrollPage();
 }
  
 /**
@@ -335,6 +342,7 @@ function parseServerHeaders(tier, xhr) {
 		if(number > 0 && number < 999) {
 			setTimeout(function() {
 				removeToTier(number);
+				scrollPage();
 			}, TIME_WAIT);	
 		}
 		
@@ -345,6 +353,7 @@ function parseServerHeaders(tier, xhr) {
 		if(number < 0 && number > -999) {
 			setTimeout(function() {
 				removeToTier(currentTier + number); //note to self, number is negative
+				scrollPage();
 			}, TIME_WAIT);	
 		}
 	}
@@ -879,6 +888,19 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				});
 				return false;
 			});
+				//addcomponent: select
+				$(document).on('click', '.js_rubrics_edit_addcriteria_addcomponent_select', function(e) {
+					var tier = parseInt($(this).parent().attr('id').substring(4)); 
+					log("JQUERY/user", "Request rubrics > edit > components > select");
+					changeColor(tier, $(this));
+					createTier(tier, "Add Component");
+					callServer(tier, "/backend/rubrics_edit_criteria_component_select.php", "rubrics_edit_criteria_component_select", {
+						COMPONENT_NUM: $(this).data('num'),
+						RUBRIC_NUM: $(this).data('rubricnum'),
+						CRITERIA_NUM: $(this).data('criterionnum'),
+					});
+					return false;
+				});
 		//edit: destroyquality
 		$(document).on('click', '#js_rubrics_edit_destroyquality', function(e) {
 			var tier = 2;

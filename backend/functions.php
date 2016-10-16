@@ -245,8 +245,70 @@ function createExampleTableCriteria() {
  * on, until it reaches the root.
  *
  * It's possible that this method could strain the database. I honestly have no idea.
+ *
+ * returns: A two dementional array where the first dimension is a list of steps it took
+ *			to obtain the parent component and the second dimension is an array with the
+ *			keys "TREE" and "NUM". "TREE" represents the symbol tree of the "NUM"th element.
  */
-function getCompiledSymbolTree($teacherNum, $symbolNum) {
+function getCompiledSymbolTree($teacherNum, $num) {
+	global $conn;
+	$tree = array();
 	
+	//Main query used to select each component.
+	$stmt = $conn->prepare("SELECT NUM, SYMBOL, PARENT_NUM FROM COMPONENT WHERE TEACHER_NUM = :teacher AND NUM = :num");
+	
+	//Run the select at least once.
+	do {
+		$stmt->execute(array('teacher' => $teacherNum, 'num' => $num));
+		$count = $stmt->rowCount();
+		
+		//if it exists...
+		if($count == 1) {
+			$component = $stmt->fetch();
+			
+			//If the parent is the ROOT
+			if($component["PARENT_NUM"] == null) {
+				
+				//Create a new sub array with indexes NUM and TREE.
+				array_push($tree, array("NUM" => $component["NUM"], "TREE" => ""));
+				
+				//foreach tree value we need to prepend the current symbol to the other symbols we have been adding.
+				foreach($tree as $key => $compile) {
+					$tree[$key]["TREE"] = $component["SYMBOL"] . $compile["TREE"];
+				}
+				break;
+				
+			//Otherwise it's just a child.
+			} else {
+				
+				//Create a new sub array with indexes NUM and TREE.
+				array_push($tree, array("NUM" => $component["NUM"], "TREE" => ""));
+				
+				//foreach tree add the symbol to the front of it. Note. the first iteration there will be
+				//one element (the array above that we pushed) so there will be one symbol in the tree spot.
+				//Next loop we add the symbol to this one and the next one. 
+				
+				//Help for future me:
+				//Iteration 1: 0: TREE: .a
+				
+				//Iteration 2: 0: TREE: .i.a
+				//			   1: TREE: .i
+				
+				//Iteration 3: 0: TREE: .1.i.a
+				//			   1: TREE: .1.i
+				//			   2: TREE: .1
+				//etc.
+				foreach($tree as $key => $compile) {
+					$tree[$key]["TREE"] = "." . $component["SYMBOL"] . $compile["TREE"];
+				}
+				$num = $component["PARENT_NUM"];
+			}
+		} else {
+			
+			//Something happened where the teacher does not have the rights to that component.
+			showError("Whoops!", "That component doesn't belong to you.", "Try refreshing the page to fix the problem.", 400);
+		}
+	} while(true);
+	return $tree;
 }
 ?>

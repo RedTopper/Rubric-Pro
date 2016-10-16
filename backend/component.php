@@ -93,6 +93,8 @@ if($MODIFICATION_MODE) { ?>
 </div>
 
 <?php
+
+#In modification mode, show creation of components and destruction of components.
 if($MODIFICATION_MODE) { ?>
 <a class="js_component_create object create" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
 	<h3>New component in "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
@@ -100,8 +102,11 @@ if($MODIFICATION_MODE) { ?>
 <a class="js_component_destroy object destroy" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
 	<h3>Destroy "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
 </a>
-<?php } else { ?>
-<a class="js_rubrics_edit_addcriteria_addcomponent_select object create" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
+
+<?php } else { 
+#Otherwise just show the select component button.?>
+<a class="js_rubrics_edit_addcriteria_addcomponent_select object create" href="#" data-num="<?php echo $parent["NUM"] ?>" 
+data-rubricnum="<?php echo $RUBRIC_NUM ?>" data-criterionnum="<?php echo $CRITERIA_NUM ?>"><div class="arrow"></div>
 	<h3>Select "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
 </a>
 <?php
