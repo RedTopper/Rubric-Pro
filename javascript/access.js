@@ -239,6 +239,79 @@ function appendServerResponse(tier, data) {
 	
 	scrollPage();
 }
+
+/**
+ * Parses the PHP headers of the obtained data.
+ * xhr: The AJAX response.
+ * returns true if the new tier should be supressed or not.
+ */
+function parseServerHeaders(tier, xhr) {
+	var supressMessage = false;
+	
+	//If the server says to resize this dynamically
+	if(xhr.getResponseHeader(HEADER_RESIZE) == "auto") {
+		$("#tier" + tier).css("max-width", "none");
+		$("#tier" + tier).css("width", "auto");
+	}
+	
+	//Parse static header responses.
+	switch(xhr.getResponseHeader(HEADER_REDIRECT)) {
+		case "account":
+			doAccounts();
+			supressMessage = true;
+			break;
+		case "classes":
+			doClass();
+			supressMessage = true;
+			break;
+		case "components":
+			doComponents();
+			supressMessage = true;
+			break;
+		case "rubrics":
+			doRubrics();
+			supressMessage = true;
+			break;
+	}
+	
+	//Parse dynamic tier removal tool.
+	if(xhr.getResponseHeader(HEADER_REDIRECT) != undefined &&
+	   xhr.getResponseHeader(HEADER_REDIRECT).substring(0,8) == "removeto") {
+		var removeTier = xhr.getResponseHeader(HEADER_REDIRECT).substring(8);
+		var number = parseInt(removeTier);
+		
+		//If the tier we want to remove is some positive number, then 
+		//we remove everything AFTER that tier.
+		if(number > 0 && number < 999) {
+			removeToTier(number);
+			
+			//auto click on the selected element if found.
+			$("#tier" + number).children().each(function(){
+				if($(this).attr("select") == "true") {
+					$(this).trigger("click");
+				}
+			});
+			
+			supressMessage = true;
+		}
+		
+		//If the tier we want to remove is some negative number, then
+		//we remove the amount of tiers leftwards from the current tier.
+		//For example, if we are at tier 4, and we get -1, then we remove everything
+		//up to tier 3.
+		if(number < 0 && number > -999) {
+			removeToTier(currentTier + number); //note to self, number is negative
+			$("#tier" + (currentTier - 1)).children().each(function(){ //note to self, removeToTier changes currentTier
+				if($(this).attr("select") == "true") {
+					$(this).trigger("click");
+				}
+			});
+			
+			supressMessage = true;
+		}
+	}
+	return supressMessage;
+}
  
 /**
  * Takes a server response and does some loose parsing.
@@ -304,62 +377,6 @@ function parseServerResponse(title, data, errorcode) {
 }
 
 /**
- * Parses the PHP headers of the obtained data.
- * xhr: The AJAX response.
- */
-function parseServerHeaders(tier, xhr) {
-				
-	//If the server says to resize this dynamically
-	if(xhr.getResponseHeader(HEADER_RESIZE) == "auto") {
-		$("#tier" + tier).css("max-width", "none");
-		$("#tier" + tier).css("width", "auto");
-	}
-	
-	//Parse static header responses.
-	switch(xhr.getResponseHeader(HEADER_REDIRECT)) {
-		case "account":
-			setTimeout(doAccounts, TIME_WAIT);
-			break;
-		case "classes":
-			setTimeout(doClass, TIME_WAIT);
-			break;
-		case "components":
-			setTimeout(doComponents, TIME_WAIT);
-			break;
-		case "rubrics":
-			setTimeout(doRubrics, TIME_WAIT);
-			break;
-	}
-	
-	//Parse dynamic tier removal tool.
-	if(xhr.getResponseHeader(HEADER_REDIRECT) != undefined &&
-	   xhr.getResponseHeader(HEADER_REDIRECT).substring(0,8) == "removeto") {
-		var removeTier = xhr.getResponseHeader(HEADER_REDIRECT).substring(8);
-		var number = parseInt(removeTier);
-		
-		//If the tier we want to remove is some positive number, then 
-		//we remove everything AFTER that tier.
-		if(number > 0 && number < 999) {
-			setTimeout(function() {
-				removeToTier(number);
-				scrollPage();
-			}, TIME_WAIT);	
-		}
-		
-		//If the tier we want to remove is some negative number, then
-		//we remove the amount of tiers leftwards from the current tier.
-		//For example, if we are at tier 4, and we get -1, then we remove everything
-		//up to tier 3.
-		if(number < 0 && number > -999) {
-			setTimeout(function() {
-				removeToTier(currentTier + number); //note to self, number is negative
-				scrollPage();
-			}, TIME_WAIT);	
-		}
-	}
-}
-
-/**
  * Performs an AJAX request on the server.
  *
  * tier: "tier" is the tier of the caller, so if we are calling from tier "0", this will insert into the newly created tier1.
@@ -387,12 +404,14 @@ function callServer(tier, path, title, post, callback) {
 		success: function(data, textStatus, xhr) {
 			
 			//parse headers.
-			parseServerHeaders(tier, xhr);
+			var supressMessage = parseServerHeaders(tier, xhr);
 			
 			//parse server response.
 			var parse = parseServerResponse(title, data, "OK");
 			if(callback == undefined) {
-				appendServerResponse(tier, parse.html);
+				if(supressMessage == false) {
+					appendServerResponse(tier, parse.html);
+				}
 			} else {
 				callback(parse);
 			}
@@ -400,7 +419,7 @@ function callServer(tier, path, title, post, callback) {
 		},
 		error: function(xhr, status, error) {
 			
-			//only parse server response.
+			//parse server response.
 			var parse = parseServerResponse(title, xhr.responseText, error);
 			if(callback == undefined) {
 				appendServerResponse(tier, parse.html);
@@ -439,19 +458,23 @@ function changeColor(tier, object) {
 		//because we are not in a "tier" yet.
 		$('#navigation').children().each(function () {
 			$(this).removeAttr('style');
+			$(this).removeAttr("select");
 		});
 		
 		//We'll set it to black.
 		object.css("background-color", "#000");
+		object.attr("select", "true");
 	} else {
 		
 		//In a tier, it's fairly modular.
 		$('#tier' + tier).children().each(function () {
 			$(this).removeAttr('style');
+			$(this).removeAttr("select");
 		});
 		
 		//Gradient.
 		object.css("background", BACKGROUND_FOR_SELECT);
+		object.attr("select", "true");
 	}
 }
 
@@ -511,7 +534,7 @@ $(document).on('click', '#js_accounts_search_first', function(e) {
 //Bound to function because it can be called during a JS-Redirect: account
 function doAccounts(e) {
 	var tier = 0; //This function originates from the sidebar, a tier 0 item.
-	log("JQUERY/user", "Request accounts tab.");
+	log("JQUERY/user", "Accounts");
 	changeColor(tier, $(this));
 	createTier(tier, "Accounts");
 	callServer(tier, "/backend/accounts.php", "accounts");
@@ -521,7 +544,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 	//Accounts tab: Create accounts
 	$(document).on('click', '#js_accounts_create', function(e) {
 		var tier = 1; 
-		log("JQUERY/user", "Request accounts > create tab");
+		log("JQUERY/user", "Accounts > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create a new account");
 		callServer(tier, "/backend/accounts_create.php", "accounts_create");
@@ -530,9 +553,9 @@ $(document).on('click', '#js_accounts', doAccounts);
 		//Create accounts: submit
 		$(document).on('click', '#js_accounts_create_submit', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Request accounts > create tab > submit");
+			log("JQUERY/user", "Accounts > Create > Submit");
 			changeColor(tier, $(this));
-			createTier(tier, "Submit");
+			createTier(tier, "Submitting...");
 			callServer(tier, "/backend/accounts_create_submit.php", "accounts_create_submit", 
 			{
 				USERNAME: $("#username").val(),
@@ -547,9 +570,9 @@ $(document).on('click', '#js_accounts', doAccounts);
 			//Submit: bind
 			$(document).on('click', '#js_accounts_create_submit_bind', function(e) {
 				var tier = 3;
-				log("JQUERY/user", "Request accounts > create tab > submit > bind");
+				log("JQUERY/user", "Accounts > Create > Submit > Bind");
 				changeColor(tier, $(this));
-				createTier(tier, "Bind");
+				createTier(tier, "Binding...");
 				callServer(tier, "/backend/accounts_create_submit_bind.php", "accounts_create_submit_bind",
 				{
 					NUM: $(this).data('num'),
@@ -560,10 +583,10 @@ $(document).on('click', '#js_accounts', doAccounts);
 	//Accounts tab: Action on ANY student
 	$(document).on('click', '.js_accounts_student', function(e) {
 		var tier = 1; 
-		log("JQUERY/user", "Request accounts > student tab");
+		log("JQUERY/user", "Accounts > Student");
 		changeColor(tier, $(this));
 		createTier(tier, "Edit a student");
-		callServer(tier, "/backend/accounts_student.php", "accounts_student (view)",
+		callServer(tier, "/backend/accounts_student.php", "accounts_student (VIEW)",
 		{
 			STUDENT: $(this).data('num'), 
 			REQUEST: "VIEW"
@@ -573,10 +596,10 @@ $(document).on('click', '#js_accounts', doAccounts);
 		//Action on ANY student: add to class
 		$(document).on('click', '#js_accounts_student_addclass', function(e) {
 			var tier = 2; 
-			log("JQUERY/user", "Request accounts > student tab > add a student to class");
+			log("JQUERY/user", "Accounts > Student > Bind to Class");
 			changeColor(tier, $(this));
 			createTier(tier, "Pick a class");
-			callServer(tier, "/backend/accounts_student.php", "accounts_student (addclass)",
+			callServer(tier, "/backend/accounts_student.php", "accounts_student (ADDCLASS)",
 			{
 				STUDENT: $(this).data('num'),
 				REQUEST: "ADDCLASS"
@@ -586,10 +609,10 @@ $(document).on('click', '#js_accounts', doAccounts);
 			//add to class: actual selection of the class
 			$(document).on('click', '.js_accounts_student_addclass_select', function(e) {
 				var tier = 3; 
-				log("JQUERY/user", "Request accounts > student tab > add a student to class > select");
+				log("JQUERY/user", "Accounts > Student > Bind to Class > Select");
 				changeColor(tier, $(this));
 				createTier(tier, "Adding...");
-				callServer(tier, "/backend/accounts_student.php", "accounts_student (addclass-select)",
+				callServer(tier, "/backend/accounts_student.php", "accounts_student (ADDCLASS-SELECT)",
 				{
 					//Student is found from previous tier ID.
 					STUDENT: $("#js_accounts_student_addclass").data('num'),
@@ -603,10 +626,10 @@ $(document).on('click', '#js_accounts', doAccounts);
 		//Action on ANY student: removal from a class
 		$(document).on('click', '.js_accounts_student_removeclass', function(e) {
 			var tier = 2; 
-			log("JQUERY/user", "Request accounts > student tab > remove a student from a class");
+			log("JQUERY/user", "Accounts > Student > Unbind from Class ");
 			changeColor(tier, $(this));
 			createTier(tier, "Removing...");
-			callServer(tier, "/backend/accounts_student.php", "accounts_student (removeclass)",
+			callServer(tier, "/backend/accounts_student.php", "accounts_student (REMOVECLASS)",
 			{
 				//Student is found from the unbind account field. A little bit hacky.
 				STUDENT: $("#js_accounts_student_unbind").data('num'),
@@ -620,10 +643,10 @@ $(document).on('click', '#js_accounts', doAccounts);
 		//Action on ANY student: reset password
 		$(document).on('click', '#js_accounts_student_reset', function(e) {
 			var tier = 2; 
-			log("JQUERY/user", "Request accounts > student tab > reset password");
+			log("JQUERY/user", "Accounts > Student > Reset Password");
 			changeColor(tier, $(this));
 			createTier(tier, "Reset Password");
-			callServer(tier, "/backend/accounts_student.php", "accounts_student (reset-ask)",
+			callServer(tier, "/backend/accounts_student.php", "accounts_student (RESET-ASK)",
 			{
 				STUDENT: $(this).data('num'),
 				REQUEST: "RESET-ASK"
@@ -633,10 +656,10 @@ $(document).on('click', '#js_accounts', doAccounts);
 			//reset password: agree!
 			$(document).on('click', '#js_accounts_student_reset_yes', function(e) {
 				var tier = 3; 
-				log("JQUERY/user", "Request accounts > student tab > reset password > reset!");
+				log("JQUERY/user", "Accounts > Student > Reset Password > Submit");
 				changeColor(tier, $(this));
-				createTier(tier, "Reset!");
-				callServer(tier, "/backend/accounts_student.php", "accounts_student (reset)",
+				createTier(tier, "Resetting...");
+				callServer(tier, "/backend/accounts_student.php", "accounts_student (RESET)",
 				{
 					STUDENT: $(this).data('num'),
 					REQUEST: "RESET"
@@ -646,10 +669,10 @@ $(document).on('click', '#js_accounts', doAccounts);
 		//Action on ANY student: unblind account
 		$(document).on('click', '#js_accounts_student_unbind', function(e) {
 			var tier = 2; 
-			log("JQUERY/user", "Request accounts > student tab > unbind account");
+			log("JQUERY/user", "Accounts > Student > Unbind Account");
 			changeColor(tier, $(this));
 			createTier(tier, "Unbind account");
-			callServer(tier, "/backend/accounts_student.php", "accounts_student (unbind-ask)",
+			callServer(tier, "/backend/accounts_student.php", "accounts_student (UNBIND-ASK)",
 			{
 				STUDENT: $(this).data('num'),
 				REQUEST: "UNBIND-ASK"
@@ -659,10 +682,10 @@ $(document).on('click', '#js_accounts', doAccounts);
 			//unblind account: agree!
 			$(document).on('click', '#js_accounts_student_unbind_yes', function(e) {
 				var tier = 3; 
-				log("JQUERY/user", "Request accounts > student tab > unbind account > unbind!");
+				log("JQUERY/user", "Accounts > Student > Unbind Account > Submit");
 				changeColor(tier, $(this));
 				createTier(tier, "Unbound!");
-				callServer(tier, "/backend/accounts_student.php", "accounts_student (unbind)",
+				callServer(tier, "/backend/accounts_student.php", "accounts_student (UNBIND)",
 				{
 					STUDENT: $(this).data('num'),
 					REQUEST: "UNBIND"
@@ -674,7 +697,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 //Function used during a JS-Redirect: classes
 function doClass(e) {
 	var tier = 0;
-	log("JQUERY/user", "Request classes tab.");
+	log("JQUERY/user", "Classes");
 	changeColor(tier, $(this));
 	createTier(tier, "Classes");
 	callServer(tier, "/backend/classes.php", "classes");
@@ -684,7 +707,7 @@ $(document).on('click', '#js_classes', doClass);
 	//Classes tab: create
 	$(document).on('click', '#js_classes_create', function(e) {
 		var tier = 1; 
-		log("JQUERY/user", "Request classes > create");
+		log("JQUERY/user", "Classes > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create a new class");
 		callServer(tier, "/backend/classes_create.php", "classes_create");
@@ -693,9 +716,9 @@ $(document).on('click', '#js_classes', doClass);
 		//create: submit
 		$(document).on('click', '#js_classes_create_submit', function(e) {
 			var tier = 2; 
-			log("JQUERY/user", "Request classes > create > submit");
+			log("JQUERY/user", "Classes > Create > Submit");
 			changeColor(tier, $(this));
-			createTier(tier, "Submit");
+			createTier(tier, "Creating...");
 			callServer(tier, "/backend/classes_create_submit.php", "classes_create",
 			{
 				NAME: $("#classname").val(),
@@ -709,7 +732,7 @@ $(document).on('click', '#js_classes', doClass);
 	//Classes tab: editor
 	$(document).on('click', '.js_classes_edit', function(e) {
 		var tier = 1; 
-		log("JQUERY/user", "Request classes > edit");
+		log("JQUERY/user", "Classes > Edit");
 		changeColor(tier, $(this));
 		createTier(tier, "Edit this class");
 		callServer(tier, "/backend/classes_edit.php", "classes_edit",
@@ -723,7 +746,7 @@ $(document).on('click', '#js_classes', doClass);
 //Function used during a JS-Redirect: components
 function doComponents(e) {
 	var tier = 0;
-	log("JQUERY/user", "Request components tab.");
+	log("JQUERY/user", "Components");
 	changeColor(tier, $(this));
 	createTier(tier, "Component Editor");
 	callServer(tier, "/backend/component.php", "component");
@@ -735,10 +758,10 @@ $(document).on('click', '#js_components', doComponents);
 		//It's impossible to tell what tier we will be on when we select a component,
 		//so we select the previous tier and call it a day.
 		var tier = parseInt($(this).parent().attr('id').substring(4)); 
-		log("JQUERY/user", "Request components > select");
+		log("JQUERY/user", "Components > Select");
 		changeColor(tier, $(this));
 		createTier(tier, "");
-		callServer(tier, "/backend/component.php", "component (sent parent component)",
+		callServer(tier, "/backend/component.php", "component (Sent Parent)",
 		{
 			COMPONENT: $(this).data('num'),
 			CRITERIA_NUM: $(this).data('criterionnum'),
@@ -749,7 +772,7 @@ $(document).on('click', '#js_components', doComponents);
 	//Components tab: create
 	$(document).on('click', '.js_component_create', function(e) {
 		var tier = parseInt($(this).parent().attr('id').substring(4)); 
-		log("JQUERY/user", "Request components > create");
+		log("JQUERY/user", "Components > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create New Component");
 		callServer(tier, "/backend/component_create.php", "component_create",
@@ -761,9 +784,9 @@ $(document).on('click', '#js_components', doComponents);
 		//create: submit
 		$(document).on('click', '#js_component_create_submit', function(e) {
 			var tier = parseInt($(this).parent().attr('id').substring(4)); 
-			log("JQUERY/user", "Request components > create > submit");
+			log("JQUERY/user", "Components > Create > Submit");
 			changeColor(tier, $(this));
-			createTier(tier, "Submit");
+			createTier(tier, "Submitting...");
 			callServer(tier, "/backend/component_create_submit.php", "component_create_submit",
 			{
 				PARENT: $(this).data('num'),
@@ -778,7 +801,7 @@ $(document).on('click', '#js_components', doComponents);
 //Function used during a JS-Redirect: rubrics
 function doRubrics(e) {
 	var tier = 0;
-	log("JQUERY/user", "Request rubrics tab.");
+	log("JQUERY/user", "Rubrics");
 	changeColor(tier, $(this));
 	createTier(tier, "Rubrics Editor");
 	callServer(tier, "/backend/rubrics.php", "rubrics");
@@ -788,7 +811,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 	//Rubrics tab: create
 	$(document).on('click', '#js_rubrics_create', function(e) {
 		var tier = 1;
-		log("JQUERY/user", "Request rubrics > create");
+		log("JQUERY/user", "Rubrics > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create New Rubric");
 		callServer(tier, "/backend/rubrics_create.php", "rubrics_create");
@@ -797,9 +820,9 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		//create: submit
 		$(document).on('click', '#js_rubrics_create_submit', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Request rubrics > create > submit");
+			log("JQUERY/user", "Rubrics > Create > Submit");
 			changeColor(tier, $(this));
-			createTier(tier, "Submit");
+			createTier(tier, "Submitting...");
 			callServer(tier, "/backend/rubrics_create_submit.php", "rubrics_create_submit",
 			{
 				MAX_POINTS_PER_CRITERIA: $("#maxpoints").val(),
@@ -810,7 +833,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 	//Rubrics tab: edit
 	$(document).on('click', '.js_rubrics_select', function(e) {
 		var tier = 1;
-		log("JQUERY/user", "Request rubrics > edit");
+		log("JQUERY/user", "Rubrics > Edit");
 		changeColor(tier, $(this));
 		createTier(tier, "Edit");
 		callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (VIEW)",
@@ -823,7 +846,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		//edit: addquality
 		$(document).on('click', '#js_rubrics_edit_addquality', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Request rubrics > edit");
+			log("JQUERY/user", "Rubrics > Edit > Add Quality");
 			changeColor(tier, $(this));
 			createTier(tier, "New Quality");
 			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (ADDQUALITY)",
@@ -836,9 +859,9 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			//addquality: submit
 			$(document).on('click', '#js_rubrics_edit_addquality_submit', function(e) {
 				var tier = 3;
-				log("JQUERY/user", "Request rubrics > edit");
+				log("JQUERY/user", "Rubrics > Add Quality > Submit");
 				changeColor(tier, $(this));
-				createTier(tier, "Submit");
+				createTier(tier, "Submitting...");
 				callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (ADDQUALITYSUBMIT)",
 				{
 					REQUEST: "ADDQUALITYSUBMIT",
@@ -851,7 +874,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		//edit: addcriteria
 		$(document).on('click', '#js_rubrics_edit_addcriteria', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Request rubrics > edit");
+			log("JQUERY/user", "Rubrics > Edit > Add Criteria");
 			changeColor(tier, $(this));
 			createTier(tier, "New Criterion");
 			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (ADDCRITERIA)",
@@ -864,9 +887,9 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			//addcriteria: submit
 			$(document).on('click', '#js_rubrics_edit_addcriteria_submit', function(e) {
 				var tier = 3;
-				log("JQUERY/user", "Request rubrics > edit");
+				log("JQUERY/user", "Rubrics > Edit > Add Criteria > Submit");
 				changeColor(tier, $(this));
-				createTier(tier, "Submit");
+				createTier(tier, "Submitting...");
 				callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (ADDCRITERIASUBMIT)",
 				{
 					REQUEST: "ADDCRITERIASUBMIT",
@@ -879,10 +902,10 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			$(document).on('click', '.js_rubrics_edit_addcriteria_addcomponent', function(e) {
 				//Basically like the regular components function.
 				var tier = parseInt($(this).parent().attr('id').substring(4)); 
-				log("JQUERY/user", "Request rubrics > edit > components");
+				log("JQUERY/user", "Rubrics > Edit > Add Criteria > Components");
 				changeColor(tier, $(this));
 				createTier(tier, "Add Component");
-				callServer(tier, "/backend/component.php", "components. NOTICE: Entering component selection mode", {
+				callServer(tier, "/backend/component.php", "components. Entering component selection mode", {
 					RUBRIC_NUM: $(this).data('rubricnum'),
 					CRITERIA_NUM: $(this).data('criterionnum'),
 				});
@@ -891,9 +914,9 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				//addcomponent: select
 				$(document).on('click', '.js_rubrics_edit_addcriteria_addcomponent_select', function(e) {
 					var tier = parseInt($(this).parent().attr('id').substring(4)); 
-					log("JQUERY/user", "Request rubrics > edit > components > select");
+					log("JQUERY/user", "Rubrics > Edit > Add Criteria > Components > Select");
 					changeColor(tier, $(this));
-					createTier(tier, "Add Component");
+					createTier(tier, "Selecting...");
 					callServer(tier, "/backend/rubrics_edit_criteria_component_select.php", "rubrics_edit_criteria_component_select", {
 						COMPONENT_NUM: $(this).data('num'),
 						RUBRIC_NUM: $(this).data('rubricnum'),
@@ -904,7 +927,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		//edit: destroyquality
 		$(document).on('click', '#js_rubrics_edit_destroyquality', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Request rubrics > edit");
+			log("JQUERY/user", "Rubrics > Edit > Destroy Quality");
 			changeColor(tier, $(this));
 			createTier(tier, "Quality Destruction");
 			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (DESTROYQUALITY)",
@@ -917,7 +940,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		//edit: destroycriteria
 		$(document).on('click', '#js_rubrics_edit_destroycriteria', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Request rubrics > edit");
+			log("JQUERY/user", "Rubrics > Edit > Destroy Criteria");
 			changeColor(tier, $(this));
 			createTier(tier, "Criterion Destruction");
 			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (DESTROYCRITERIA)",
@@ -930,7 +953,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		//edit: editrubric
 		$(document).on('click', '#js_rubrics_edit_editrubric', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Request rubrics > edit");
+			log("JQUERY/user", "Rubrics > Edit > Build");
 			changeColor(tier, $(this));
 			createTier(tier, "Builder");
 			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (BUILD)",

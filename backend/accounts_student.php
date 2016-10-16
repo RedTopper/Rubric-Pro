@@ -185,7 +185,7 @@ SQL
 		
 		#ACTUALLY reset the user's password!
 		case "RESET":
-			header("JS-Redirect: account");
+			header("JS-Redirect: removeto1");
 			
 			#Do the reset!
 			$stmt = $conn->prepare("UPDATE STUDENT SET PASSWORD='CHANGE' WHERE NUM=:num");
@@ -232,6 +232,9 @@ SQL
 				<p>Grade level: <?php echo $row["GRADE"]; ?>.
 				<p>Extra information: <?php if($row["EXTRA"] != "") {echo htmlentities($row["EXTRA"]);} else {echo "None given";} ?>.
 			</div>
+			<a id="js_accounts_student_addclass" class="object create" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div>
+				<h3>Bind this student to a class</h3>
+			</a>
 			<?php
 			
 			#Gets a list of classes that the student belongs to in relation to the currently logged in teacher.
@@ -277,12 +280,10 @@ SQL
 			
 			#Output any other options
 			?>
+			<div class="object subtext spacer"></div>
 			<div class="object subtitle">
 				<h2>Other options:</h2>
 			</div>
-			<a id="js_accounts_student_addclass" class="object create" href="#" data-num="<?php echo $row["NUM"]; ?>"><div class="arrow"></div>
-				<h3>Bind this student to a class</h3>
-			</a>
 			
 			<?php
 			#Do not display the ability to reset the password if the password is reset already!
