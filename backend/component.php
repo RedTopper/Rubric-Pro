@@ -3,12 +3,15 @@ $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
 include "db.php";
+
+$needsFunction = true;
+include "functions.php";
 $COMPONENT = isset($_POST["COMPONENT"]) ? $_POST["COMPONENT"] : null;
 $RUBRIC_NUM = isset($_POST["RUBRIC_NUM"]) ? $_POST["RUBRIC_NUM"] : null;
 $CRITERIA_NUM = isset($_POST["CRITERIA_NUM"]) ? $_POST["CRITERIA_NUM"] : null;
 
+#Modification mode is true when we are not requesting components from the rubric editor.
 $MODIFICATION_MODE = $RUBRIC_NUM === null && $CRITERIA_NUM === null;
-
 
 #Validate that the component can be null or a number greater than 0
 if(!($COMPONENT == null || is_numeric($COMPONENT) && $COMPONENT > 0)) {
@@ -17,133 +20,145 @@ if(!($COMPONENT == null || is_numeric($COMPONENT) && $COMPONENT > 0)) {
 
 #If it's null, request the root elements (they are null)
 if($COMPONENT === null) {
-$stmt = $conn->prepare( 
-<<<SQL
-SELECT NUM, TEACHER_NUM, PARENT_NUM, SYMBOL, NAME, DESCRIPTION
-FROM COMPONENT
-WHERE TEACHER_NUM = :teacherNum AND PARENT_NUM IS NULL
-SQL
-);
-$stmt->execute(array('teacherNum' => $_SESSION["NUM"]));
+	$stmt = $conn->prepare("SELECT NUM, TEACHER_NUM, PARENT_NUM, SYMBOL, NAME, DESCRIPTION FROM COMPONENT WHERE TEACHER_NUM = :teacherNum AND PARENT_NUM IS NULL");
+	$stmt->execute(array('teacherNum' => $_SESSION["NUM"]));
 
 #Otherwise we need to fetch the elemetns that the user requested as well as it's parent.
 } else {
 
-#Get parent information
-$stmt = $conn->prepare(<<<SQL
-SELECT NUM, TEACHER_NUM, PARENT_NUM, SYMBOL, NAME, DESCRIPTION
-FROM COMPONENT
-WHERE TEACHER_NUM = :teacherNum AND NUM = :componentNum
-SQL
-);
-$stmt->execute(array('teacherNum' => $_SESSION["NUM"], 'componentNum' => $COMPONENT));
-$parent = $stmt->fetch();
-$count = $stmt->rowCount();
+	#Get parent information
+	$stmt = $conn->prepare("SELECT NUM, TEACHER_NUM, PARENT_NUM, SYMBOL, NAME, DESCRIPTION FROM COMPONENT WHERE TEACHER_NUM = :teacherNum AND NUM = :componentNum");
+	$stmt->execute(array('teacherNum' => $_SESSION["NUM"], 'componentNum' => $COMPONENT));
+	$parent = $stmt->fetch();
+	$count = $stmt->rowCount();
 
-#If we do not have a matching parent show an error.
-if($count != 1) {
-?>
-<div class="title">
-	<h3>Something happened</h3>
-</div>
-<?php
-showError("Whoops!", "There is no matching parent.", "Sorry about that!", 400);
-}
+	#If we do not have a matching parent show an error.
+	if($count != 1) {
+		?><div class="title"><h3>Something happened</h3></div><?php #show title because nothing in this section has one.
+		showError("Whoops!", "There is no matching parent.", "Sorry about that!", 400);
+	}
 
-#Get all components from that parent
-$stmt = $conn->prepare(<<<SQL
-SELECT NUM, TEACHER_NUM, PARENT_NUM, SYMBOL, NAME, DESCRIPTION
-FROM COMPONENT
-WHERE TEACHER_NUM = :teacherNum AND PARENT_NUM = :componentNum
-ORDER BY SYMBOL
-SQL
-);
-$stmt->execute(array('teacherNum' => $_SESSION["NUM"], 'componentNum' => $COMPONENT));
+	#Get all components from that parent
+	$stmt = $conn->prepare("SELECT NUM, TEACHER_NUM, PARENT_NUM, SYMBOL, NAME, DESCRIPTION FROM COMPONENT WHERE TEACHER_NUM = :teacherNum AND PARENT_NUM = :componentNum ORDER BY SYMBOL");
+	$stmt->execute(array('teacherNum' => $_SESSION["NUM"], 'componentNum' => $COMPONENT));
 }
 
 #Fetch everything (data array).
 $data = $stmt->fetchAll();
 
+#If we are not in modification mode, we need to figure out what components are already a part of a criteria!
+if(!$MODIFICATION_MODE) {
+	#This is where it gets fun though. We need to see if the component that's being added to the list
+	#is already in the criteria that we are adding so the user has some visual basis to see what's already added.
+	$stmt = $conn->prepare("SELECT COMPONENT_NUM FROM CRITERION WHERE RUBRIC_CRITERIA_NUM = :criteria");
+	$stmt->execute(array('criteria' => $CRITERIA_NUM));
+	$existingComponentsData = $stmt->fetchAll();
+}
+
+#If we are at the root component
 if($COMPONENT === null) {
 	
-#Title for the root components.
-?>
-<div class="object subtitle">
-	<h2>Your root components:</h2>
-</div>
+	#Title for the root components. ?>
+	<div class="object subtitle">
+		<h2>Your root components:</h2>
+	</div>
 
-<?php
-#If we are requesting the components from the rubric editor, restrict creation and
-#deletion of components.
-if($MODIFICATION_MODE) { ?>
-<a class="js_component_create object create" href="#"><div class="arrow"></div>
-	<h3>Create new "Root Component"</h3>
-</a>
-<?php
-}
+	<?php
+	#If we are requesting the components from the rubric editor, restrict creation and
+	#deletion of components.
+	if($MODIFICATION_MODE) { ?>
+		<a class="js_component_create object create" href="#"><div class="arrow"></div>
+			<h3>Create new "Root Component"</h3>
+		</a><?php
+	} else { ?>
+		<a class="js_rubrics_edit_addcriteria_destroycomponents object destroy" href="#"><div class="arrow"></div>
+			<h3>Remove all components from this criteria</h3>
+		</a><?php
+	}
 } else {
 	
-#Title for the sub components.
-?>
-<div class="title">
-	<h1><?php echo htmlentities($parent["NAME"]); ?></h1>
-</div>
-<div class="object subtitle">
-	<h2>Components</h2>
-</div>
+	#Title for the sub components. ?>
+	<div class="title">
+		<h1><?php echo htmlentities($parent["NAME"]); ?></h1>
+	</div>
+	<div class="object subtitle">
+		<h2>Components</h2>
+	</div>
 
-<?php
+	<?php
+	#In modification mode, show creation of components and destruction of components.
+	if($MODIFICATION_MODE) { ?>
+		<a class="js_component_create object create" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
+			<h3>New component in "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
+		</a>
+		<a class="js_component_destroy object destroy" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
+			<h3>Destroy "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
+		</a><?php 
 
-#In modification mode, show creation of components and destruction of components.
-if($MODIFICATION_MODE) { ?>
-<a class="js_component_create object create" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
-	<h3>New component in "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
-</a>
-<a class="js_component_destroy object destroy" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div>
-	<h3>Destroy "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
-</a>
-
-<?php } else { 
-#Otherwise just show the select component button.?>
-<a class="js_rubrics_edit_addcriteria_addcomponent_select object create" href="#" data-num="<?php echo $parent["NUM"] ?>" 
-data-rubricnum="<?php echo $RUBRIC_NUM ?>" data-criterionnum="<?php echo $CRITERIA_NUM ?>"><div class="arrow"></div>
-	<h3>Select "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
-</a>
-<?php
-}
+	#Otherwise just show the select component button.
+	} else { ?>
+		
+		<a class="js_rubrics_edit_addcriteria_addcomponent_select object create" href="#" data-num="<?php echo $parent["NUM"] ?>" 
+		data-rubricnum="<?php echo $RUBRIC_NUM ?>" data-criterionnum="<?php echo $CRITERIA_NUM ?>"><div class="arrow"></div>
+			<h3>Select "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
+		</a><?php
+	}
 }
 
 #Display all components from the data array.
 foreach($data as $row) { 
+
+	#For non modification mode, we need to deturmine if the component already exists in the criteria.
+	$exists = false;
+	
 	if($MODIFICATION_MODE) {
 		
-	#If we are modifying the components, then we don't need to relay the rubric and component number. ?>
-	<a class="js_components_select object selectable" href="#" data-num="<?php echo $row["NUM"] ?>">
-	<?php } else { 
+		#If we are modifying the components, then we don't need to relay the rubric and component number. ?>
+		<a class="js_components_select object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><?php 
 	
-	#Otherwise, relay all the things. ?>
-	<a class="js_components_select object selectable" href="#" 
-	data-num="<?php echo $row["NUM"] ?>" data-rubricnum="<?php echo $RUBRIC_NUM ?>" data-criterionnum="<?php echo $CRITERIA_NUM ?>">
-	<?php } ?>
-	
-	
-	<div class="arrow"></div>
-		<h3>
-		<?php 
-
-		#Outputs the components
-		echo "(" . $row["SYMBOL"] . ") " . htmlentities($row["NAME"]);
-		?>
-		</h3>
-		<div class="monospace">
-		<?php
+	#Otherwise, relay all the things and figure out if the component already is within a list of existing components.
+	} else { 
 		
-		#And their descriptions
-		echo htmlentities($row["DESCRIPTION"]);
-		?>
+		#TL DR: FOR EACH PARENT FOR EACH EXISTING COMPONENT FOR EACH COMPONENT, IF ANY PARENT MATCHES, HILIGHT THIS COMPONENT.
+		foreach($existingComponentsData as $existingComponents) {
+			
+			#...fetch the tree...
+			$parents = getCompiledSymbolTree($_SESSION["NUM"], $existingComponents["COMPONENT_NUM"]);
+			
+			#...then foreach component in the tree....
+			foreach($parents as $parent) {
+				
+				#TL DR: IF THE DATABASE HAS A CHILD COMPONENT OF THE COMPONENT WE ARE ADDING, DELETE AND REPLACE IT WITH THE COMPONENT WE ARE ADDING.
+				if($parent["NUM"] == $row["NUM"]) {
+					$exists = true;
+					break 2;
+				}
+			}
+		}
+		if(!$exists) { ?>
+			<a class="js_components_select object selectable" href="#" 
+			data-num="<?php echo $row["NUM"] ?>" data-rubricnum="<?php echo $RUBRIC_NUM ?>" data-criterionnum="<?php echo $CRITERIA_NUM ?>"><?php 
+		} else { ?>
+			<a class="js_components_select object create" href="#" 
+			data-num="<?php echo $row["NUM"] ?>" data-rubricnum="<?php echo $RUBRIC_NUM ?>" data-criterionnum="<?php echo $CRITERIA_NUM ?>"><?php 
+		}
+	}?>
+	
+	
+	<div class="arrow"></div> <?php
+		if($exists) { ?>
+			<h2>This component is already a part of this criteria</h2><?php
+		} ?>
+		<h3><?php 
+			#Outputs the components
+			echo "(" . $row["SYMBOL"] . ") " . htmlentities($row["NAME"]); ?>
+		</h3>
+		<div class="monospace"><?php
+		
+			#And their descriptions
+			echo htmlentities($row["DESCRIPTION"]); ?>
 		</div>
-	</a>
-	<?php 
+	</a><?php 
 }
 
 #If we are at root, then display help information to the user.

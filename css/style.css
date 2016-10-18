@@ -124,7 +124,7 @@ body {
 	
 	/* WARNING: If you update this value here, you'll need to   *
 	 * fix the JS variable RIGHT_SPACE_MULTIPLYER in access.js! */
-	margin-right: 20%;
+	margin-right: 10%;
 }
 
 .bar {
@@ -188,11 +188,14 @@ body {
 	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
 	text-decoration: none;
 }
-.object h3 {
+.object h2, h3 {
 	margin: 0;
 	padding: 0 20px 0 0;
 	color: #EEE;
 	font-size: 16px;
+}
+.object h2 {
+	font-size: 20px;
 }
 .object:not(.create):not(.destroy):not(.query) h3 {
 	color: #1B96FE;

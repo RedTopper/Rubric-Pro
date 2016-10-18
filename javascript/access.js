@@ -16,9 +16,6 @@ var consoleShown = false;
 //======================================= STATIC VARIABLES BELOW =======================================
 //======================================================================================================
 
-//This variable controlls how long a user must wait at the redirect screen to be redirected (ms).
-var TIME_WAIT = 2000;
-
 //50px to correct slight scroll ups.
 var LOG_DEADZONE = 50;
 
@@ -51,7 +48,7 @@ var TIME_HIDE_SUCCESS = 1500;
 
 //Amount of padding that appears to the right of the last tier. Needs to be the inverse
 //of the value that appears in the CSS value "#content>:last-child". 1.0 = no change.
-var RIGHT_SPACE_MULTIPLYER = 0.8;
+var RIGHT_SPACE_MULTIPLYER = 0.9;
 
 //If you change the value here, update it in style.PHP as well!
 var CONSOLE_HEIGHT = 90;
