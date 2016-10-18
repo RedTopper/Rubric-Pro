@@ -72,7 +72,7 @@ if($countRubrics == 1) {
 			$countQualities = $stmt->rowCount();
 			
 			#Next, to complete our masterpeice, we need the criteria of each row.
-			$stmt = $conn->prepare("SELECT CRITERIA_TITLE FROM RUBRIC_CRITERIA WHERE RUBRIC_NUM = :rubric");
+			$stmt = $conn->prepare("SELECT NUM, CRITERIA_TITLE FROM RUBRIC_CRITERIA WHERE RUBRIC_NUM = :rubric");
 			$stmt->execute(array('rubric' => $rubric["NUM"]));
 			$criteria = $stmt->fetchAll();
 			$countCriteria = $stmt->rowCount();
@@ -126,14 +126,21 @@ SQL
 				$introw = 0;
 				foreach($cells as $cell) {
 					if($intcol == 0) {
+						#Fetch all of the linked components in the criteria.
+						$stmt = $conn->prepare("SELECT COMPILED_SYMBOL_TREE FROM CRITERION WHERE RUBRIC_CRITERIA_NUM = :criteria");
+						$stmt->execute(array('criteria' => $criteria[$introw]["NUM"]));
+						$data = $stmt->fetchAll();
+						
 						#Begin a new column every 0.
 						echo "<tr>";
 						
-						#Output the criteria for the row.
-						echo 
-						"<th>" . 
-							$criteria[$introw]["CRITERIA_TITLE"] . 
-						"</th>";
+						#Output the criteria for the row and the components.
+						echo "<th>"; 
+						echo $criteria[$introw]["CRITERIA_TITLE"];
+						foreach($data as $component) {
+							echo "<div class='rubriccriteria'>" . $component["COMPILED_SYMBOL_TREE"] . "</div>";
+						}
+						echo "</th>";
 						
 						#Go to the next row.
 						$introw++;

@@ -426,3 +426,9 @@ body {
 .rubriceditor .corner {
 	background-color: rgba(0,0,0,0.2);
 }
+.rubriccriteria {
+	font-family: 'Ubuntu Mono', monospace;
+	font-weight: 400;
+	color: #CCC;
+	font-size: 14px;
+}
