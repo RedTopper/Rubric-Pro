@@ -128,5 +128,5 @@ $stmt->execute(array('teacher' => $_SESSION['NUM'],
 header("JS-Redirect: account");
 
 #It's not really an error, but it does the same thing.
-showError("Ok!", "The acccount has been created.", "We'll automatically redirect you now...", 201);
+showError("Ok!", "The acccount has been created.", "", 201);
 ?>

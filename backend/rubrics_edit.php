@@ -223,7 +223,7 @@ SQL
 			header("JS-Redirect: removeto-2");
 			
 			#We're done here.
-			showError("Ok!", "The quality has been added to your rubric.", "We'll automatically redirect you now...", 201);
+			showError("Ok!", "The quality has been added to your rubric.", "", 201);
 			break;
 			
 			
@@ -313,7 +313,7 @@ SQL
 			header("JS-Redirect: removeto-2");
 			
 			#We're done here.... again!
-			showError("Ok!", "The criteria has been added to your rubric.", "We'll automatically redirect you now...", 201);
+			showError("Ok!", "The criteria has been added to your rubric.", "", 201);
 			break;
 			
 			

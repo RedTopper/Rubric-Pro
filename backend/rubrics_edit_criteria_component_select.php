@@ -39,6 +39,9 @@ foreach($data as $existingComponents) {
 	}
 }
 
+#redirect the page
+header("JS-Redirect: removeto-3");
+
 #Now it gets fun....
 
 //Check to see if the component we are adding is a SUBSET of what's there.
@@ -116,4 +119,4 @@ foreach($parents as $parent) {
 $stmt = $conn->prepare("INSERT INTO CRITERION (RUBRIC_CRITERIA_NUM, COMPONENT_NUM, COMPILED_SYMBOL_TREE) VALUES (:criteria, :component, :tree)");
 $stmt->execute(array('criteria' => $CRITERIA_NUM, "component" => $COMPONENT_NUM, "tree" => $parents[0]["TREE"]));
 
-showError("Success!", "The new component has been added.","You can continue to select more components if you want.", 200);
+showError("Ok!", "The new component has been added.","You can continue to select more components if you want.", 200);

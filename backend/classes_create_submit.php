@@ -44,5 +44,5 @@ $stmt->execute(array('teacherID' => $_SESSION["NUM"],
 #Redirect using some Javascript
 header("JS-Redirect: classes");
 
-showError("Ok!", "The class has been created.", "We'll automatically redirect you now...", 201);
+showError("Ok!", "The class has been created.", "", 201);
 ?>

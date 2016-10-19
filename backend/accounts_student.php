@@ -72,7 +72,7 @@ if($count == 1) {
 			$stmt->execute(array('studentnum' => $STUDENT, 'classnum' => $CLASS)); #We've already verified the number is correct.
 			
 			#Show that it's been bound
-			showError("Ok!", "The acccount has been bound to " . htmlentities($classname["NAME"]) . ".", "We'll automatically redirect you now...", 201);
+			showError("Ok!", "The acccount has been bound to " . htmlentities($classname["NAME"]) . ".", "", 201);
 			break;
 		
 		
@@ -130,7 +130,7 @@ SQL
 			$stmt->execute(array('studentnum' => $STUDENT, 'classnum' => $CLASS)); #We've already verified the number is correct.
 			
 			#Show that it's been unbound
-			showError("Ok!", "The acccount has been unbound from " . htmlentities($classname["NAME"]) . ".", "We'll automatically redirect you now...", 201);
+			showError("Ok!", "The acccount has been unbound from " . htmlentities($classname["NAME"]) . ".", "", 201);
 			break;
 		
 		
@@ -147,7 +147,7 @@ SQL
 			$stmt->execute(array('num' => $row["NUM"])); #We've already verified the number is correct.
 			
 			#Show that it's been unbound
-			showError("Ok!", "The acccount has been unbound.", "We'll automatically redirect you now...", 201);
+			showError("Ok!", "The acccount has been unbound.", "", 201);
 			break;
 			
 			
@@ -192,7 +192,7 @@ SQL
 			$stmt->execute(array('num' => $row["NUM"]));
 
 			#Show that it's been reset
-			showError("Ok!", "The acccount has been reset.", "We'll automatically redirect you now...", 201);
+			showError("Ok!", "The acccount password has been reset.", "", 201);
 			break;
 		
 		

@@ -31,5 +31,5 @@ $stmt->execute(array('teacherNum' => $_SESSION["NUM"],
 header("JS-Redirect: rubrics");
 
 #Show that it's been created
-showError("Ok!", "Created the rubric \"" . htmlentities($SUBTITLE) . "\".", "We'll automatically redirect you now...", 201);
+showError("Ok!", "Created the rubric \"" . htmlentities($SUBTITLE) . "\".", "", 201);
 ?>

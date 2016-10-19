@@ -67,5 +67,5 @@ $stmt->execute(array('teacherNum' => $_SESSION["NUM"],
 header("JS-Redirect: removeto-3");
 
 #Show that it's been created
-showError("Ok!", "Created the component \"" . htmlentities($NAME) . "\".", "We'll automatically redirect you now...", 201);
+showError("Ok!", "Created the component \"" . htmlentities($NAME) . "\".", "", 201);
 ?>

@@ -53,6 +53,12 @@ var RIGHT_SPACE_MULTIPLYER = 0.9;
 //If you change the value here, update it in style.PHP as well!
 var CONSOLE_HEIGHT = 90;
 
+//width of the modal that appears at the top right. Make sure to change in css too (.modal)
+var MODAL_WIDTH = "300px";
+
+//time for the modal to stick around
+var MODAL_TIME = 5000;
+
 
 
 
@@ -237,6 +243,17 @@ function appendServerResponse(tier, data) {
 	scrollPage();
 }
 
+function modalAppendServerResponse(data) {
+	var modal = $("<div class='modal'>" + data + "</div>").appendTo("body");
+	modal.animate({left: "0"}, 400, "swing", function() {
+		setTimeout(function(){
+			modal.animate({left: "-" + MODAL_WIDTH}, 400, "swing", function(){
+				modal.remove();
+			});
+		}, MODAL_TIME);
+	});
+}
+
 /**
  * Parses the PHP headers of the obtained data.
  * xhr: The AJAX response.
@@ -280,14 +297,22 @@ function parseServerHeaders(tier, xhr) {
 		//If the tier we want to remove is some positive number, then 
 		//we remove everything AFTER that tier.
 		if(number > 0 && number < 999) {
-			removeToTier(number);
+			
+			//need to find something to click on to reset the tier.
+			var foundClickable = false;
 			
 			//auto click on the selected element if found.
 			$("#tier" + number).children().each(function(){
 				if($(this).attr("select") == "true") {
 					$(this).trigger("click");
+					foundClickable = true;
 				}
 			});
+			
+			//if we don't delete the things anyway.
+			if(!foundClickable) {
+				removeToTier(number);
+			}
 			
 			supressMessage = true;
 		}
@@ -297,23 +322,31 @@ function parseServerHeaders(tier, xhr) {
 		//For example, if we are at tier 4, and we get -1, then we keep everything
 		//up to tier 3.
 		if(number < 0 && number > -999) {
-			removeToTier(currentTier + number); //note to self, number is negative
-			if((currentTier - 1) <= 0) {
+			
+			var foundClickable = false;
+			
+			if(currentTier + number <= 0) {
 				
 				//If we are removing something that takes us to the sidebar or beyond, select the sidebar.
 				$("#navigation").children().each(function(){
 					if($(this).attr("select") == "true") {
 						$(this).trigger("click");
+						foundClickable = true;
 					}
 				});
 			} else {
 				
 				//Otherwise, just select the current tier.
-				$("#tier" + (currentTier - 1)).children().each(function(){ //note to self, removeToTier changes currentTier
+				$("#tier" + (currentTier + number)).children().each(function(){
 					if($(this).attr("select") == "true") {
 						$(this).trigger("click");
+						foundClickable = true;
 					}
 				});
+			}
+			
+			if(!foundClickable) {
+				removeToTier(currentTier + number); //note to self, number is negative
 			}
 			
 			supressMessage = true;
@@ -420,6 +453,8 @@ function callServer(tier, path, title, post, callback) {
 			if(callback == undefined) {
 				if(supressMessage == false) {
 					appendServerResponse(tier, parse.html);
+				} else {
+					modalAppendServerResponse(parse.html);
 				}
 			} else {
 				callback(parse);

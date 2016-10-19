@@ -31,5 +31,5 @@ $stmt->execute(array('teacher' => $_SESSION['NUM'], 'student' => $NUM));
 header("JS-Redirect: account");
 
 #It's not really an error, but it does the same thing.
-showError("Ok!", "The acccount has been linked.", "We'll automatically redirect you now...", 201);
+showError("Ok!", "The acccount has been linked.", "", 201);
 ?>

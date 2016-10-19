@@ -10,6 +10,7 @@ body {
 	background-image: url("/images/background.png");
 	background-repeat: repeat;
 	font-family: 'Josefin Sans', sans-serif;
+	overflow: hidden;
 }
 
 /* Console that appears at the bottom of the screen. */
@@ -188,20 +189,27 @@ body {
 	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
 	text-decoration: none;
 }
-.object h2, h3 {
+.object h3 {
 	margin: 0;
 	padding: 0 20px 0 0;
 	color: #EEE;
 	font-size: 16px;
-}
-.object h2 {
-	font-size: 20px;
 }
 .object:not(.create):not(.destroy):not(.query) h3 {
 	color: #1B96FE;
 }
 .object.spacer{
 	height: 80px;
+}
+
+.selectedcomponent {
+	margin: 0;
+	padding: 0; 
+	color: #CCC;
+	font-size: 14px;
+	font-style: italic;
+	margin: 0 20px 20px 0;
+	text-align: left;
 }
 
 /* Like an object but less uneven */
@@ -431,4 +439,13 @@ body {
 	font-weight: 400;
 	color: #CCC;
 	font-size: 14px;
+}
+.modal {
+	position: absolute;
+	top: 0;
+	left: -300px;
+	width: 300px;
+	background-color: #333;
+	border-right: <?php echo $SEPERATION_BORDER; //esc:?>;
+	box-shadow: 10px 10px 10px #111;
 }

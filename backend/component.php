@@ -109,45 +109,51 @@ if($COMPONENT === null) {
 foreach($data as $row) { 
 
 	#For non modification mode, we need to deturmine if the component already exists in the criteria.
-	$exists = false;
+	$exists = "NO";
+	
 	
 	if($MODIFICATION_MODE) {
 		
 		#If we are modifying the components, then we don't need to relay the rubric and component number. ?>
 		<a class="js_components_select object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><?php 
 	
-	#Otherwise, relay all the things and figure out if the component already is within a list of existing components.
 	} else { 
+	
+		#Otherwise, relay all the things and figure out if the component already is within a list of existing components. ?>
+		<a class="js_components_select object selectable" href="#" 
+		data-num="<?php echo $row["NUM"] ?>" data-rubricnum="<?php echo $RUBRIC_NUM ?>" data-criterionnum="<?php echo $CRITERIA_NUM ?>"><?php 
 		
 		#TL DR: FOR EACH PARENT FOR EACH EXISTING COMPONENT FOR EACH COMPONENT, IF ANY PARENT MATCHES, HILIGHT THIS COMPONENT.
 		foreach($existingComponentsData as $existingComponents) {
 			
-			#...fetch the tree...
+			#check to see if this component is already linked to the criteria. We might not even have to traverse over the tree!
+			if($existingComponents["COMPONENT_NUM"] == $row["NUM"]) {
+				$exists = "MATCH";
+				break;
+			}
+			
+			#Ok, fine, it didn't work. Fetch the trees of the existing components...
 			$parents = getCompiledSymbolTree($_SESSION["NUM"], $existingComponents["COMPONENT_NUM"]);
 			
 			#...then foreach component in the tree....
 			foreach($parents as $parent) {
 				
-				#TL DR: IF THE DATABASE HAS A CHILD COMPONENT OF THE COMPONENT WE ARE ADDING, DELETE AND REPLACE IT WITH THE COMPONENT WE ARE ADDING.
+				#if one parent matches, return.
 				if($parent["NUM"] == $row["NUM"]) {
-					$exists = true;
+					$exists = "INHERITED";
 					break 2;
 				}
 			}
 		}
-		if(!$exists) { ?>
-			<a class="js_components_select object selectable" href="#" 
-			data-num="<?php echo $row["NUM"] ?>" data-rubricnum="<?php echo $RUBRIC_NUM ?>" data-criterionnum="<?php echo $CRITERIA_NUM ?>"><?php 
-		} else { ?>
-			<a class="js_components_select object create" href="#" 
-			data-num="<?php echo $row["NUM"] ?>" data-rubricnum="<?php echo $RUBRIC_NUM ?>" data-criterionnum="<?php echo $CRITERIA_NUM ?>"><?php 
-		}
 	}?>
 	
 	
-	<div class="arrow"></div> <?php
-		if($exists) { ?>
-			<h2>This component is already a part of this criteria</h2><?php
+	<div class="arrow"></div><?php
+		if($exists == "MATCH") { ?>
+			<h2 class="selectedcomponent">This component is specifically selected.</h2><?php
+		}
+		if($exists == "INHERITED") { ?>
+			<h2 class="selectedcomponent">This component is inherently selected because<br> a child component is specifically selected.</h2><?php
 		} ?>
 		<h3><?php 
 			#Outputs the components
