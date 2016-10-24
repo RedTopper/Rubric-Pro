@@ -235,7 +235,7 @@ function createTier(tier, name) {
  * Appends a server response to a tier and scroll page.
  *
  * tier: The tier we wish to append to.
- * data: The data we wish to append.
+ * data: The data we wish to append (basically raw HTML).
  */
 function appendServerResponse(tier, data) {
 	$("#tier" + tier).append(data);
@@ -243,6 +243,12 @@ function appendServerResponse(tier, data) {
 	scrollPage();
 }
 
+/**
+ * Creates a new modal box, shows it for some time,
+ * then destroys itself.
+ *
+ * data: The data we wish to show (basically raw HTML)
+ */
 function modalAppendServerResponse(data) {
 	var modal = $("<div class='modal'>" + data + "</div>").appendTo("body");
 	modal.animate({left: "0"}, 400, "swing", function() {

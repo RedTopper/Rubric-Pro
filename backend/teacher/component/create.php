@@ -44,7 +44,7 @@ if($count != 1) {
 <div class="object subtitle"><h2>"<?php echo htmlentities($parentdata["NAME"]);?>"<br> sub component</h2></div>
 <div class="editor">
 	<label for="componentname">Name: </label>
-	<input id="componentname" type="text" name="NAME" value="Component"><br>
+	<input id="componentname" type="text" name="NAME" placeholder="Derivitives"><br>
 	<label for="symbol">Symbol: </label>
 	<input id="symbol" type="text" name="TERM" placeholder="IV, Chapter 1, A, b, etc."><br>
 	<label for="description">Description: </label>
