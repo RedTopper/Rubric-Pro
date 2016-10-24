@@ -2,7 +2,7 @@
 $needsAuthentication = true;
 $needsAJAX = false;
 $needsTeacher = true;
-include "backend/db.php";
+include "backend/restricted/db.php";
 
 $version = shell_exec("git describe --long --tags --dirty --always");
 $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen("version", 'r')) : "Unknown Version"));

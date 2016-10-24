@@ -2,7 +2,7 @@
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
-include "db.php";
+include "../../restricted/db.php";
 
 #There isn't much here other than a web form.
 ?>

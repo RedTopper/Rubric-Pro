@@ -566,17 +566,17 @@ $(document).on('click', '#js_consoleshow', function(e) {
 //object, it belongs as a root function.
 //Accounts tab: search accounts by username.
 $(document).on('click', '#js_accounts_search_username', function(e) {
-	search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "username");
+	search(0, "Accounts", "/backend/teacher/accounts.php", "#js_accounts_search", "student", "USERNAME");
 	return false;
 });
 //Accounts tab: search accounts by last name.
 $(document).on('click', '#js_accounts_search_last', function(e) {
-	search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "last");
+	search(0, "Accounts", "/backend/teacher/accounts.php", "#js_accounts_search", "student", "LAST");
 	return false;
 });
 //Accounts tab: search accounts by first name.
 $(document).on('click', '#js_accounts_search_first', function(e) {
-	search(0, "Accounts", "/backend/accounts.php", "#js_accounts_search", "student", "first");
+	search(0, "Accounts", "/backend/teacher/accounts.php", "#js_accounts_search", "student", "FIRST");
 	return false;
 });
 
@@ -587,7 +587,7 @@ function doAccounts(e) {
 	log("JQUERY/user", "Accounts");
 	changeColor(tier, $(this));
 	createTier(tier, "Accounts");
-	callServer(tier, "/backend/accounts.php", "accounts");
+	callServer(tier, "/backend/teacher/accounts.php", "accounts");
 	return false;
 }
 $(document).on('click', '#js_accounts', doAccounts);
@@ -597,7 +597,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 		log("JQUERY/user", "Accounts > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create a new account");
-		callServer(tier, "/backend/accounts_create.php", "accounts_create");
+		callServer(tier, "/backend/teacher/accounts/create.php", "create");
 		return false;
 	});
 		//Create accounts: submit
@@ -606,7 +606,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 			log("JQUERY/user", "Accounts > Create > Submit");
 			changeColor(tier, $(this));
 			createTier(tier, "Submitting...");
-			callServer(tier, "/backend/accounts_create_submit.php", "accounts_create_submit", 
+			callServer(tier, "/backend/teacher/accounts/create_submit.php", "create_submit", 
 			{
 				USERNAME: $("#username").val(),
 				LAST_NAME: $("#last").val(),
@@ -623,7 +623,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 				log("JQUERY/user", "Accounts > Create > Submit > Bind");
 				changeColor(tier, $(this));
 				createTier(tier, "Binding...");
-				callServer(tier, "/backend/accounts_create_submit_bind.php", "accounts_create_submit_bind",
+				callServer(tier, "/backend/teacher/accounts/create_submit_bind.php", "create_submit_bind",
 				{
 					NUM: $(this).data('num'),
 					USERNAME: $(this).data('username')
@@ -636,7 +636,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 		log("JQUERY/user", "Accounts > Student");
 		changeColor(tier, $(this));
 		createTier(tier, "Edit a student");
-		callServer(tier, "/backend/accounts_student.php", "accounts_student (VIEW)",
+		callServer(tier, "/backend/teacher/accounts/student.php", "student (VIEW)",
 		{
 			STUDENT: $(this).data('num'), 
 			REQUEST: "VIEW"
@@ -649,7 +649,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 			log("JQUERY/user", "Accounts > Student > Bind to Class");
 			changeColor(tier, $(this));
 			createTier(tier, "Pick a class");
-			callServer(tier, "/backend/accounts_student.php", "accounts_student (ADDCLASS)",
+			callServer(tier, "/backend/teacher/accounts/student.php", "student (ADDCLASS)",
 			{
 				STUDENT: $(this).data('num'),
 				REQUEST: "ADDCLASS"
@@ -662,7 +662,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 				log("JQUERY/user", "Accounts > Student > Bind to Class > Select");
 				changeColor(tier, $(this));
 				createTier(tier, "Adding...");
-				callServer(tier, "/backend/accounts_student.php", "accounts_student (ADDCLASS-SELECT)",
+				callServer(tier, "/backend/teacher/accounts/student.php", "student (ADDCLASS-SELECT)",
 				{
 					//Student is found from previous tier ID.
 					STUDENT: $("#js_accounts_student_addclass").data('num'),
@@ -679,7 +679,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 			log("JQUERY/user", "Accounts > Student > Unbind from Class ");
 			changeColor(tier, $(this));
 			createTier(tier, "Removing...");
-			callServer(tier, "/backend/accounts_student.php", "accounts_student (REMOVECLASS)",
+			callServer(tier, "/backend/teacher/accounts/student.php", "student (REMOVECLASS)",
 			{
 				//Student is found from the unbind account field. A little bit hacky.
 				STUDENT: $("#js_accounts_student_unbind").data('num'),
@@ -696,7 +696,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 			log("JQUERY/user", "Accounts > Student > Reset Password");
 			changeColor(tier, $(this));
 			createTier(tier, "Reset Password");
-			callServer(tier, "/backend/accounts_student.php", "accounts_student (RESET-ASK)",
+			callServer(tier, "/backend/teacher/accounts/student.php", "student (RESET-ASK)",
 			{
 				STUDENT: $(this).data('num'),
 				REQUEST: "RESET-ASK"
@@ -709,7 +709,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 				log("JQUERY/user", "Accounts > Student > Reset Password > Submit");
 				changeColor(tier, $(this));
 				createTier(tier, "Resetting...");
-				callServer(tier, "/backend/accounts_student.php", "accounts_student (RESET)",
+				callServer(tier, "/backend/teacher/accounts/student.php", "student (RESET)",
 				{
 					STUDENT: $(this).data('num'),
 					REQUEST: "RESET"
@@ -722,7 +722,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 			log("JQUERY/user", "Accounts > Student > Unbind Account");
 			changeColor(tier, $(this));
 			createTier(tier, "Unbind account");
-			callServer(tier, "/backend/accounts_student.php", "accounts_student (UNBIND-ASK)",
+			callServer(tier, "/backend/teacher/accounts/student.php", "student (UNBIND-ASK)",
 			{
 				STUDENT: $(this).data('num'),
 				REQUEST: "UNBIND-ASK"
@@ -735,7 +735,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 				log("JQUERY/user", "Accounts > Student > Unbind Account > Submit");
 				changeColor(tier, $(this));
 				createTier(tier, "Unbound!");
-				callServer(tier, "/backend/accounts_student.php", "accounts_student (UNBIND)",
+				callServer(tier, "/backend/teacher/accounts/student.php", "student (UNBIND)",
 				{
 					STUDENT: $(this).data('num'),
 					REQUEST: "UNBIND"

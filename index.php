@@ -2,7 +2,7 @@
 $needsAuthentication = false;
 $needsAJAX = false;
 $needsTeacher = false;
-include "backend/db.php";
+include "backend/restricted/db.php";
 $USERNAME = isset($_POST["USERNAME"]) ? $_POST["USERNAME"] : "";
 $PASSWORD = isset($_POST["PASSWORD"]) ? $_POST["PASSWORD"] : "";
 $PASSWORD1 = isset($_POST["PASSWORD1"]) ? $_POST["PASSWORD1"] : "";
