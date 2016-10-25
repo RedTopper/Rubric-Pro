@@ -9,4 +9,4 @@ header("JS-Redirect: account");
 sql_unbindStudentFromTeacher($info["NUM"], $_SESSION["NUM"]);
 
 #Show that it's been unbound
-showError("Ok!", "The acccount has been unbound.", "", 201);
+db_showError("Ok!", "The acccount has been unbound.", "", 201);
