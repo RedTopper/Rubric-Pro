@@ -21,7 +21,7 @@ if(!doesStudentUsernameAndNumberMatch($USERNAME, $NUM)) {
 
 #Ok, so the submitted number is the same as the username (didn't really need to check that but better safe then sorry?)
 #We need to bind the submitted user ID to this teacher account.
-linkTeacherToStudent($_SESSION['NUM'], $NUM);
+bindTeacherToStudent($_SESSION['NUM'], $NUM);
 
 #Redirect using some Javascript Hackery(tm)
 header("JS-Redirect: account");
