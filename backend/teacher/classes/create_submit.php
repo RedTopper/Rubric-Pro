@@ -13,8 +13,6 @@ $TERM = isset($_POST["TERM"]) ? $_POST["TERM"] : "";
 $PERIOD = isset($_POST["PERIOD"]) ? $_POST["PERIOD"] : "";
 $DESCRIPTOR = isset($_POST["DESCRIPTOR"]) ? $_POST["DESCRIPTOR"] : "";
 
-###################################
-
 #Class name needs to be 2 or more chars.
 if(strlen($NAME) < 2) {
 	db_showError("Error creating class!", "The class name is too short.", "Please type a longer class name.", 400);

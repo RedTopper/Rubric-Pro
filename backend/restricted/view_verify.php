@@ -9,8 +9,6 @@ include "../../restricted/sql.php";
 
 $STUDENT = isset($_POST["STUDENT"]) ? $_POST["STUDENT"] : "";
 
-###################################
-
 if($STUDENT == "") {
 	showError("Whoops!", "You need to select a student.", "Try refreshing the page to fix the problem.", 400);
 }

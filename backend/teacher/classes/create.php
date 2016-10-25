@@ -5,8 +5,7 @@ $needsAJAX = true;
 $needsTeacher = true;
 include "../../restricted/db.php";
 
-#There isn't much here other than a web form.
-?>
+#There isn't much here other than a web form. ?>
 <div class="editor">
 	<label for="classname">Class Name: </label>
 	<input id="classname" type="text" name="NAME" placeholder="AP Computer Science"><br>

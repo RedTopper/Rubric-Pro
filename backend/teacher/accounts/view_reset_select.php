@@ -2,8 +2,6 @@
 #Libraries.
 include "../../restricted/view_verify.php";
 
-###################################
-
 header("JS-Redirect: removeto1");
 
 #Do the reset!

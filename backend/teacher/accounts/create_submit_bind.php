@@ -10,8 +10,6 @@ include "../../restricted/sql.php";
 $NUM = isset($_POST["NUM"]) ? $_POST["NUM"] : "";
 $USERNAME = isset($_POST["USERNAME"]) ? $_POST["USERNAME"] : "";
 
-###################################
-
 #We didn't get a result!?!?!?!?
 if(!sql_doesStudentUsernameAndNumberMatch($USERNAME, $NUM)) {
 	db_showError("Error!", "Your client lied!", "I thought I trusted you! (The number and username submitted does not match)", 400);

@@ -12,8 +12,6 @@ include "../restricted/sql.php";
 $SEARCH = isset($_POST["SEARCH"]) ? $_POST["SEARCH"] : "";
 $WHERE = isset($_POST["WHERE"]) ? $_POST["WHERE"] : "";
 
-###################################
-
 #Sanatize $SEARCH (will be included in PDO, so no sql injection). Removes extra wild cards.
 $SEARCH = preg_replace('/%+/', '', $SEARCH); 
 

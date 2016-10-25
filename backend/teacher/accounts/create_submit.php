@@ -14,8 +14,6 @@ $NICK_NAME = isset($_POST["NICK_NAME"]) ? $_POST["NICK_NAME"] : "";
 $GRADE = isset($_POST["GRADE"]) ? $_POST["GRADE"] : "";
 $EXTRA = isset($_POST["EXTRA"]) ? $_POST["EXTRA"] : "";
 
-###################################
-
 #Check to see if the user actually typed anything.
 if(strlen($USERNAME) < 2) {
 	db_showError("Error creating account!", "The username is too short.", "Please type a longer username.", 400);

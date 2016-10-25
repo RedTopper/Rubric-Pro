@@ -4,8 +4,6 @@ include "../../restricted/view_verify.php";
 
 $CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
 
-###################################
-
 if($CLASS == "") {
 	db_showError("Whoops!", "You didn't select a class!", "Try selecting a class first.", 400);
 }

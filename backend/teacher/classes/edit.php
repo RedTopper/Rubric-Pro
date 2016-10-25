@@ -11,8 +11,6 @@ include "../../restricted/sql.php";
 
 $CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
 
-###################################
-
 $class = sql_doesTeacherOwnClass($_SESSION["NUM"], $CLASS);
 
 #Check to see if there is really a student!

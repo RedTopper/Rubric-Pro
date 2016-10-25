@@ -4,8 +4,6 @@ $needsFunction = true;
 include "../../restricted/view_verify.php";
 include "../../restricted/functions.php";
 
-###################################
-
 #Show some general information about the student. ?>
 <div class="object subtitle">
 	<h2>Editing: <?php echo htmlentities($info["LAST_NAME"]) . ", " . htmlentities($info["FIRST_NAME"]); ?></h2>
