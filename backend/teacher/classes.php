@@ -19,5 +19,5 @@ include "../restricted/sql.php";
 <?php
 
 $classes = sql_getListOfClassesViaTeacher($_SESSION["NUM"]);
-listclasses("js_classes_edit", $classes);
+fun_listClasses("js_classes_edit", $classes);
 ?>
