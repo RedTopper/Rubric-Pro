@@ -16,6 +16,8 @@ include "../restricted/functions.php";
 $needsSQL = true;
 include "../restricted/sql.php";
 
+###################################
+
 #Sanatize $SEARCH (will be included in PDO, so no sql injection). Removes extra wild cards.
 $SEARCH = preg_replace('/%+/', '', $SEARCH); 
 
