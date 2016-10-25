@@ -35,7 +35,7 @@ if(!is_numeric($TERM)) {
 }
 
 #Create the class.
-createClass($_SESSION["NUM"], $NAME, $YEAR, $PERIOD, $TERM, $DESCRIPTOR);
+sql_createClass($_SESSION["NUM"], $NAME, $YEAR, $PERIOD, $TERM, $DESCRIPTOR);
 
 #Redirect using some Javascript
 header("JS-Redirect: classes");

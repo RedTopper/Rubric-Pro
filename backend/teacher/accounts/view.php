@@ -23,7 +23,7 @@ include "../../restricted/functions.php";
 </a><?php
 
 #Gets a list of classes that the student belongs to in relation to the currently logged in teacher.
-$classes = getListOfStudentClassesViaTeacher($_SESSION['NUM'], $info["NUM"]);
+$classes = sql_getListOfStudentClassesViaTeacher($_SESSION['NUM'], $info["NUM"]);
 
 #If there are no classes
 if($classes == null) {	
