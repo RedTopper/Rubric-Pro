@@ -40,9 +40,9 @@ switch($WHERE) {
 }
 
 if($SEARCH === "") {
-	$students = getAllStudents($_SESSION["NUM"]);
+	$students = sql_getAllStudents($_SESSION["NUM"]);
 } else {
-	$students = getAllStudentsBasedOnSearch($_SESSION["NUM"], $LOCATION, $SEARCH);
+	$students = sql_getAllStudentsBasedOnSearch($_SESSION["NUM"], $LOCATION, $SEARCH);
 }
 
 
