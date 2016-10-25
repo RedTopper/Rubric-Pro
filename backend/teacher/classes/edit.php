@@ -1,19 +1,15 @@
 <?php
-$CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
-
-#init db
+#Libraries.
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
-include "../../restricted/db.php";
-
-#General global functions
 $needsFunction = true;
-include "../../restricted/functions.php";
-
-#Include SQL functions
 $needsSQL = true;
+include "../../restricted/db.php";
+include "../../restricted/functions.php";
 include "../../restricted/sql.php";
+
+$CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
 
 ###################################
 

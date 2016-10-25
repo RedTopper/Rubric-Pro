@@ -1,19 +1,17 @@
 <?php
+#Libraries.
+$needsAuthentication = true;
+$needsAJAX = true;
+$needsTeacher = true;
+$needsSQL = true;
+include "../../restricted/db.php";
+include "../../restricted/sql.php";
+
 $NAME = isset($_POST["NAME"]) ? $_POST["NAME"] : "";
 $YEAR = isset($_POST["YEAR"]) ? $_POST["YEAR"] : "";
 $TERM = isset($_POST["TERM"]) ? $_POST["TERM"] : "";
 $PERIOD = isset($_POST["PERIOD"]) ? $_POST["PERIOD"] : "";
 $DESCRIPTOR = isset($_POST["DESCRIPTOR"]) ? $_POST["DESCRIPTOR"] : "";
-
-#Initialize db.
-$needsAuthentication = true;
-$needsAJAX = true;
-$needsTeacher = true;
-include "../../restricted/db.php";
-
-#Include SQL functions
-$needsSQL = true;
-include "../../restricted/sql.php";
 
 ###################################
 

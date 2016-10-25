@@ -1,15 +1,13 @@
 <?php
-$STUDENT = isset($_POST["STUDENT"]) ? $_POST["STUDENT"] : "";
-
-#Initialize db.
+#Libraries.
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
-include "../../restricted/db.php";
-
-#Include SQL functions
 $needsSQL = true;
+include "../../restricted/db.php";
 include "../../restricted/sql.php";
+
+$STUDENT = isset($_POST["STUDENT"]) ? $_POST["STUDENT"] : "";
 
 ###################################
 

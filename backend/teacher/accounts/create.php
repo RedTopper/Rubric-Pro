@@ -1,4 +1,5 @@
 <?php
+#Libraries.
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;

@@ -1,20 +1,16 @@
 <?php
-$SEARCH = isset($_POST["SEARCH"]) ? $_POST["SEARCH"] : "";
-$WHERE = isset($_POST["WHERE"]) ? $_POST["WHERE"] : "";
-
-#Initialize db.
+#Libraries.
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
-include "../restricted/db.php";
-
-#Include functions from functions.php.
 $needsFunction = true;
-include "../restricted/functions.php";
-
-#Also include SQL functions
 $needsSQL = true;
+include "../restricted/db.php";
+include "../restricted/functions.php";
 include "../restricted/sql.php";
+
+$SEARCH = isset($_POST["SEARCH"]) ? $_POST["SEARCH"] : "";
+$WHERE = isset($_POST["WHERE"]) ? $_POST["WHERE"] : "";
 
 ###################################
 

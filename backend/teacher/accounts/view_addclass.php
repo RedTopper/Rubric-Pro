@@ -1,8 +1,7 @@
 <?php
-include "../../restricted/view_verify.php";
-
-#General global functions.
+#Libraries.
 $needsFunction = true;
+include "../../restricted/view_verify.php";
 include "../../restricted/functions.php"; 
 
 ################################### 

@@ -1,16 +1,14 @@
 <?php
-$NUM = isset($_POST["NUM"]) ? $_POST["NUM"] : "";
-$USERNAME = isset($_POST["USERNAME"]) ? $_POST["USERNAME"] : "";
-
-#Initialize db.
+#Libraries.
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
-include "../../restricted/db.php";
-
-#Include SQL functions
 $needsSQL = true;
+include "../../restricted/db.php";
 include "../../restricted/sql.php";
+
+$NUM = isset($_POST["NUM"]) ? $_POST["NUM"] : "";
+$USERNAME = isset($_POST["USERNAME"]) ? $_POST["USERNAME"] : "";
 
 ###################################
 

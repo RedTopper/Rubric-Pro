@@ -1,7 +1,8 @@
 <?php
-$CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
-
+#Libraries.
 include "../../restricted/view_verify.php";
+
+$CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
 
 ###################################
 
