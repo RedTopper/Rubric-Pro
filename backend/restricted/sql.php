@@ -169,6 +169,9 @@ SQL
 
 /**
  * Links a student to a teacher account.
+ *
+ * $teacherNum: The number of the teacher in the database
+ * $studentNum: The number of the student in the database
  */
 function linkTeacherToStudent($teacherNum, $studentNum) {
 	global $conn;
@@ -183,4 +186,27 @@ SQL
 	$stmt->execute(array(
 	'teacher' => $teacherNum, 
 	'student' => $studentNum));
+}
+
+/**
+ * Checks if the number of the student in the database and 
+ * the username are of the same record. Used for client varification
+ *
+ * $username: The username of the student.
+ * $studentNum: The probable number of the student. 
+ * return: True if the username and number match.
+ */
+function doesStudentUsernameAndNumberMatch($username, $studentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, USERNAME
+FROM STUDENT 
+WHERE 
+USERNAME = :username AND
+NUM = :num
+SQL
+	);
+	$stmt->execute(array('username' => $username, 'num' => $studentNum));
+	return $stmt->rowCount() > 0;
 }

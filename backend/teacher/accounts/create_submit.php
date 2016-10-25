@@ -12,7 +12,7 @@ $EXTRA = isset($_POST["EXTRA"]) ? $_POST["EXTRA"] : "";
 
 #Include SQL functions
 $needsSQL = true;
-include "../restricted/sql.php";
+include "../../restricted/sql.php";
 
 #Check to see if the user actually typed anything.
 if(strlen($USERNAME) < 2) {
@@ -78,7 +78,7 @@ createStudent($USERNAME, $FIRST_NAME, $LAST_NAME, $NICK_NAME, $GRADE, $EXTRA);
 $insertedStudent = $conn->lastInsertId();
 
 #And link them together.
-linkTeacherToStudent($_SESSION["NUM"], $insertedStudent)
+linkTeacherToStudent($_SESSION["NUM"], $insertedStudent);
 
 #Redirect using some Javascript Hackery(tm)
 header("JS-Redirect: account");
