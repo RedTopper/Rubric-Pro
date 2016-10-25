@@ -43,7 +43,7 @@ if($classes == null) {
 	</div><?php
 	
 	#Print every class.
-	listclasses("js_accounts_student_removeclass", $classes, "warn");
+	fun_listClasses("js_accounts_student_removeclass", $classes, "warn");
 }
 
 #Output any other options ?>
