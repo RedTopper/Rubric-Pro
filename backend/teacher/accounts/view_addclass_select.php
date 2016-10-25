@@ -3,6 +3,8 @@ $CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
 
 include "../../restricted/view_verify.php";
 
+###################################
+
 if($CLASS == "") {
 	showError("Whoops!", "You didn't select a class!", "Try selecting a class first.", 400);
 }
