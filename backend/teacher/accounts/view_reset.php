@@ -1,24 +1,5 @@
 <?php
-$STUDENT = isset($_POST["STUDENT"]) ? $_POST["STUDENT"] : "";
-
-#Initialize db.
-$needsAuthentication = true;
-$needsAJAX = true;
-$needsTeacher = true;
-include "../../restricted/db.php";
-
-#Include SQL functions
-$needsSQL = true;
-include "../../restricted/sql.php";
-
-###################################
-
-#Check to see if there is really a student!
-if(!isTeacherAndStudentLinked($_SESSION["NUM"], $STUDENT)) {
-	showError("Whoops!", "Something went wrong when requesting that student.", "Check to see if the student still exists and is linked to your account.", 400);
-}
-$info = getStudentInformation($STUDENT);
-
+include "view_verify.php";
 ?>
 <div class="object subtitle">
 	<h2>Really reset <?php echo  htmlentities($info["FIRST_NAME"]) . " " . htmlentities($info["LAST_NAME"]); ?>'s password?</h2>
