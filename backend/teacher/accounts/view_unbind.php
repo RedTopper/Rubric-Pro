@@ -1,6 +1,7 @@
 <?php
 include "../../restricted/view_verify.php";
-?>
+
+################################### ?>
 
 <div class="object subtitle">
 	<h2>Really unbind <?php echo  htmlentities($info["FIRST_NAME"]) . " " . htmlentities($info["LAST_NAME"]); ?> from your account?</h2>

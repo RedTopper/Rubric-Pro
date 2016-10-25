@@ -1,6 +1,7 @@
 <?php
 include "../../restricted/view_verify.php";
-?>
+
+################################### ?>
 
 <div class="object subtitle">
 	<h2>Really reset <?php echo  htmlentities($info["FIRST_NAME"]) . " " . htmlentities($info["LAST_NAME"]); ?>'s password?</h2>
