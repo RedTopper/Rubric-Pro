@@ -6,7 +6,7 @@ if(!isset($needsSQL)) die();
  *
  * $teacherNum: The teacher's number in the database.
  */
-function getStudents($teacherNum) {
+function getAllStudents($teacherNum) {
 	global $conn;
 	$stmt = $conn->prepare( 
 <<<SQL
@@ -29,7 +29,7 @@ SQL
  * $location: Either "STUDENT.FIRST_NAME", "STUDENT.LAST_NAME", or "STUDENT.USERNAME".
  * $searchTerm: The term to search for in the database. 
  */
-function getStudentsBasedOnSearch($teacherNum, $location, $searchTerm) {
+function getAllStudentsBasedOnSearch($teacherNum, $location, $searchTerm) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -37,11 +37,150 @@ SELECT STUDENT.NUM, STUDENT.USERNAME, STUDENT.FIRST_NAME, STUDENT.LAST_NAME, STU
 FROM STUDENT
 JOIN TEACHES ON STUDENT.NUM = TEACHES.STUDENT_NUM
 WHERE
-TEACHES.TEACHER_NUM = :teacherID AND
+TEACHES.TEACHER_NUM = :teacherNum AND
 $location LIKE CONCAT('%',:search,'%') 
 ORDER BY STUDENT.LAST_NAME, STUDENT.FIRST_NAME
 SQL
 	);
-	$stmt->execute(array('teacherID' => $teacherNum, 'search' => $searchTerm));	
+	$stmt->execute(array('teacherNum' => $teacherNum, 'search' => $searchTerm));	
 	return $stmt->fetchAll();
+}
+
+/**
+ * Checks if the passed username already exists within the teachers database
+ *
+ * $username: Username to check.
+ * return: True if it exists, false otherwise.
+ */
+function isUsernameInTeacherDatabase($username) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT USERNAME
+FROM TEACHER
+WHERE
+USERNAME = :username
+SQL
+	);
+	$stmt->execute(array('username' => $username));
+	return $stmt->rowCount() > 0;
+}
+
+/**
+ * Checks if the passed username already exists within the students database
+ *
+ * $username: Username to check.
+ * $studentNum: The number of the student if it exists. This variable is always modified by the function.
+ * return: True if it exists, false otherwise.
+ */
+function isUsernameInStudentDatabase($username, &$studentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, USERNAME 
+FROM STUDENT 
+WHERE 
+USERNAME = :username
+SQL
+	);
+	$stmt->execute(array('username' => $username));
+	if($stmt->rowCount() > 0) {
+		$row = $stmt->fetch();
+		$studentNum = $row["NUM"];
+		return true;
+	} else {
+		$studentNum = null;
+		return false;
+	}
+}
+
+/**
+ * Checks if the passed teacher number and student number are already linked.
+ *
+ * $teacherNum: The teacher's number in the database.
+ * $studentNum: The student's number in the database.
+ * return: True if the teacher and student are linked together.
+ */
+function isTeacherAndStudentLinked($teacherNum, $studentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT STUDENT_NUM, TEACHER_NUM 
+FROM TEACHES 
+WHERE 
+STUDENT_NUM = :student AND 
+TEACHER_NUM = :teacher
+SQL
+	);
+	$stmt->execute(array('student' => $studentNum, 'teacher' => $teacherNum));
+	return $stmt->rowCount() > 0;
+}
+
+/**
+ * Gets all information about a student
+ *
+ * $studentNum: The number of the student in the database.
+ * return: An SQL row of all of the student information.
+ */
+function getStudentInformation($studentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT
+USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, NICK_NAME, GRADE, EXTRA
+FROM STUDENT
+WHERE NUM = :student
+SQL
+	);
+	$stmt->execute(array('student' => $studentNum));
+	return $stmt->fetch();
+}
+
+/**
+ * Creates a student
+ *
+ * $username: The username of the student
+ * $first: The first name of the student
+ * $last: The last name of the student
+ * $nick: The nickname of the student
+ * $grade: The grade (year) of the student
+ * $extra: Extra information about the student
+ */
+function createStudent($username, $first, $last, $nick, $grade, $extra) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO STUDENT 
+(USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, NICK_NAME, GRADE, EXTRA, SETTINGS)
+VALUES
+(:username, :password, :first, :last, :nick, :grade, :extra, :settings)
+SQL
+	);
+	$stmt->execute(array(
+	'username' => $username, 
+	'password' => "CHANGE", 
+	'first' => $first, 
+	'last' => $last, 
+	'nick' => $nick, 
+	'grade' => $grade, 
+	'extra' => $extra, 
+	'settings' => "{}"));
+}
+
+/**
+ * Links a student to a teacher account.
+ */
+function linkTeacherToStudent($teacherNum, $studentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO TEACHES
+(TEACHER_NUM, STUDENT_NUM)
+VALUES
+(:teacher, :student)
+SQL
+	);
+	$stmt->execute(array(
+	'teacher' => $teacherNum, 
+	'student' => $studentNum));
 }
