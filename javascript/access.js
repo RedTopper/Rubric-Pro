@@ -777,7 +777,7 @@ $(document).on('click', '#js_classes', doClass);
 		log("JQUERY/user", "Classes > Edit");
 		changeColor(tier, $(this));
 		createTier(tier, "Edit this class");
-		callServer(tier, "/backend/classes_edit.php", "classes_edit",
+		callServer(tier, "/backend/teacher/classes/edit.php", "edit",
 		{
 			CLASS: $(this).data('num')
 		});

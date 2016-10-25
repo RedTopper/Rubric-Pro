@@ -340,6 +340,32 @@ SQL
 }
 
 /**
+ * Gets a list of students that are in a class.
+ *
+ * $classNum: The number of the class in the database.
+ * return: All of the students in the class or null if there are none.
+ */
+function sql_getListOfStudentsViaClass($classNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT STUDENT.NUM, STUDENT.USERNAME, STUDENT.FIRST_NAME, STUDENT.LAST_NAME, STUDENT.NICK_NAME, STUDENT.GRADE, STUDENT.EXTRA
+FROM STUDENT, `CLASS-STUDENT_LINKER` CSL
+WHERE
+CSL.CLASS_NUM = :classNum AND 
+CSL.STUDENT_NUM = STUDENT.NUM
+ORDER BY STUDENT.LAST_NAME, STUDENT.FIRST_NAME
+SQL
+	);
+	$stmt->execute(array('classNum' => $classNum));
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
+}
+
+/**
  * Resets a student's password
  *
  * $studentNum: The number of the student in the database to reset.
