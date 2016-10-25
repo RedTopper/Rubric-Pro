@@ -362,14 +362,13 @@ SQL
  *
  * $teacherNum: The teacher we are verifying matches a class
  * $classNum: The class we are verifying matches a teacher
- * $className: This function modifies this variable to contain the selected class name. Null if no class matches.
- * return: True if the teacher owns the class, false otherwise.
+ * return: A row of the matched class if found, or null otherwise.
  */
-function sql_doesTeacherOwnClass($teacherNum, $classNum, &$className) {
+function sql_doesTeacherOwnClass($teacherNum, $classNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
-SELECT NUM, TEACHER_NUM, NAME
+SELECT NUM, TEACHER_NUM, NAME, YEAR, TERM, PERIOD, DESCRIPTOR
 FROM CLASS
 WHERE
 TEACHER_NUM = :teacherNum AND 
@@ -378,11 +377,9 @@ SQL
 	);
 	$stmt->execute(array('teacherNum' => $teacherNum, 'classNum' =>  $classNum));
 	if($stmt->rowCount() > 0) {
-		$className = $stmt->fetch()["NAME"];
-		return true;
+		return $stmt->fetch();
 	} else {
-		$className = "";
-		return false;
+		return null;
 	}
 }
 

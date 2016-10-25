@@ -55,17 +55,17 @@ $sessionSet = isset($_SESSION['VALID']) && isset($_SESSION['TIMESTAMP']) && isse
 
 #Stop the page load if needsAuthentication is UNSET
 if(!isset($needsAuthentication)) {
-	showError("Server Error", "It was unable to be deturmined if this page requires authentication.", "Tell an administrator to fix this!", 500);
+	db_showError("Server Error", "It was unable to be deturmined if this page requires authentication.", "Tell an administrator to fix this!", 500);
 }
 
 #Stop the page load if needsAJAX is UNSET
 if(!isset($needsAJAX)) {
-	showError("Server Error", "It was unable to be deturmined if this page requires AJAX.", "Tell an administrator to fix this!", 500);
+	db_showError("Server Error", "It was unable to be deturmined if this page requires AJAX.", "Tell an administrator to fix this!", 500);
 }
 
 #Stop the page load if needsTeacher is UNSET
 if(!isset($needsTeacher)) {
-	showError("Server Error", "It was unable to be deturmined if this page requires teacher level authentication.", "Tell an administrator to fix this!", 500);
+	db_showError("Server Error", "It was unable to be deturmined if this page requires teacher level authentication.", "Tell an administrator to fix this!", 500);
 }
 
 #Stop the page load if we cannot connect to the database
@@ -73,7 +73,7 @@ try {
 	$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password); #login
 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); #Enable errors
 } catch(PDOException $e) {
-	showError("Database Error", "An error occured when connecting to the database.", "Sorry about that :(", 500);
+	db_showError("Database Error", "An error occured when connecting to the database.", "Sorry about that :(", 500);
 }
 
 #If we need authentication to view this page....
@@ -81,14 +81,14 @@ if($needsAuthentication) {
 	
 	#Stop the page load if something is not set or the session is not valid.
 	if(!$sessionSet || !$_SESSION["VALID"]) {
-		logout(); #If something is broke, make sure they really are logged out!
-		showError("Forbidden", "You need to be logged in to do that!", "Sorry :(", 403, true);
+		db_logout(); #If something is broke, make sure they really are logged out!
+		db_showError("Forbidden", "You need to be logged in to do that!", "Sorry :(", 403, true);
 	}
 	
 	#Stop the page load if the user timed out.
 	if(strtotime(date("Y-m-d H:i:s")) - strtotime($_SESSION['TIMESTAMP']) > 60*60) {
-		logout();
-		showError("Timed Out", "Your session timed out.", "Sorry :/", 403, true);
+		db_logout();
+		db_showError("Timed Out", "Your session timed out.", "Sorry :/", 403, true);
 	}
 }
 
@@ -97,12 +97,12 @@ if($needsAJAX) {
 	
 	#Stop the page load if we need ajax, but don't have the post check (Basically dumb user check, anybody can "fool" this).
 	if(!(isset($_POST["AJAX"]))) {
-		showError("Requires AJAX", "This page is not meant to be read by a human.", "Try to be a robot next time.", 400);
+		db_showError("Requires AJAX", "This page is not meant to be read by a human.", "Try to be a robot next time.", 400);
 	}
 }
 
 #If we need to be a teacher and we are not then stop page load.
 if($needsTeacher && $_SESSION["TYPE"] !== "TEACHER") {
-	showError("Requires higher authentication", "Only a teacher may request this page.", null, 400, true);
+	db_showError("Requires higher authentication", "Only a teacher may request this page.", null, 400, true);
 }
 ?>

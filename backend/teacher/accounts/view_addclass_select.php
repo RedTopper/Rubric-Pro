@@ -5,14 +5,14 @@ include "../../restricted/view_verify.php";
 
 ###################################
 
-$classname = "Unknown";
-
 if($CLASS == "") {
 	db_showError("Whoops!", "You didn't select a class!", "Try selecting a class first.", 400);
 }
 
+$class = sql_doesTeacherOwnClass($_SESSION["NUM"], $CLASS);
+
 #Check if the teacher owns the class
-if(!sql_doesTeacherOwnClass($_SESSION["NUM"], $CLASS, $classname)) {
+if($class == null) {
 	db_showError("Whoops!", "You can't add a student to a class that doesn't belong to you!", "Try selecting another class.", 400);
 }
 
@@ -29,4 +29,4 @@ header("JS-Redirect: removeto1");
 sql_bindStudentToClass($STUDENT, $CLASS);
 
 #Show that it's been bound
-db_showError("Ok!", htmlentities($info["FIRST_NAME"]) . " " . htmlentities($info["LAST_NAME"]) . " has been bound to " . htmlentities($classname) . ".", "", 201);
+db_showError("Ok!", htmlentities($info["FIRST_NAME"]) . " " . htmlentities($info["LAST_NAME"]) . " has been bound to " . htmlentities($class["NAME"]) . ".", "", 201);

@@ -1,13 +1,21 @@
 <?php
+$CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
+
+#init db
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
-include "db.php";
-$CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
+include "../../db.php";
 
 #General global functions
 $needsFunction = true;
-include "functions.php";
+include "../../functions.php";
+
+#Include SQL functions
+$needsSQL = true;
+include "../../restricted/sql.php";
+
+###################################
 
 $stmt = $conn->prepare(
 <<<SQL
