@@ -23,4 +23,4 @@ header("JS-Redirect: removeto1");
 unbindStudentFromClass($STUDENT, $CLASS);
 
 #Show that it's been unbound
-showError("Ok!", "The acccount has been unbound from " . htmlentities($classname) . ".", "", 201);
+showError("Ok!", htmlentities($info["FIRST_NAME"]) . " " . htmlentities($info["LAST_NAME"]) . " has been unbound from " . htmlentities($classname) . ".", "", 201);

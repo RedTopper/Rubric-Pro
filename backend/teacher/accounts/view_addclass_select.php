@@ -29,4 +29,4 @@ header("JS-Redirect: removeto1");
 bindStudentToClass($STUDENT, $CLASS);
 
 #Show that it's been bound
-showError("Ok!", "The acccount has been bound to " . htmlentities($classname) . ".", "", 201);
+showError("Ok!", htmlentities($info["FIRST_NAME"]) . " " . htmlentities($info["LAST_NAME"]) . " has been bound to " . htmlentities($classname) . ".", "", 201);
