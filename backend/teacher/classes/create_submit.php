@@ -1,13 +1,21 @@
 <?php
-$needsAuthentication = true;
-$needsAJAX = true;
-$needsTeacher = true;
-include "db.php";
 $NAME = isset($_POST["NAME"]) ? $_POST["NAME"] : "";
 $YEAR = isset($_POST["YEAR"]) ? $_POST["YEAR"] : "";
 $TERM = isset($_POST["TERM"]) ? $_POST["TERM"] : "";
 $PERIOD = isset($_POST["PERIOD"]) ? $_POST["PERIOD"] : "";
 $DESCRIPTOR = isset($_POST["DESCRIPTOR"]) ? $_POST["DESCRIPTOR"] : "";
+
+#Initialize db.
+$needsAuthentication = true;
+$needsAJAX = true;
+$needsTeacher = true;
+include "../../restricted/db.php";
+
+#Include SQL functions
+$needsSQL = true;
+include "../../restricted/sql.php";
+
+###################################
 
 #Class name needs to be 2 or more chars.
 if(strlen($NAME) < 2) {
@@ -26,20 +34,8 @@ if(!is_numeric($TERM)) {
 	showError("Error creating class!", "The term needs to be numerical.", "Please type a number for the term.", 400);
 }
 
-$stmt = $conn->prepare(
-<<<SQL
-INSERT INTO CLASS
-(TEACHER_NUM, NAME, YEAR, PERIOD, TERM, DESCRIPTOR)
-VALUES
-(:teacherID, :classname, :year, :period, :term, :descriptor)
-SQL
-);
-$stmt->execute(array('teacherID' => $_SESSION["NUM"],
-					 'classname' => $NAME,
-					 'year' => $YEAR,
-					 'period' => $PERIOD,
-					 'term' => $TERM,
-					 'descriptor' => $DESCRIPTOR));	
+#Create the class.
+createClass($_SESSION["NUM"], $NAME, $YEAR, $PERIOD, $TERM, $DESCRIPTOR);
 
 #Redirect using some Javascript
 header("JS-Redirect: classes");

@@ -2,10 +2,10 @@
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
-include "db.php";
+include "../restricted/db.php";
 
 $needsFunction = true;
-include "functions.php";
+include "../restricted/functions.php";
 ?>
 <div class="object subtitle">
 	<h2>Your classes</h2>

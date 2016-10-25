@@ -742,7 +742,7 @@ function doClass(e) {
 	log("JQUERY/user", "Classes");
 	changeColor(tier, $(this));
 	createTier(tier, "Classes");
-	callServer(tier, "/backend/classes.php", "classes");
+	callServer(tier, "/backend/teacher/classes.php", "classes");
 	return false;
 }
 $(document).on('click', '#js_classes', doClass);
@@ -752,7 +752,7 @@ $(document).on('click', '#js_classes', doClass);
 		log("JQUERY/user", "Classes > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create a new class");
-		callServer(tier, "/backend/classes_create.php", "classes_create");
+		callServer(tier, "/backend/teacher/classes/create.php", "create");
 		return false;
 	});
 		//create: submit
@@ -761,7 +761,7 @@ $(document).on('click', '#js_classes', doClass);
 			log("JQUERY/user", "Classes > Create > Submit");
 			changeColor(tier, $(this));
 			createTier(tier, "Creating...");
-			callServer(tier, "/backend/classes_create_submit.php", "classes_create",
+			callServer(tier, "/backend/teacher/classes/create_submit.php", "create_submit",
 			{
 				NAME: $("#classname").val(),
 				YEAR: $("#year").val(),
