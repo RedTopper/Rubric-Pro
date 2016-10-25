@@ -648,10 +648,9 @@ $(document).on('click', '#js_accounts', doAccounts);
 			log("JQUERY/user", "Accounts > Student > Bind to Class");
 			changeColor(tier, $(this));
 			createTier(tier, "Pick a class");
-			callServer(tier, "/backend/teacher/accounts/student.php", "student (ADDCLASS)",
+			callServer(tier, "/backend/teacher/accounts/view_addclass.php", "view_addclass",
 			{
-				STUDENT: $(this).data('num'),
-				REQUEST: "ADDCLASS"
+				STUDENT: $(this).data('num')
 			});
 			return false;
 		});
@@ -661,14 +660,13 @@ $(document).on('click', '#js_accounts', doAccounts);
 				log("JQUERY/user", "Accounts > Student > Bind to Class > Select");
 				changeColor(tier, $(this));
 				createTier(tier, "Adding...");
-				callServer(tier, "/backend/teacher/accounts/student.php", "student (ADDCLASS-SELECT)",
+				callServer(tier, "/backend/teacher/accounts/view_addclass_select.php", "view_addclass_select",
 				{
 					//Student is found from previous tier ID.
 					STUDENT: $("#js_accounts_student_addclass").data('num'),
 					
 					//Class is the current data entry for the clicked object when this class is selected.
-					CLASS: $(this).data('num'),
-					REQUEST: "ADDCLASS-SELECT"
+					CLASS: $(this).data('num')
 				});
 				return false;
 			});
@@ -678,14 +676,13 @@ $(document).on('click', '#js_accounts', doAccounts);
 			log("JQUERY/user", "Accounts > Student > Unbind from Class ");
 			changeColor(tier, $(this));
 			createTier(tier, "Removing...");
-			callServer(tier, "/backend/teacher/accounts/student.php", "student (REMOVECLASS)",
+			callServer(tier, "/backend/teacher/accounts/view_removeclass.php", "view_removeclass",
 			{
 				//Student is found from the unbind account field. A little bit hacky.
 				STUDENT: $("#js_accounts_student_unbind").data('num'),
 				
 				//Class is found natively in the button.
-				CLASS: $(this).data('num'),
-				REQUEST: "REMOVECLASS"
+				CLASS: $(this).data('num')
 			});
 			return false;
 		});

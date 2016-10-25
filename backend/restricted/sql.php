@@ -14,11 +14,11 @@ SELECT STUDENT.NUM, STUDENT.USERNAME, STUDENT.FIRST_NAME, STUDENT.LAST_NAME, STU
 FROM STUDENT
 JOIN TEACHES ON STUDENT.NUM = TEACHES.STUDENT_NUM
 WHERE 
-TEACHES.TEACHER_NUM = :teacherID
+TEACHES.TEACHER_NUM = :teacherNum
 ORDER BY STUDENT.LAST_NAME, STUDENT.FIRST_NAME
 SQL
 	);
-	$stmt->execute(array('teacherID' => $teacherNum));	
+	$stmt->execute(array('teacherNum' => $teacherNum));	
 	return $stmt->fetchAll();
 }
 
@@ -170,10 +170,10 @@ SQL
 /**
  * Links a student to a teacher account.
  *
- * $teacherNum: The number of the teacher in the database
  * $studentNum: The number of the student in the database
+ * $teacherNum: The number of the teacher in the database we want to link the student to
  */
-function linkTeacherToStudent($teacherNum, $studentNum) {
+function bindStudentToTeacher($studentNum, $teacherNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -183,9 +183,86 @@ VALUES
 (:teacher, :student)
 SQL
 	);
-	$stmt->execute(array(
-	'teacher' => $teacherNum, 
-	'student' => $studentNum));
+	$stmt->execute(array('teacher' => $teacherNum, 'student' => $studentNum));
+}
+
+/**
+ * This function will attempt to disconnect a student from a teacher account
+ *
+ * $studentNum: The number of the student in the database
+ * $teacherNum: The number of the teacher in the database we want to disconnect the student from
+ */
+function unbindStudentFromTeacher($studentNum, $teacherNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+DELETE FROM TEACHES 
+WHERE 
+STUDENT_NUM = :studentnum AND
+TEACHER_NUM = :teachernum
+SQL
+	);
+	$stmt->execute(array('studentnum' => $studentNum, 'teachernum' => $teacherNum));
+}
+
+/**
+ * Binds a student to a class
+ *
+ * $studentNum: The number of the student in the database
+ * $teacherNum: The number of the class in the database we want to bind the student to.
+ */
+function bindStudentToClass($studentNum, $classNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO `CLASS-STUDENT_LINKER` 
+(STUDENT_NUM, CLASS_NUM) 
+VALUES
+(:studentnum, :classnum)
+SQL
+	);
+	$stmt->execute(array('studentnum' => $studentNum, 'classnum' => $classNum));
+}
+
+
+/**
+ * Attempts to unlink a student from a class.
+ *
+ * $studentNum: The number of student we want to unlink
+ * $classNum: The number of the class we want to unlink the student from.
+ */ 
+function unbindStudentFromClass($studentNum, $classNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+DELETE FROM `CLASS-STUDENT_LINKER` 
+WHERE STUDENT_NUM = :studentnum AND 
+CLASS_NUM = :classnum
+SQL
+	);
+	$stmt->execute(array('studentnum' => $studentNum, 'classnum' => $classNum));
+}
+
+/**
+ * Checks to see if a student already exists within a class.
+ *
+ * $studentNum: The number of the student in the database
+ * $classNum: The number of the class in the database
+ * Returns true 
+ */
+function doesStudentAlreadyExistInClass($studentNum, $classNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT STUDENT_NUM, CLASS_NUM 
+FROM `CLASS-STUDENT_LINKER`
+WHERE 
+STUDENT_NUM = :studentnum AND
+CLASS_NUM = :classnum
+SQL
+	);
+	$stmt->execute(array('studentnum' => $studentNum, 'classnum' => $classNum));
+	return $stmt->rowCount() > 0;
 }
 
 /**
@@ -242,6 +319,27 @@ SQL
 }
 
 /**
+ * Gets a list of classes that belong to a specific teacher.
+ *
+ * $teacherNum: The number of a teacher.
+ * return: A 2D array of all classes that belong to the teacher.
+ */
+function getListOfClassesViaTeacher($teacherNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, TEACHER_NUM, NAME, YEAR, TERM, PERIOD, DESCRIPTOR
+FROM CLASS
+WHERE
+TEACHER_NUM = :teacherNum
+ORDER BY YEAR DESC, TERM DESC, PERIOD
+SQL
+	);
+	$stmt->execute(array('teacherNum' => $_SESSION["NUM"]));	
+	return $stmt->fetchAll();
+}
+
+/**
  * Resets a student's password
  *
  * $studentNum: The number of the student in the database to reset.
@@ -260,16 +358,30 @@ SQL
 }
 
 /**
- * This function will attempt to disconnect a student from a teacher account
+ * Verifies if a class actually belongs to a specified teacher.
+ *
+ * $teacherNum: The teacher we are verifying matches a class
+ * $classNum: The class we are verifying matches a teacher
+ * $className: This function modifies this variable to contain the selected class name. Null if no class matches.
+ * return: True if the teacher owns the class, false otherwise.
  */
-function unbindStudentFromTeacher($studentNum) {
+function doesTeacherOwnClass($teacherNum, $classNum, &$className) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
-DELETE FROM TEACHES 
-WHERE 
-STUDENT_NUM=:num
+SELECT NUM, TEACHER_NUM, NAME
+FROM CLASS
+WHERE
+TEACHER_NUM = :teacherNum AND 
+NUM = :classNum
 SQL
 	);
-	$stmt->execute(array('num' => $studentNum));
+	$stmt->execute(array('teacherNum' => $teacherNum, 'classNum' =>  $classNum));
+	if($stmt->rowCount() > 0) {
+		$className = $stmt->fetch()["NAME"];
+		return true;
+	} else {
+		$className = "";
+		return false;
+	}
 }
