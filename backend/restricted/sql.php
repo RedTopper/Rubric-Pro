@@ -234,10 +234,42 @@ SQL
 	);
 	$stmt->execute(array('studentNum' =>  $studentNum, 'teacherNum' => $teacherNum));
 	
-	#If there is at least one class....
 	if($stmt->rowCount() > 0) {
 		return $stmt->fetchAll();
 	} else {
 		return null;
 	}
+}
+
+/**
+ * Resets a student's password
+ *
+ * $studentNum: The number of the student in the database to reset.
+ */
+function resetStudentPassword($studentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+UPDATE STUDENT 
+SET PASSWORD='CHANGE' 
+WHERE 
+NUM=:num
+SQL
+	);
+	$stmt->execute(array('num' => $studentNum));
+}
+
+/**
+ * This function will attempt to disconnect a student from a teacher account
+ */
+function unbindStudentFromTeacher($studentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+DELETE FROM TEACHES 
+WHERE 
+STUDENT_NUM=:num
+SQL
+	);
+	$stmt->execute(array('num' => $studentNum));
 }

@@ -636,10 +636,9 @@ $(document).on('click', '#js_accounts', doAccounts);
 		log("JQUERY/user", "Accounts > Student");
 		changeColor(tier, $(this));
 		createTier(tier, "Edit a student");
-		callServer(tier, "/backend/teacher/accounts/student.php", "student (VIEW)",
+		callServer(tier, "/backend/teacher/accounts/view.php", "view",
 		{
-			STUDENT: $(this).data('num'), 
-			REQUEST: "VIEW"
+			STUDENT: $(this).data('num')
 		});
 		return false;
 	});
@@ -696,10 +695,9 @@ $(document).on('click', '#js_accounts', doAccounts);
 			log("JQUERY/user", "Accounts > Student > Reset Password");
 			changeColor(tier, $(this));
 			createTier(tier, "Reset Password");
-			callServer(tier, "/backend/teacher/accounts/student.php", "student (RESET-ASK)",
+			callServer(tier, "/backend/teacher/accounts/view_reset.php", "view_reset",
 			{
-				STUDENT: $(this).data('num'),
-				REQUEST: "RESET-ASK"
+				STUDENT: $(this).data('num')
 			});
 			return false;
 		});
@@ -709,10 +707,9 @@ $(document).on('click', '#js_accounts', doAccounts);
 				log("JQUERY/user", "Accounts > Student > Reset Password > Submit");
 				changeColor(tier, $(this));
 				createTier(tier, "Resetting...");
-				callServer(tier, "/backend/teacher/accounts/student.php", "student (RESET)",
+				callServer(tier, "/backend/teacher/accounts/view_reset_select.php", "view_reset_select",
 				{
-					STUDENT: $(this).data('num'),
-					REQUEST: "RESET"
+					STUDENT: $(this).data('num')
 				});
 				return false;
 			});
@@ -722,10 +719,9 @@ $(document).on('click', '#js_accounts', doAccounts);
 			log("JQUERY/user", "Accounts > Student > Unbind Account");
 			changeColor(tier, $(this));
 			createTier(tier, "Unbind account");
-			callServer(tier, "/backend/teacher/accounts/student.php", "student (UNBIND-ASK)",
+			callServer(tier, "/backend/teacher/accounts/view_unbind.php", "view_unbind",
 			{
-				STUDENT: $(this).data('num'),
-				REQUEST: "UNBIND-ASK"
+				STUDENT: $(this).data('num')
 			});
 			return false;
 		});
@@ -735,10 +731,9 @@ $(document).on('click', '#js_accounts', doAccounts);
 				log("JQUERY/user", "Accounts > Student > Unbind Account > Submit");
 				changeColor(tier, $(this));
 				createTier(tier, "Unbound!");
-				callServer(tier, "/backend/teacher/accounts/student.php", "student (UNBIND)",
+				callServer(tier, "/backend/teacher/accounts/view_unbind_select.php", "view_unbind_select",
 				{
-					STUDENT: $(this).data('num'),
-					REQUEST: "UNBIND"
+					STUDENT: $(this).data('num')
 				});
 				return false;
 			});

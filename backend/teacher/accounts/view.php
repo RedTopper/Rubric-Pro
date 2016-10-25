@@ -1,5 +1,5 @@
 <?php
-include "view_verify.php";
+include "../../restricted/view_verify.php";
 
 #General global functions.
 $needsFunction = true;
