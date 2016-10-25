@@ -21,7 +21,7 @@ if($STUDENT == "") {
 if(!isTeacherAndStudentLinked($_SESSION["NUM"], $STUDENT)) {
 	showError("Whoops!", "Something went wrong when requesting that student.", "Check to see if the student still exists and is linked to your account.", 400);
 }
-$info = getStudentInformation($STUDENT);
+$info = sql_getStudentInformation($STUDENT);
 
 #After this point, a file can alter student info. 
 #This file is needed to check if a teacher can alter student information.

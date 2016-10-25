@@ -6,7 +6,7 @@ if(!isset($needsSQL)) die();
  *
  * $teacherNum: The teacher's number in the database.
  */
-function getAllStudents($teacherNum) {
+function sql_getAllStudents($teacherNum) {
 	global $conn;
 	$stmt = $conn->prepare( 
 <<<SQL
@@ -29,7 +29,7 @@ SQL
  * $location: Either "STUDENT.FIRST_NAME", "STUDENT.LAST_NAME", or "STUDENT.USERNAME".
  * $searchTerm: The term to search for in the database. 
  */
-function getAllStudentsBasedOnSearch($teacherNum, $location, $searchTerm) {
+function sql_getAllStudentsBasedOnSearch($teacherNum, $location, $searchTerm) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -52,7 +52,7 @@ SQL
  * $username: Username to check.
  * return: True if it exists, false otherwise.
  */
-function isUsernameInTeacherDatabase($username) {
+function sql_isUsernameInTeacherDatabase($username) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -73,7 +73,7 @@ SQL
  * $studentNum: The number of the student if it exists. This variable is always modified by the function.
  * return: True if it exists, false otherwise.
  */
-function isUsernameInStudentDatabase($username, &$studentNum) {
+function sql_isUsernameInStudentDatabase($username, &$studentNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -101,7 +101,7 @@ SQL
  * $studentNum: The student's number in the database.
  * return: True if the teacher and student are linked together.
  */
-function isTeacherAndStudentLinked($teacherNum, $studentNum) {
+function sql_isTeacherAndStudentLinked($teacherNum, $studentNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -122,7 +122,7 @@ SQL
  * $studentNum: The number of the student in the database.
  * return: An SQL row of all of the student information.
  */
-function getStudentInformation($studentNum) {
+function sql_getStudentInformation($studentNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -146,7 +146,7 @@ SQL
  * $grade: The grade (year) of the student
  * $extra: Extra information about the student
  */
-function createStudent($username, $first, $last, $nick, $grade, $extra) {
+function sql_createStudent($username, $first, $last, $nick, $grade, $extra) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -173,7 +173,7 @@ SQL
  * $studentNum: The number of the student in the database
  * $teacherNum: The number of the teacher in the database we want to link the student to
  */
-function bindStudentToTeacher($studentNum, $teacherNum) {
+function sql_bindStudentToTeacher($studentNum, $teacherNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -192,7 +192,7 @@ SQL
  * $studentNum: The number of the student in the database
  * $teacherNum: The number of the teacher in the database we want to disconnect the student from
  */
-function unbindStudentFromTeacher($studentNum, $teacherNum) {
+function sql_unbindStudentFromTeacher($studentNum, $teacherNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -211,7 +211,7 @@ SQL
  * $studentNum: The number of the student in the database
  * $teacherNum: The number of the class in the database we want to bind the student to.
  */
-function bindStudentToClass($studentNum, $classNum) {
+function sql_bindStudentToClass($studentNum, $classNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -231,7 +231,7 @@ SQL
  * $studentNum: The number of student we want to unlink
  * $classNum: The number of the class we want to unlink the student from.
  */ 
-function unbindStudentFromClass($studentNum, $classNum) {
+function sql_unbindStudentFromClass($studentNum, $classNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -250,7 +250,7 @@ SQL
  * $classNum: The number of the class in the database
  * Returns true 
  */
-function doesStudentAlreadyExistInClass($studentNum, $classNum) {
+function sql_doesStudentAlreadyExistInClass($studentNum, $classNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -273,7 +273,7 @@ SQL
  * $studentNum: The probable number of the student. 
  * return: True if the username and number match.
  */
-function doesStudentUsernameAndNumberMatch($username, $studentNum) {
+function sql_doesStudentUsernameAndNumberMatch($username, $studentNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -296,7 +296,7 @@ SQL
  * $studentNum: The number of the student.
  * return: The list of classes in SQL form if they exist, or null.
  */
-function getListOfStudentClassesViaTeacher($teacherNum, $studentNum) {
+function sql_getListOfStudentClassesViaTeacher($teacherNum, $studentNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -324,7 +324,7 @@ SQL
  * $teacherNum: The number of a teacher.
  * return: A 2D array of all classes that belong to the teacher.
  */
-function getListOfClassesViaTeacher($teacherNum) {
+function sql_getListOfClassesViaTeacher($teacherNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -344,7 +344,7 @@ SQL
  *
  * $studentNum: The number of the student in the database to reset.
  */
-function resetStudentPassword($studentNum) {
+function sql_resetStudentPassword($studentNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -365,7 +365,7 @@ SQL
  * $className: This function modifies this variable to contain the selected class name. Null if no class matches.
  * return: True if the teacher owns the class, false otherwise.
  */
-function doesTeacherOwnClass($teacherNum, $classNum, &$className) {
+function sql_doesTeacherOwnClass($teacherNum, $classNum, &$className) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -384,4 +384,33 @@ SQL
 		$className = "";
 		return false;
 	}
+}
+
+/**
+ * Creates a new class using the information provided.
+ *
+ * $teacherNum: The number of the teacher in the database.
+ * $className: A name for the class
+ * $classYear: The year (numerical, date) of the class
+ * $period: The period the class occurs
+ * $term: The term the class occurs
+ * $descriptor: A description of the class.
+ */
+function sql_createClass($teacherNum, $className, $classYear, $period, $term, $descriptor) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO CLASS
+(TEACHER_NUM, NAME, YEAR, PERIOD, TERM, DESCRIPTOR)
+VALUES
+(:teachernum, :classname, :year, :period, :term, :descriptor)
+SQL
+	);
+	$stmt->execute(array(
+	'teachernum' => $teacherNum,
+	'classname' => $className,
+	'year' => $classYear,
+	'period' => $period,
+	'term' => $term,
+	'descriptor' => $descriptor));	
 }
