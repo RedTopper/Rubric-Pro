@@ -15,7 +15,7 @@ include "../../restricted/sql.php";
 ###################################
 
 #We didn't get a result!?!?!?!?
-if(doesStudentUsernameAndNumberMatch($USERNAME, $NUM)) {
+if(!doesStudentUsernameAndNumberMatch($USERNAME, $NUM)) {
 	showError("Error!", "Your client lied!", "I thought I trusted you! (The number and username submitted does not match)", 400);
 }
 

@@ -127,7 +127,7 @@ function getStudentInformation($studentNum) {
 	$stmt = $conn->prepare(
 <<<SQL
 SELECT
-USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, NICK_NAME, GRADE, EXTRA
+NUM, USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, NICK_NAME, GRADE, EXTRA
 FROM STUDENT
 WHERE NUM = :student
 SQL
@@ -209,4 +209,35 @@ SQL
 	);
 	$stmt->execute(array('username' => $username, 'num' => $studentNum));
 	return $stmt->rowCount() > 0;
+}
+
+/**
+ * Gets the list of classes that a student belongs to limited by
+ * a single teacher
+ *
+ * $teacherNum: The number of a teacher.
+ * $studentNum: The number of the student.
+ * return: The list of classes in SQL form if they exist, or null.
+ */
+function getListOfStudentClassesViaTeacher($teacherNum, $studentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT CLASS.NUM, CLASS.NAME, CLASS.YEAR, CLASS.PERIOD, CLASS.TERM, CLASS.DESCRIPTOR
+FROM `CLASS-STUDENT_LINKER` CSL, CLASS
+WHERE
+CSL.STUDENT_NUM = :studentNum AND 
+CSL.CLASS_NUM = CLASS.NUM AND
+CLASS.TEACHER_NUM = :teacherNum
+ORDER BY YEAR DESC, TERM DESC, PERIOD
+SQL
+	);
+	$stmt->execute(array('studentNum' =>  $studentNum, 'teacherNum' => $teacherNum));
+	
+	#If there is at least one class....
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
 }

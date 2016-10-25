@@ -2,6 +2,6 @@
 $needsAuthentication = true;
 $needsAJAX = false;
 $needsTeacher = false;
-include "db.php";
+include "restricted/db.php";
 logout();
 ?>
