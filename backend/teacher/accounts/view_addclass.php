@@ -13,5 +13,5 @@ include "../../restricted/functions.php";
 </div>
 
 <?php
-$classes = getListOfClassesViaTeacher($_SESSION["NUM"]);
+$classes = sql_getListOfClassesViaTeacher($_SESSION["NUM"]);
 listclasses("js_accounts_student_addclass_select", $classes);

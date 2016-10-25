@@ -12,7 +12,7 @@ if($CLASS == "") {
 }
 
 #Check if the teacher owns the class!
-if(!doesTeacherOwnClass($_SESSION["NUM"], $CLASS, $classname)) {
+if(!sql_doesTeacherOwnClass($_SESSION["NUM"], $CLASS, $classname)) {
 	showError("Whoops!", "You can't remove a student from a class that doesn't belong to you!", "Try selecting another class.", 400);
 }
 
@@ -20,7 +20,7 @@ if(!doesTeacherOwnClass($_SESSION["NUM"], $CLASS, $classname)) {
 header("JS-Redirect: removeto1");
 
 #Unbind!
-unbindStudentFromClass($STUDENT, $CLASS);
+sql_unbindStudentFromClass($STUDENT, $CLASS);
 
 #Show that it's been unbound
 showError("Ok!", htmlentities($info["FIRST_NAME"]) . " " . htmlentities($info["LAST_NAME"]) . " has been unbound from " . htmlentities($classname) . ".", "", 201);
