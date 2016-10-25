@@ -437,3 +437,133 @@ SQL
 	'term' => $term,
 	'descriptor' => $descriptor));	
 }
+
+/**
+ * Gets all of the ROOT components that belong to a teacher.
+ * 
+ * $teacherNum: The number of the teacher in the database.
+ * return: All of the components selected from the teacher or null if none are selected.
+ */
+function sql_getAllRootComponents($teacherNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, TEACHER_NUM, PARENT_NUM, SYMBOL, NAME, DESCRIPTION 
+FROM COMPONENT 
+WHERE 
+TEACHER_NUM = :teacherNum AND 
+PARENT_NUM IS NULL
+SQL
+	);
+	$stmt->execute(array('teacherNum' => $teacherNum));
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
+}
+
+/**
+ * Gets the information of a component from a teacher.
+ *
+ * $teacherNum: The number of the teacher in the database.
+ * $componentNum: The number of the component in the database to fetch.
+ * return: The component information or null if it does not exist.
+ */
+function sql_getComponent($teacherNum, $componentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, TEACHER_NUM, PARENT_NUM, SYMBOL, NAME, DESCRIPTION
+FROM COMPONENT
+WHERE 
+TEACHER_NUM = :teacherNum AND
+NUM = :componentNum
+SQL
+	);
+	$stmt->execute(array('teacherNum' => $teacherNum, 'componentNum' => $componentNum));
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetch();
+	} else {
+		return null;
+	}
+}
+
+/**
+ * Gets all of the components that are children of a specified component.
+ *
+ * $teacherNum: The number of the teacher in the database.
+ * $componentNum: The parent number of the component in the database to use to fetch the children.
+ * return: The component information or null if it does not exist.
+ */
+function sql_getAllSubComponentsFromComponent($teacherNum, $componentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, TEACHER_NUM, PARENT_NUM, SYMBOL, NAME, DESCRIPTION
+FROM COMPONENT 
+WHERE 
+TEACHER_NUM = :teacherNum AND
+PARENT_NUM = :componentNum 
+ORDER BY SYMBOL
+SQL
+	);
+	$stmt->execute(array('teacherNum' => $teacherNum, 'componentNum' => $componentNum));
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
+}
+
+/**
+ * Creates a new root component bound to a teacher.
+ * 
+ * $teacherNum: The number of the teacher in the database.
+ * $symbol: The symbol of the component. A symbol is something like "I", "B", "7", "a", "ii", "SCI" etc.
+ * $name: The name of the component
+ * $description: A long description of the component.
+ */
+function sql_createRootComponent($teacherNum, $symbol, $name, $description) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO COMPONENT
+(TEACHER_NUM, PARENT_NUM, SYMBOL, NAME, DESCRIPTION)
+VALUES
+(:teacherNum, NULL, :symbol, :name, :description)
+SQL
+	);
+	$stmt->execute(array(
+	'teacherNum' => $teacherNum, 
+	'symbol' => $symbol, 
+	'name' => $name,
+	'description' => $description));
+}
+
+/**
+ * Creates a new component bound to a teacher and bound to another component.
+ *
+ * $teacherNum: The number of the teacher in the database.
+ * $parentComponentNum: The number 
+ * $symbol: The symbol of the component as described in sql_createRootComponent()
+ * $name: The name of the component
+ * $description: A long description of the component.
+ */
+function sql_createComponent($teacherNum, $parentComponentNum, $symbol, $name, $description) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO COMPONENT
+(TEACHER_NUM, PARENT_NUM, SYMBOL, NAME, DESCRIPTION)
+VALUES
+(:teacherNum, :parentNum, :symbol, :name, :description)
+SQL
+	);
+	$stmt->execute(array(
+	'teacherNum' => $teacherNum, 
+	'parentNum' => $parentComponentNum,
+	'symbol' => $symbol, 
+	'name' => $name,
+	'description' => $description));
+}

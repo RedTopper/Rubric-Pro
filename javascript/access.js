@@ -791,7 +791,7 @@ function doComponents(e) {
 	log("JQUERY/user", "Components");
 	changeColor(tier, $(this));
 	createTier(tier, "Component Editor");
-	callServer(tier, "/backend/component.php", "component");
+	callServer(tier, "/backend/teacher/component.php", "component");
 	return false;
 }
 $(document).on('click', '#js_components', doComponents);
@@ -803,7 +803,7 @@ $(document).on('click', '#js_components', doComponents);
 		log("JQUERY/user", "Components > Select");
 		changeColor(tier, $(this));
 		createTier(tier, "");
-		callServer(tier, "/backend/component.php", "component (Sent Parent)",
+		callServer(tier, "/backend/teacher/component.php", "component (Sent Parent)",
 		{
 			COMPONENT: $(this).data('num'),
 			CRITERIA_NUM: $(this).data('criterionnum'),
@@ -817,7 +817,7 @@ $(document).on('click', '#js_components', doComponents);
 		log("JQUERY/user", "Components > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create New Component");
-		callServer(tier, "/backend/component_create.php", "component_create",
+		callServer(tier, "/backend/teacher/component/create.php", "create",
 		{
 			PARENT: $(this).data('num')
 		});
@@ -829,7 +829,7 @@ $(document).on('click', '#js_components', doComponents);
 			log("JQUERY/user", "Components > Create > Submit");
 			changeColor(tier, $(this));
 			createTier(tier, "Submitting...");
-			callServer(tier, "/backend/component_create_submit.php", "component_create_submit",
+			callServer(tier, "/backend/teacher/component/create_submit.php", "create_submit",
 			{
 				PARENT: $(this).data('num'),
 				SYMBOL: $("#symbol").val(),
