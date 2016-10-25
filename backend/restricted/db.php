@@ -2,7 +2,7 @@
 include "passwd.php";
 
 #Logs a user out of the page.
-function logout() {
+function db_logout() {
 	if(isset($_SESSION['VALID'])) { 
 		$_SESSION['VALID'] = false; #Makes sure the session is killed.
 	}
@@ -11,7 +11,7 @@ function logout() {
 }
 
 #Shows an error code.
-function showError($title = "Error", $header = "An unknown error occured.", $subheader = "Sorry about that :(", $status = 500, $returnToLogin = false) {
+function db_showError($title = "Error", $header = "An unknown error occured.", $subheader = "Sorry about that :(", $status = 500, $returnToLogin = false) {
 	http_response_code($status);
 	if(!(isset($_POST["AJAX"]))) {  #If we are not using AJAX, send the normal html. ?>
 <!DOCTYPE html>

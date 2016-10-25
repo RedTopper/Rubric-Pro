@@ -9,7 +9,7 @@ if(!isset($needsFunction)) die();
  * $type The css type of the list. Curently available: "selectable" - generic grey "destroy" - Appears red "create" - Appears green. 
  *		 "selectable" by default
  */
-function listclasses($classname, $data, $type = "selectable") {
+function fun_listClasses($classname, $data, $type = "selectable") {
 	foreach($data as $row) { ?>
 		<a class="<?php echo $classname; ?> object <?php echo $type; ?>" href="#" data-num="<?php echo $row["NUM"] ?>">
 		<div class="arrow"></div>
@@ -36,7 +36,7 @@ function listclasses($classname, $data, $type = "selectable") {
  * $students 2D array output from the database (you must call the database yourself!)
  * $selectable True if the objects can be selected, false otherwise. True by default.
  */
-function listStudents($classname, $students, $selectable = true) {
+function fun_listStudents($classname, $students, $selectable = true) {
 	foreach($students as $row) {  ?>
 		<?php if ($selectable) { ?>
 			<a class="<?php echo $classname;?> object selectable" href="#" data-num="<?php echo $row["NUM"] ?>">
@@ -68,7 +68,7 @@ function listStudents($classname, $students, $selectable = true) {
  * $classname The HTML class name for each button (used for JQuery binding in access.js)
  * $rubrics 2D array output from the database (you must call the database yourself!)
  */
-function listRubrics($classname, $rubrics) {
+function fun_listRubrics($classname, $rubrics) {
 	foreach($rubrics as $row) {  ?>
 		<a class="<?php echo $classname;?> object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><div class='arrow'></div>
 			<h3>
@@ -91,7 +91,7 @@ function listRubrics($classname, $rubrics) {
  * $qualities 2D array output from the database (you must call the database yourself!)
  * $maxpointspercriteria Is the maximum points that a student can obtain per criteria.
  */
-function listQuality($classname, $qualities, $maxpointspercriteria, $type = "") {
+function fun_listQuality($classname, $qualities, $maxpointspercriteria, $type = "") {
 	
 	#Show a header
 	?>
@@ -137,7 +137,7 @@ function listQuality($classname, $qualities, $maxpointspercriteria, $type = "") 
  * $criterion 2D array output from the database (you must call the database yourself!)
  * $rubricnum The number of the rubric that we got the criteria from.
  */
-function listCriterion($classname, $criterion, $type = "", $rubricnum) {
+function fun_listCriterion($classname, $criterion, $type = "", $rubricnum) {
 	foreach($criterion as $row) {  
 		
 		#Begin div or anchor if type is set
@@ -163,7 +163,7 @@ function listCriterion($classname, $criterion, $type = "", $rubricnum) {
  * When they are editing the qualities section, they'll 
  * then see a hilighted example of the section they are editing.
  */
-function createExampleTableQualities() {
+function fun_createExampleTableQualities() {
 ?>
 <div class="object subtext">
 	<p>In a normal rubric, this section represents the cells colored in blue, as pictured below:</p>
@@ -202,7 +202,7 @@ function createExampleTableQualities() {
 /**
  * Another function that creates an example table. See createExampleTableQualities()
  */
-function createExampleTableCriteria() {
+function fun_createExampleTableCriteria() {
 ?>
 <div class="object subtext">
 	<p>In a normal rubric, this section represents the cells colored in blue, as pictured below:</p>
@@ -250,7 +250,7 @@ function createExampleTableCriteria() {
  *			to obtain the parent component and the second dimension is an array with the
  *			keys "TREE" and "NUM". "TREE" represents the symbol tree of the "NUM"th element.
  */
-function getCompiledSymbolTree($teacherNum, $num) {
+function fun_getCompiledSymbolTree($teacherNum, $num) {
 	global $conn;
 	$tree = array();
 	
