@@ -16,7 +16,7 @@ include "../../restricted/sql.php";
 
 #We didn't get a result!?!?!?!?
 if(!sql_doesStudentUsernameAndNumberMatch($USERNAME, $NUM)) {
-	showError("Error!", "Your client lied!", "I thought I trusted you! (The number and username submitted does not match)", 400);
+	db_showError("Error!", "Your client lied!", "I thought I trusted you! (The number and username submitted does not match)", 400);
 }
 
 #Ok, so the submitted number is the same as the username (didn't really need to check that but better safe then sorry?)
@@ -27,5 +27,5 @@ sql_bindStudentToTeacher($NUM, $_SESSION['NUM']);
 header("JS-Redirect: account");
 
 #It's not really an error, but it does the same thing.
-showError("Ok!", "The acccount has been linked.", "", 201);
+db_showError("Ok!", "The acccount has been linked.", "", 201);
 ?>

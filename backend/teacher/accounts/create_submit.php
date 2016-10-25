@@ -20,25 +20,25 @@ include "../../restricted/sql.php";
 
 #Check to see if the user actually typed anything.
 if(strlen($USERNAME) < 2) {
-	showError("Error creating account!", "The username is too short.", "Please type a longer username.", 400);
+	db_showError("Error creating account!", "The username is too short.", "Please type a longer username.", 400);
 }
 
 #We need to make sure that the username doesn't already exist in BOTH tables (so we don't mistake a student for a teacher)
-if(isUsernameInTeacherDatabase($USERNAME)) {
-	showError("Error creating account!", "The username cannot be the username of another teacher!", "Please change the username field to something else.", 400);
+if(sql_isUsernameInTeacherDatabase($USERNAME)) {
+	db_showError("Error creating account!", "The username cannot be the username of another teacher!", "Please change the username field to something else.", 400);
 }
 
 $studentNum = null;
-if(isUsernameInStudentDatabase($USERNAME, $studentNum)) {
+if(sql_isUsernameInStudentDatabase($USERNAME, $studentNum)) {
 	
 	#Ok, so unfortunately we have a match, we figure out how to deal with it.
 	
 	#Check if there is already a link between the teacher and the student
-	if(isTeacherAndStudentLinked($_SESSION["NUM"], $studentNum)) {
-		showError("Error creating account!", "The username cannot be the username of another student that's already bound to your account!", "Please change the username field to something else.", 400);
+	if(sql_isTeacherAndStudentLinked($_SESSION["NUM"], $studentNum)) {
+		db_showError("Error creating account!", "The username cannot be the username of another student that's already bound to your account!", "Please change the username field to something else.", 400);
 	}
 	
-	$student = getStudentInformation($studentNum); ?>
+	$student = sql_getStudentInformation($studentNum); ?>
 	
 	<div class="object subtitle">
 		<h2>We found a matching username!</h2>
@@ -70,23 +70,23 @@ if(isUsernameInStudentDatabase($USERNAME, $studentNum)) {
 } 
 
 if(strlen($LAST_NAME) < 2 || strlen($FIRST_NAME) < 2) {
-	showError("Error creating account!", "The name is too short.", "Please type a longer first name or last name.", 400);
+	db_showError("Error creating account!", "The name is too short.", "Please type a longer first name or last name.", 400);
 }
 
 if(strlen($GRADE) < 1 || !is_numeric($GRADE)) {
-	showError("Error creating account!", "The grade a student is in must be a number.", "Check what you typed, then try again.", 400);
+	db_showError("Error creating account!", "The grade a student is in must be a number.", "Check what you typed, then try again.", 400);
 }
 
 #Ok, so far so good. Now we need to insert the new account.
-createStudent($USERNAME, $FIRST_NAME, $LAST_NAME, $NICK_NAME, $GRADE, $EXTRA);
+sql_createStudent($USERNAME, $FIRST_NAME, $LAST_NAME, $NICK_NAME, $GRADE, $EXTRA);
 $insertedStudent = $conn->lastInsertId();
 
 #And link them together.
-linkTeacherToStudent($_SESSION["NUM"], $insertedStudent);
+sql_linkStudentToTeacher($insertedStudent, $_SESSION["NUM"]);
 
 #Redirect using some Javascript Hackery(tm)
 header("JS-Redirect: account");
 
 #It's not really an error, but it does the same thing.
-showError("Ok!", "The acccount has been created.", "", 201);
+db_showError("Ok!", "The acccount has been created.", "", 201);
 ?>
