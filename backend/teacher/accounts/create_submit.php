@@ -82,7 +82,7 @@ sql_createStudent($USERNAME, $FIRST_NAME, $LAST_NAME, $NICK_NAME, $GRADE, $EXTRA
 $insertedStudent = $conn->lastInsertId();
 
 #And link them together.
-sql_linkStudentToTeacher($insertedStudent, $_SESSION["NUM"]);
+sql_bindStudentToTeacher($insertedStudent, $_SESSION["NUM"]);
 
 #Redirect using some Javascript Hackery(tm)
 header("JS-Redirect: account");

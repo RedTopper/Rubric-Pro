@@ -9,4 +9,4 @@ header("JS-Redirect: removeto1");
 sql_resetStudentPassword($info["NUM"]);
 
 #Show that it's been reset
-showError("Ok!", "The acccount password has been reset.", "", 201);
+db_showError("Ok!", "The acccount password has been reset.", "", 201);

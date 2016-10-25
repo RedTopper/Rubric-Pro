@@ -16,7 +16,7 @@ include "../../restricted/db.php";
 	<label for="nick">Nickname: </label>
 	<input id="nick" type="text" name="NICK_NAME" placeholder="Lord Snow"><br>
 	<label for="grade">Grade: </label>
-	<input id="grade" type="text" name="GRADE" placeholder="12"><br>
+	<input id="grade" type="number" name="GRADE" placeholder="12"><br>
 	<label for="comment">Comment: </label>
 	<input id="comment" type="text" name="EXTRA" placeholder="True King of the North"><br>
 </div>
