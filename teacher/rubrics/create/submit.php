@@ -4,8 +4,8 @@ $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
 $needsSQL = true;
-include "../../restricted/db.php";
-include "../../restricted/sql.php";
+include "../../../restricted/db.php";
+include "../../../restricted/sql.php";
 
 $SUBTITLE = isset($_POST["SUBTITLE"]) ? $_POST["SUBTITLE"] : null;
 $MAX_POINTS_PER_CRITERIA = isset($_POST["MAX_POINTS_PER_CRITERIA"]) ? $_POST["MAX_POINTS_PER_CRITERIA"] : "";

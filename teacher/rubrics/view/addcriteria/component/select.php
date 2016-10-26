@@ -1,4 +1,4 @@
-<?php
+<?php  die();
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;

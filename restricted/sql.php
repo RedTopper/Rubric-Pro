@@ -645,3 +645,152 @@ SQL
 	'points' => $maxPointsPerCriteria,
 	'sub' => $subtitle));
 }
+
+/**
+ * Fetches all qualities that are bound to a rubric.
+ *
+ * $rubricNum: Numbe of the rubric in the database.
+ * returns: Either a list of all of the qualities in SQL format or null if there are none. 
+ */
+function sql_getAllQualitiesInRubric($rubricNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, POINTS, QUALITY_TITLE
+FROM RUBRIC_QUALITY
+WHERE
+RUBRIC_NUM = :rubric
+ORDER BY POINTS
+SQL
+	);
+	$stmt->execute(array('rubric' => $rubricNum));	
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
+}
+
+/**
+ * Fetches all of the criteria of a rubric.
+ *
+ * $rubricNum: Numbe of the rubric in the database.
+ * returns: Either a list of all of the qualities in SQL format or null if there are none. 
+ */
+function sql_getAllCriteriaInRubric($rubricNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, CRITERIA_TITLE 
+FROM RUBRIC_CRITERIA 
+WHERE 
+RUBRIC_NUM = :rubric
+SQL
+	);
+	$stmt->execute(array('rubric' => $rubricNum));	
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
+}
+
+/**
+ * Creates and initializes a quality.
+ * This method will create empty cells in the rubric so they can be used later.
+ *
+ * $rubricNum: Numbe of the rubric in the database.
+ * $points: The points awarded to the quality.
+ * $qualityTitle: The title of the quality for the rubric (will appear at the top)
+ */
+function sql_createQuality($rubricNum, $points, $qualityTitle) {
+	global $conn;
+	#First, insert the quality as normal. We'll use this to get the number we just inserted.
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO RUBRIC_QUALITY 
+(RUBRIC_NUM, POINTS, QUALITY_TITLE) 
+VALUES 
+(:rubric, :points, :title)
+SQL
+	);
+	$stmt->execute(array(
+	'rubric' => $rubricNum,
+	'points' => $points,
+	'title' => $qualityTitle));
+	$qualityNum = $conn->lastInsertId();
+
+	#Because we are adding a quality, we need to initialize a cell for every criteria.
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM 
+FROM RUBRIC_CRITERIA 
+WHERE RUBRIC_NUM = :rubric
+SQL
+	);
+	$stmt->execute(array('rubric' => $rubricNum));
+	$criteria = $stmt->fetchAll();
+
+	#Now that we have the inserted id and each criteria, let's initialize the cells.
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO RUBRIC_CELL 
+(RUBRIC_CRITERIA_NUM, RUBRIC_QUALITY_NUM, CONTENTS) 
+VALUES 
+(:criteria, :quality, '')
+SQL
+	);
+
+	#And we'll insert in a foreach loop.
+	foreach($criteria as $criterion) {
+		$stmt->execute(array(
+		'criteria' => $criterion["NUM"],
+		'quality' => $qualityTitle));
+	}
+}
+
+function sql_createCriteria($rubricNum, $criteriaTitle) {
+	global $conn;
+	#You can see the steps of quality submit for more details.
+	#Basically, insert....... 
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO RUBRIC_CRITERIA 
+(RUBRIC_NUM, CRITERIA_TITLE) 
+VALUES 
+(:rubric, :title)
+SQL
+	);
+	$stmt->execute(array(
+	'rubric' => $rubricNum,
+	'title' => $criteriaTitle));
+	$criterion = $conn->lastInsertId();
+
+	#......then select the qualities.......
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM 
+FROM RUBRIC_QUALITY 
+WHERE RUBRIC_NUM = :rubric
+SQL
+	);
+	$stmt->execute(array('rubric' => $rubricNum));
+	$qualities = $stmt->fetchAll();
+
+	#......and initialize the cells.....
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO RUBRIC_CELL 
+(RUBRIC_CRITERIA_NUM, RUBRIC_QUALITY_NUM, CONTENTS) 
+VALUES 
+(:criteria, :quality, '')
+SQL
+	);
+
+	#......in a foreach loop.
+	foreach($qualities as $quality) {
+		$stmt->execute(array(
+		'criteria' => $criterion,
+		'quality' => $quality["NUM"]));
+	}
+}

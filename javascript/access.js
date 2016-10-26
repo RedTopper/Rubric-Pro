@@ -901,7 +901,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				log("JQUERY/user", "Rubrics > Add Quality > Submit");
 				changeColor(tier, $(this));
 				createTier(tier, "Submitting...");
-				callServer(tier, "/teacher/rubrics/view/addquality/submmit.php",
+				callServer(tier, "/teacher/rubrics/view/addquality/submit.php",
 				{
 					NUM: $(this).data('num'),
 					QUALITY_TITLE: $("#qualityname").val(),

@@ -1,4 +1,4 @@
-<?php
+<?php  die();
 #Libraries.
 $needsAuthentication = true;
 $needsAJAX = true;
