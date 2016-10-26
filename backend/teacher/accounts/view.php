@@ -1,7 +1,7 @@
 <?php
 #Libraries.
 $needsFunction = true;
-include "../../restricted/view_verify.php";
+include "../../restricted/headaccount.php";
 include "../../restricted/functions.php";
 
 #Show some general information about the student. ?>

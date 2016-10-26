@@ -10,12 +10,12 @@ include "../../restricted/sql.php";
 $STUDENT = isset($_POST["STUDENT"]) ? $_POST["STUDENT"] : "";
 
 if($STUDENT == "") {
-	showError("Whoops!", "You need to select a student.", "Try refreshing the page to fix the problem.", 400);
+	db_showError("Whoops!", "You need to select a student.", "Try refreshing the page to fix the problem.", 400);
 }
 
 #Check to see if there is really a student!
 if(!sql_isTeacherAndStudentLinked($_SESSION["NUM"], $STUDENT)) {
-	showError("Whoops!", "Something went wrong when requesting that student.", "Check to see if the student still exists and is linked to your account.", 400);
+	db_showError("Whoops!", "Something went wrong when requesting that student.", "Check to see if the student still exists and is linked to your account.", 400);
 }
 $info = sql_getStudentInformation($STUDENT);
 

@@ -1,6 +1,6 @@
 <?php
 #Libraries.
-include "../../restricted/view_verify.php";
+include "../../restricted/headaccount.php";
 
 header("JS-Redirect: account");
 
