@@ -2,7 +2,7 @@
 $needsAuthentication = true;
 $needsAJAX = false;
 $needsTeacher = true;
-include "backend/restricted/db.php";
+include "./restricted/db.php";
 
 $version = shell_exec("git describe --long --tags --dirty --always");
 $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen("version", 'r')) : "Unknown Version"));
@@ -37,7 +37,7 @@ $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen(
 					<a href="#" id="js_accounts"><span>Accounts</span></a>
 					<a href="#" id="js_components"><span>Components</span></a>
 					<a href="#" id="js_rubrics"><span>Rubrics</span></a>
-					<a href="/backend/logout.php"><span>Log out of <?php echo htmlspecialchars($_SESSION["USERNAME"]); ?></span></a>
+					<a href="/logout.php"><span>Log out of <?php echo htmlspecialchars($_SESSION["USERNAME"]); ?></span></a>
 				</div>
 			</div>
 		</div>
