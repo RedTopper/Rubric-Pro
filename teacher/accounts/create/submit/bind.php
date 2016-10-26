@@ -4,8 +4,8 @@ $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
 $needsSQL = true;
-include "../../restricted/db.php";
-include "../../restricted/sql.php";
+include "../../../../restricted/db.php";
+include "../../../../restricted/sql.php";
 
 $NUM = isset($_POST["NUM"]) ? $_POST["NUM"] : "";
 $USERNAME = isset($_POST["USERNAME"]) ? $_POST["USERNAME"] : "";

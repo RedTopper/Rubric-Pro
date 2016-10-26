@@ -4,8 +4,8 @@ $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
 $needsSQL = true;
-include "../../restricted/db.php";
-include "../../restricted/sql.php";
+include "../../../restricted/db.php";
+include "../../../restricted/sql.php";
 
 $NAME = isset($_POST["NAME"]) ? $_POST["NAME"] : "";
 $YEAR = isset($_POST["YEAR"]) ? $_POST["YEAR"] : "";

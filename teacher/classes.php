@@ -1,15 +1,12 @@
 <?php
+#Libraries.
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
-include "../restricted/db.php";
-
-#Obtain global functions
 $needsFunction = true;
-include "../restricted/functions.php";
-
-#Include SQL functions
 $needsSQL = true;
+include "../restricted/db.php";
+include "../restricted/functions.php";
 include "../restricted/sql.php";
 ?>
 <div class="object subtitle">

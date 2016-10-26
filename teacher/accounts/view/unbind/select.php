@@ -1,6 +1,6 @@
 <?php
 #Libraries.
-include "../../restricted/headaccount.php";
+include "../../../../restricted/headaccount.php";
 
 header("JS-Redirect: account");
 

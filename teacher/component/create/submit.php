@@ -4,8 +4,8 @@ $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
 $needsSQL = true;
-include "../../restricted/db.php";
-include "../../restricted/sql.php";
+include "../../../restricted/db.php";
+include "../../../restricted/sql.php";
 
 $PARENT = isset($_POST["PARENT"]) ? $_POST["PARENT"] : null;
 $SYMBOL = isset($_POST["SYMBOL"]) ? $_POST["SYMBOL"] : "";
