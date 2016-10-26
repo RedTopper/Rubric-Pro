@@ -878,9 +878,8 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		log("JQUERY/user", "Rubrics > Edit");
 		changeColor(tier, $(this));
 		createTier(tier, "Edit");
-		callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (VIEW)",
+		callServer(tier, "/backend/teacher/rubrics/view.php", "view",
 		{
-			REQUEST: "VIEW",
 			NUM: $(this).data('num')
 		});
 		return false;
@@ -966,32 +965,6 @@ $(document).on('click', '#js_rubrics', doRubrics);
 					});
 					return false;
 				});
-		//edit: destroyquality
-		$(document).on('click', '#js_rubrics_edit_destroyquality', function(e) {
-			var tier = 2;
-			log("JQUERY/user", "Rubrics > Edit > Destroy Quality");
-			changeColor(tier, $(this));
-			createTier(tier, "Quality Destruction");
-			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (DESTROYQUALITY)",
-			{
-				REQUEST: "DESTROYQUALITY",
-				NUM: $(this).data('num')
-			});
-			return false;
-		});
-		//edit: destroycriteria
-		$(document).on('click', '#js_rubrics_edit_destroycriteria', function(e) {
-			var tier = 2;
-			log("JQUERY/user", "Rubrics > Edit > Destroy Criteria");
-			changeColor(tier, $(this));
-			createTier(tier, "Criterion Destruction");
-			callServer(tier, "/backend/rubrics_edit.php", "rubrics_edit (DESTROYCRITERIA)",
-			{
-				REQUEST: "DESTROYCRITERIA",
-				NUM: $(this).data('num')
-			});
-			return false;
-		});
 		//edit: editrubric
 		$(document).on('click', '#js_rubrics_edit_editrubric', function(e) {
 			var tier = 2;

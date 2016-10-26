@@ -597,3 +597,51 @@ SQL
 		return null;
 	}
 }
+
+/**
+ * Checks to see if a rubric actually belongs to a teacher.
+ *
+ * $teacherNum: The number of the teacher in the database.
+ * $rubricNum: The number of the rubric that we are checking if it belongs to the teacher.
+ * return: The rubric row if it matches, or null if it does not.
+ */
+function sql_doesTeacherOwnRubric($teacherNum, $rubricNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, TEACHER_NUM, MAX_POINTS_PER_CRITERIA, SUBTITLE
+FROM RUBRIC
+WHERE
+TEACHER_NUM = :teachernum AND
+NUM = :num
+SQL
+	);
+	$stmt->execute(array('teachernum' => $teacherNum, 'num' => $rubricNum));	
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetch();
+	} else {
+		return null;
+	}
+}
+
+/**
+ * Creates a new rubric bound to a teacher
+ *
+ * $teacherNum: The number of the teacher in the database.
+ * $maxPointsPerCriteria: The absolute maximum amount of points that a student may be awarded per criteria in this rubric.
+ * $subtitle: The title of the rubric.
+ */
+function sql_createRubric($teacherNum, $maxPointsPerCriteria, $subtitle) {
+	global $conn;
+	$stmt = $conn->prepare(<<<SQL
+INSERT INTO RUBRIC
+(TEACHER_NUM, MAX_POINTS_PER_CRITERIA, SUBTITLE)
+VALUES
+(:teacherNum, :points, :sub)
+SQL
+	);
+	$stmt->execute(array(
+	'teacherNum' => $teacherNum, 
+	'points' => $maxPointsPerCriteria,
+	'sub' => $subtitle));
+}
