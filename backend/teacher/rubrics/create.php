@@ -1,8 +1,9 @@
 <?php
+#Libraries.
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
-include "db.php";
+include "../../restricted/db.php";
 ?>
 <div class="object subtitle">
 	<h2>Information</h2>
@@ -14,7 +15,7 @@ include "db.php";
 	<input id="maxpoints" type="number" name="MAX_POINTS_PER_CRITERIA" placeholder="10"><br>
 </div>
 <a id="js_rubrics_create_submit" class="object create" href="#"><div class="arrow"></div><h3>Submit</h3></a>
-<div class="object subtitle"><h2>About<br>"Maximum points per criteria"</h2></div>
+<div class="object subtitle"><h2>About "Maximum points per criteria"</h2></div>
 <div class="object subtext">
 	<p>Maximum points per criteria represents the maximum amount of points that a student can acheive per row on a rubric.
 	<p>If you plan to score a student 9/10 in a criteria, the maximum points per criteria should be 10.</p>

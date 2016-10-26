@@ -11,7 +11,7 @@ $PARENT = isset($_POST["PARENT"]) ? $_POST["PARENT"] : null;
 
 #Validate that the parent can be null or a number greater than 0
 if(!($PARENT == null || is_numeric($PARENT) && $PARENT > 0)) {
-	showError("Whoops", "I didn't quite understand the request...", "Sorry about that!", 400);
+	db_showError("Whoops", "I didn't quite understand the request...", "Sorry about that!", 400);
 }
 
 #Get parent information

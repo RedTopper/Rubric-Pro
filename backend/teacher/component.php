@@ -65,8 +65,12 @@ if($COMPONENT === null) {
 	</a><?php 
 }
 
-if($components === null) {
-	db_showError("Notice","There's nothing here.","You can create a new component with the button above.",200);
+if($components === null) { ?>
+	<div class="object subtext">
+		<p>There's nothing here. 
+		<p>You can create a new component with the button above.
+	</div>
+	<?php die();
 }
 
 #Display all components from the data array.
@@ -74,7 +78,6 @@ foreach($components as $comp) {
 		
 	#If we are modifying the components, then we don't need to relay the rubric and component number. ?>
 	<a class="js_components_select object selectable" href="#" data-num="<?php echo $comp["NUM"] ?>">
-	
 	
 	<div class="arrow"></div>
 		<h3><?php 
@@ -152,4 +155,3 @@ if($COMPONENT === null) { ?>
 </div>
 <?php
 }
-?>

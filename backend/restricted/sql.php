@@ -545,7 +545,7 @@ SQL
  * Creates a new component bound to a teacher and bound to another component.
  *
  * $teacherNum: The number of the teacher in the database.
- * $parentComponentNum: The number 
+ * $parentComponentNum: The number of the parent component. Must be set. Use sql_createRootComponent() otherwise.
  * $symbol: The symbol of the component as described in sql_createRootComponent()
  * $name: The name of the component
  * $description: A long description of the component.
@@ -566,4 +566,34 @@ SQL
 	'symbol' => $symbol, 
 	'name' => $name,
 	'description' => $description));
+}
+
+/**
+ * Gets all of the rubrics bound to a teacher. This query also includes the max
+ * possible points of a rubric.
+ *
+ * $teacherNum: The number of the teacher in the database.
+ */
+function sql_getAllRubricsFromTeacher($teacherNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, TEACHER_NUM, MAX_POINTS_PER_CRITERIA, SUBTITLE, ((
+	SELECT COUNT(*) 
+	FROM RUBRIC_CRITERIA
+	WHERE
+	TEACHER_NUM = :teachernum AND
+	RUBRIC_NUM = RUBRIC.NUM) * MAX_POINTS_PER_CRITERIA) AS TOTAL_POINTS 
+FROM RUBRIC
+WHERE
+TEACHER_NUM = :teachernum
+ORDER BY SUBTITLE
+SQL
+	);
+	$stmt->execute(array('teachernum' => $teacherNum));	
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
 }

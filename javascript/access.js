@@ -846,7 +846,7 @@ function doRubrics(e) {
 	log("JQUERY/user", "Rubrics");
 	changeColor(tier, $(this));
 	createTier(tier, "Rubrics Editor");
-	callServer(tier, "/backend/rubrics.php", "rubrics");
+	callServer(tier, "/backend/teacher/rubrics.php", "rubrics");
 	return false;
 }
 $(document).on('click', '#js_rubrics', doRubrics);
@@ -856,7 +856,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		log("JQUERY/user", "Rubrics > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create New Rubric");
-		callServer(tier, "/backend/rubrics_create.php", "rubrics_create");
+		callServer(tier, "/backend/teacher/rubrics/create.php", "create");
 		return false;
 	});
 		//create: submit
@@ -865,7 +865,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			log("JQUERY/user", "Rubrics > Create > Submit");
 			changeColor(tier, $(this));
 			createTier(tier, "Submitting...");
-			callServer(tier, "/backend/rubrics_create_submit.php", "rubrics_create_submit",
+			callServer(tier, "/backend/teacher/rubrics/create_submit.php", "create_submit",
 			{
 				MAX_POINTS_PER_CRITERIA: $("#maxpoints").val(),
 				SUBTITLE: $("#subtitle").val()
