@@ -873,6 +873,13 @@ SQL
 	return $stmt->fetchAll();
 }
 
+/**
+ * Obtains every single cell of a rubric in a single line. 
+ * To format the cells, you'll need to know the width (amount of qualities) of the rubric.
+ * This method orders the cells by the points earned per quality automatically.
+ *
+ * $rubricNum: The number of the rubric to obtain the cells of.
+ */
 function sql_getAllRubricCells($rubricNum) {
 	global $conn;
 	$stmt = $conn->prepare(
@@ -903,4 +910,55 @@ SQL
 	);
 	$stmt->execute(array('criteria' => $criteriaNum));
 	return $stmt->fetchAll();
+}
+
+
+function sql_getRubricCell($rubricCriteriaNum, $rubricQualityNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT RUBRIC_QUALITY_NUM 
+FROM RUBRIC_CELL 
+WHERE 
+RUBRIC_CRITERIA_NUM = :criteria AND 
+RUBRIC_QUALITY_NUM = :quality
+SQL
+	);
+	$stmt->execute(array('criteria' => $rubricCriteriaNum, 'quality' => $rubricQualityNum));
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetch();
+	} else {
+		return null;
+	}
+}
+
+function sql_getRubricNumberFromRubricQuality($rubricQualityNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT RUBRIC_NUM 
+FROM RUBRIC_QUALITY 
+WHERE 
+NUM = :cellparent
+SQL
+	);
+	$stmt->execute(array('cellparent' => $rubricQualityNum));
+	return $stmt->fetch();
+}
+
+function sql_setRubricCellContents($rubricCriteriaNum, $rubricQualityNum, $contents) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+UPDATE RUBRIC_CELL 
+SET CONTENTS = :contents 
+WHERE 
+RUBRIC_CRITERIA_NUM = :criteria AND
+RUBRIC_QUALITY_NUM = :quality
+SQL
+	);
+	$stmt->execute(array(
+	'contents' => $contents, 
+	'criteria' => $rubricCriteriaNum, 
+	'quality' => $rubricQualityNum));
 }

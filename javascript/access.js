@@ -941,7 +941,6 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				createTier(tier, "");
 				callServer(tier, "/teacher/rubrics/view/addcriteria/component.php",
 				{
-					RUBRIC_NUM: $(this).data('rubricnum'),
 					COMPONENT: $(this).data('num'),
 					CRITERIA_NUM: $(this).data('criterionnum'),
 				});
@@ -955,7 +954,6 @@ $(document).on('click', '#js_rubrics', doRubrics);
 					createTier(tier, "Selecting...");
 					callServer(tier, "/teacher/rubrics/view/addcriteria/component/select.php", 
 					{
-						NUM: $(this).data('rubricnum'),
 						COMPONENT_NUM: $(this).data('num'),
 						CRITERIA_NUM: $(this).data('criterionnum'),
 					});
