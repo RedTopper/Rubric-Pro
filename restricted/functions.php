@@ -85,6 +85,22 @@ function fun_listRubrics($classname, $rubrics) {
 }
 
 /**
+ * This function creates a formatted list of all of the assignments.
+ *
+ * $classname: The HTML class name for each button (used for JQuery binding in access.js)
+ * $assignments: 2D array output from the database (you must call the database yourself!)
+ */
+function fun_listAssignments($classname, $assignments) {
+	foreach($assignments as $row) {  ?>
+		<a class="<?php echo $classname;?> object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><div class='arrow'></div>
+			<h3>
+			<?php echo htmlentities($row["TITLE"]); ?> 
+			</h3>
+		</a><?php
+	}
+}
+
+/**
  * This function creates a formatted list of all of the qualities in a rubric.
  *
  * $classname The HTML class name for each button (used for JQuery binding in access.js)

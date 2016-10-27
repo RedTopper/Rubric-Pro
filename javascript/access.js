@@ -292,6 +292,9 @@ function parseServerHeaders(tier, xhr) {
 			doRubrics();
 			supressMessage = true;
 			break;
+		case "assignment":
+			doAssignments();
+			supressMessage = true;
 	}
 	
 	//Parse dynamic tier removal tool.
@@ -1022,3 +1025,36 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				});
 				return false;
 			});
+//Sidebar: Assignment tab.
+//Function used during a JS-Redirect: assignment
+function doAssignments(e) {
+	var tier = 0;
+	log("JQUERY/user", "Assignment");
+	changeColor(tier, $(this));
+	createTier(tier, "Assignment Editor");
+	callServer(tier, "/teacher/assignment.php");
+	return false;
+}
+$(document).on('click', '#js_assignments', doAssignments);
+	//Assignment tab: create
+	$(document).on('click', '#js_assignment_create', function(e) {
+		var tier = 1;
+		log("JQUERY/user", "Assignment > Create");
+		changeColor(tier, $(this));
+		createTier(tier, "Create New Assignment");
+		callServer(tier, "/teacher/assignment/create.php");
+		return false;
+	});
+		//create: submit
+		$(document).on('click', '#js_assignment_create_submit', function(e) {
+			var tier = 2;
+			log("JQUERY/user", "Assignment > Create > Submit");
+			changeColor(tier, $(this));
+			createTier(tier, "Submitting...");
+			callServer(tier, "/teacher/assignment/create/submit.php",
+			{
+				TITLE: $("#title").val(),
+				DESCRIPTION: $("#description").val()
+			});
+			return false;
+		});

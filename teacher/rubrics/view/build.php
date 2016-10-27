@@ -73,7 +73,7 @@ header("JS-Resize: auto");
 		"' data-criteria='" . $cell["RUBRIC_CRITERIA_NUM"] . 
 		
 		#actual contents of cell
-		"'>" . $cell["CONTENTS"] . "</textarea></td>";
+		"'>" . htmlentities($cell["CONTENTS"]) . "</textarea></td>";
 		
 		#When we hit the end, finish the row and reset the column.
 		if($intcol == $qualitiesCount - 1) {

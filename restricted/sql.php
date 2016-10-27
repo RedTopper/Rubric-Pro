@@ -898,6 +898,12 @@ SQL
 	return $stmt->fetchAll();
 }
 
+/**
+ * Obtains a list of all the pre compiled symbol trees for a criteria.
+ *
+ * $criteriaNum: The criteria we would like to fetch the symbol trees from.
+ * return: An array of all of the compiled symbol trees. (may be empty)
+ */
 function sql_getAllCompiledSymbolTreesFromCriteria($criteriaNum) {
 	global $conn;
 	$stmt = $conn->prepare(
@@ -912,7 +918,12 @@ SQL
 	return $stmt->fetchAll();
 }
 
-
+/**
+ * Gets a specific rubric cell. Usefull for updating a specific cell in a rubric.
+ *
+ * $rubricCriteriaNum: The "y" cordnate of the cell in a rubric.
+ * $rubricQualityNum: The "x" cordnate of a cell in a rubric.
+ */
 function sql_getRubricCell($rubricCriteriaNum, $rubricQualityNum) {
 	global $conn;
 	$stmt = $conn->prepare(
@@ -961,4 +972,39 @@ SQL
 	'contents' => $contents, 
 	'criteria' => $rubricCriteriaNum, 
 	'quality' => $rubricQualityNum));
+}
+
+function sql_getAllAssignments($teacherNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, TITLE
+FROM ASSIGNMENT
+WHERE 
+TEACHER_NUM = :teachernum
+ORDER BY TITLE
+SQL
+	);
+	$stmt->execute(array('teachernum' => $teacherNum));
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
+}
+
+function sql_createAssignment($teacherNum, $title, $description) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO ASSIGNMENT 
+(TEACHER_NUM, TITLE, DESCRIPTION) 
+VALUES 
+(:teacher, :title, :desc)
+SQL
+	);
+	$stmt->execute(array(
+	'teacher' => $teacherNum,
+	'title' => $title,
+	'desc' => $description));
 }

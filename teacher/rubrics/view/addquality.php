@@ -22,7 +22,7 @@ include "../../../restricted/headrubric.php";
 </div><?php
 
 #Get qualities from database that match the rubric.
-$qualities = sql_getAllQualitiesInRubric($rubric["NUM"]);
+$qualities = sql_getAllQualitiesInRubric($rubric["NUM"], $differed);
 
 #Output them if they exist, otherwise show that nothing exists. 
 if($qualities === null) {

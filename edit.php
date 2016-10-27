@@ -38,6 +38,7 @@ $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen(
 					<a href="#" id="js_components"><span>Components</span></a>
 					<a href="#" id="js_rubrics"><span>Rubrics</span></a>
 					<a href="#" id="js_assignments"><span>Assignments</span></a>
+					<div class="smallspacer"></div>
 					<a href="/logout.php"><span>Log out of <?php echo htmlspecialchars($_SESSION["USERNAME"]); ?></span></a>
 				</div>
 			</div>
