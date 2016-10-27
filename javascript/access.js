@@ -804,9 +804,7 @@ $(document).on('click', '#js_components', doComponents);
 		createTier(tier, "");
 		callServer(tier, "/teacher/component.php",
 		{
-			COMPONENT: $(this).data('num'),
-			CRITERIA_NUM: $(this).data('criterionnum'),
-			RUBRIC_NUM: $(this).data('rubricnum')
+			COMPONENT: $(this).data('num')
 		});
 		return false;
 	});
@@ -940,10 +938,11 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				var tier = parseInt($(this).parent().attr('id').substring(4)); 
 				log("JQUERY/user", "Rubrics > Edit > Add Criteria > Components");
 				changeColor(tier, $(this));
-				createTier(tier, "Add Component");
+				createTier(tier, "");
 				callServer(tier, "/teacher/rubrics/view/addcriteria/component.php",
 				{
 					RUBRIC_NUM: $(this).data('rubricnum'),
+					COMPONENT: $(this).data('num'),
 					CRITERIA_NUM: $(this).data('criterionnum'),
 				});
 				return false;
@@ -956,8 +955,8 @@ $(document).on('click', '#js_rubrics', doRubrics);
 					createTier(tier, "Selecting...");
 					callServer(tier, "/teacher/rubrics/view/addcriteria/component/select.php", 
 					{
+						NUM: $(this).data('rubricnum'),
 						COMPONENT_NUM: $(this).data('num'),
-						RUBRIC_NUM: $(this).data('rubricnum'),
 						CRITERIA_NUM: $(this).data('criterionnum'),
 					});
 					return false;

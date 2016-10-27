@@ -41,7 +41,7 @@ if($COMPONENT === null) {
 
 	#If we do not have a matching parent show an error.
 	if($parent === null) { ?>
-		<div class="title"><h3>Something happened</h3></div><?php #show title because nothing in this section has one.
+		<div class="title"><h1>Something happened</h1></div><?php #show title because nothing in this section has one.
 		db_showError("Whoops!", "There is no matching parent.", "Sorry about that!", 400);
 	}
 

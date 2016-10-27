@@ -749,6 +749,13 @@ SQL
 	}
 }
 
+/**
+ * Creates and initializes a criteria.
+ * This method will create empty cells in the rubric so they can be used later.
+ *
+ * $rubricNum: Numbe of the rubric in the database.
+ * $criteriaTitle: The title of the criteria for the rubric (will appear on the left side)
+ */
 function sql_createCriteria($rubricNum, $criteriaTitle) {
 	global $conn;
 	#You can see the steps of quality submit for more details.
@@ -793,4 +800,73 @@ SQL
 		'criteria' => $criterion,
 		'quality' => $quality["NUM"]));
 	}
+}
+
+/**
+ * Gets a criteria information based off of a criteria number.
+ *
+ * $criteriaNum: The number of the criteria in the database.
+ * return: A row of one selected criteria or null if none is found.
+ */
+function sql_getCriteria($criteriaNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT RUBRIC_NUM 
+FROM RUBRIC_CRITERIA 
+WHERE
+NUM = :criteria
+SQL
+	);
+	$stmt->execute(array('criteria' => $criteriaNum));
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetch();
+	} else {
+		return null;
+	}
+}
+
+/**
+ * Gets a single rubric information. 
+ *
+ * $teacherNum: The number of the teacher in the database.
+ * $rubricNum: The number of the rubric to obtain information about.
+ * return: Either the selected rubric information or null if there is no match.
+ */
+function sql_getRubric($teacherNum, $rubricNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT TEACHER_NUM 
+FROM RUBRIC 
+WHERE 
+NUM = :rubric AND 
+TEACHER_NUM = :teacher
+SQL
+	);
+	$stmt->execute(array('rubric' => $rubricNum, "teacher" => $teacherNum));
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetch();
+	} else {
+		return null;
+	}
+}
+
+/**
+ * Fetch all of the criteria that is binded to a component.
+ *
+ * $criteriaNum: The number of the criteria in the database.
+ * return: All off the bound component NUMBERS (not the contents!)
+ */
+function getAllCriteriaComponents($criteriaNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT COMPONENT_NUM 
+FROM CRITERION 
+WHERE RUBRIC_CRITERIA_NUM = :criteria
+SQL
+	);
+	$stmt->execute(array('criteria' => $criteriaNum));
+	return $stmt->fetchAll();
 }
