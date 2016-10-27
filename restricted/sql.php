@@ -650,9 +650,10 @@ SQL
  * Fetches all qualities that are bound to a rubric.
  *
  * $rubricNum: Numbe of the rubric in the database.
+ * $qualitiesCount: Passed by reference. This method modifies this variable to contain the amount of selected qualities.
  * returns: Either a list of all of the qualities in SQL format or null if there are none. 
  */
-function sql_getAllQualitiesInRubric($rubricNum) {
+function sql_getAllQualitiesInRubric($rubricNum, &$qualitiesCount) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
@@ -663,8 +664,9 @@ RUBRIC_NUM = :rubric
 ORDER BY POINTS
 SQL
 	);
-	$stmt->execute(array('rubric' => $rubricNum));	
-	if($stmt->rowCount() > 0) {
+	$stmt->execute(array('rubric' => $rubricNum));
+	$qualitiesCount = $stmt->rowCount();
+	if($qualitiesCount > 0) {
 		return $stmt->fetchAll();
 	} else {
 		return null;
@@ -865,6 +867,38 @@ function getAllCriteriaComponents($criteriaNum) {
 SELECT COMPONENT_NUM 
 FROM CRITERION 
 WHERE RUBRIC_CRITERIA_NUM = :criteria
+SQL
+	);
+	$stmt->execute(array('criteria' => $criteriaNum));
+	return $stmt->fetchAll();
+}
+
+function sql_getAllRubricCells($rubricNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT RUBRIC_CRITERIA_NUM, RUBRIC_QUALITY_NUM, CONTENTS
+FROM RUBRIC_CELL, RUBRIC_CRITERIA, RUBRIC_QUALITY
+WHERE
+RUBRIC_CRITERIA.RUBRIC_NUM = :rubric AND
+RUBRIC_QUALITY.RUBRIC_NUM = :rubric AND
+RUBRIC_CELL.RUBRIC_QUALITY_NUM = RUBRIC_QUALITY.NUM AND
+RUBRIC_CELL.RUBRIC_CRITERIA_NUM = RUBRIC_CRITERIA.NUM
+ORDER BY RUBRIC_CRITERIA_NUM, RUBRIC_QUALITY.POINTS
+SQL
+	);
+	$stmt->execute(array('rubric' => $rubricNum));
+	return $stmt->fetchAll();
+}
+
+function sql_getAllCompiledSymbolTreesFromCriteria($criteriaNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT COMPILED_SYMBOL_TREE 
+FROM CRITERION 
+WHERE 
+RUBRIC_CRITERIA_NUM = :criteria
 SQL
 	);
 	$stmt->execute(array('criteria' => $criteriaNum));
