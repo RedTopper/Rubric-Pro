@@ -32,14 +32,14 @@ $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen(
 					<div id="version"><?php echo $version; ?></div>
 				</div>
 				<div id="navigation">
-					<a href="#" id="js_dashboard"><span>Dashboard</span></a>
-					<a href="#" id="js_classes"><span>Classes</span></a>
-					<a href="#" id="js_accounts"><span>Accounts</span></a>
-					<a href="#" id="js_components"><span>Components</span></a>
-					<a href="#" id="js_rubrics"><span>Rubrics</span></a>
-					<a href="#" id="js_assignments"><span>Assignments</span></a>
+					<a href="#" id="js_dashboard"><img class="navicon" src="images/sidebar/dashboard.svg"><span>Dashboard</span></a>
+					<a href="#" id="js_classes"><img class="navicon" src="images/sidebar/class.svg"><span>Classes</span></a>
+					<a href="#" id="js_accounts"><img class="navicon" src="images/sidebar/accounts.svg"><span>Accounts</span></a>
+					<a href="#" id="js_components"><img class="navicon" src="images/sidebar/component.svg"><span>Components</span></a>
+					<a href="#" id="js_rubrics"><img class="navicon" src="images/sidebar/rubrics.svg"><span>Rubrics</span></a>
+					<a href="#" id="js_assignments"><img class="navicon" src="images/sidebar/assignment.svg"><span>Assignments</span></a>
 					<div class="smallspacer"></div>
-					<a href="/logout.php"><span>Log out of <?php echo htmlspecialchars($_SESSION["USERNAME"]); ?></span></a>
+					<a href="/logout.php"><img class="navicon" src="images/sidebar/logout.svg"><span>Log out</span></a>
 				</div>
 			</div>
 		</div>

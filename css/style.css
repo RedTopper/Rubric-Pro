@@ -46,6 +46,14 @@ body {
 	border: <?php echo $SEPERATION_BORDER; //esc:?>;
 	border-bottom: none;
 }
+.navicon {
+	display: block;
+	width: 30px;
+	height: 30px;
+	padding: 10px 15px 10px 10px;
+	margin: 0;
+	float: left;
+}
 
 /* Logo at the top of the Navigation Bar */
 #logo {
@@ -54,7 +62,7 @@ body {
 }
 #logowrapper {
 	padding: 10px;
-	margin: 20px 0 10px;
+	margin: 3px 0 10px;
 }
 #name {
 	padding: 10px 0;
@@ -91,20 +99,20 @@ body {
 	height: <?php echo $NAV_LINK_HEIGHT; //esc:?>;
 	line-height: <?php echo $NAV_LINK_HEIGHT; //esc:?>;
 	display: block;
-	text-align: center;
+	text-align: left;
 }
 #navigation a:hover {
 	background-color: #222;
 }
 #navigation a span {
-	display: inline-block;
-	vertical-align: middle;
-	line-height: normal; 
-	
 	/* Decoration for sidebar */
 	font-size: 18px;
 	text-decoration: none;
 	color: #CCC;
+	display: block;
+	height: 50px;
+	width: auto;
+	float: left;
 }
 
 #contentscroller {

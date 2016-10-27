@@ -20,7 +20,7 @@
 	
 	//others
 	$NAV_LINK_HEIGHT = "50px";
-	$NAV_BAR_WIDTH = "160px";
+	$NAV_BAR_WIDTH = "180px";
 	$SEPERATION_BORDER = "1px solid #777";
 	include "style.css";
 ?>
