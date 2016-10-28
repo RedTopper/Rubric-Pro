@@ -186,6 +186,19 @@ SQL
 	$stmt->execute(array('teacher' => $teacherNum, 'student' => $studentNum));
 }
 
+function sql_bindRubricToAssignment($rubricNum, $assignmentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO `ASSIGNMENT-RUBRIC_LINKER`
+(RUBRIC_NUM, ASSIGNMENT_NUM)
+VALUES
+(:rubricnum, :assignmentnum)
+SQL
+	);
+	$stmt->execute(array('rubricnum' => $rubricNum, 'assignmentnum' => $assignmentNum));
+}
+
 /**
  * This function will attempt to disconnect a student from a teacher account
  *
@@ -262,6 +275,21 @@ CLASS_NUM = :classnum
 SQL
 	);
 	$stmt->execute(array('studentnum' => $studentNum, 'classnum' => $classNum));
+	return $stmt->rowCount() > 0;
+}
+
+function sql_doesRubricAlreadyExistInAssignment($rubricNum, $assignmentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT RUBRIC_NUM, ASSIGNMENT_NUM 
+FROM `ASSIGNMENT-RUBRIC_LINKER`
+WHERE 
+RUBRIC_NUM = :rubricnum AND
+ASSIGNMENT_NUM = :assnnum
+SQL
+	);
+	$stmt->execute(array('rubricnum' => $rubricNum, 'assnnum' => $assignmentNum));
 	return $stmt->rowCount() > 0;
 }
 
@@ -617,6 +645,25 @@ NUM = :num
 SQL
 	);
 	$stmt->execute(array('teachernum' => $teacherNum, 'num' => $rubricNum));	
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetch();
+	} else {
+		return null;
+	}
+}
+
+function sql_doesTeacherOwnAssignment($teacherNum, $assignmentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, TEACHER_NUM, TITLE, DESCRIPTION
+FROM ASSIGNMENT
+WHERE
+TEACHER_NUM = :teachernum AND
+NUM = :num
+SQL
+	);
+	$stmt->execute(array('teachernum' => $teacherNum, 'num' => $assignmentNum));	
 	if($stmt->rowCount() > 0) {
 		return $stmt->fetch();
 	} else {

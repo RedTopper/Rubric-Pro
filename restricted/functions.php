@@ -90,9 +90,10 @@ function fun_listRubrics($classname, $rubrics) {
  * $classname: The HTML class name for each button (used for JQuery binding in access.js)
  * $assignments: 2D array output from the database (you must call the database yourself!)
  */
-function fun_listAssignments($classname, $assignments) {
+function fun_listAssignments($classname, $assignments, $rubricNumber = null) {
 	foreach($assignments as $row) {  ?>
-		<a class="<?php echo $classname;?> object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><div class='arrow'></div>
+		<a class="<?php echo $classname;?> object selectable" href="#" 
+				data-assignmentnum="<?php echo $row["NUM"] ?>"<?php echo ($rubricNumber === null ? "" : " data-num='$rubricNumber'");?>><div class='arrow'></div>
 			<h3>
 			<?php echo htmlentities($row["TITLE"]); ?> 
 			</h3>

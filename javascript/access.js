@@ -973,6 +973,31 @@ $(document).on('click', '#js_rubrics', doRubrics);
 					});
 					return false;
 				});
+		//edit: addassignnment 
+		$(document).on('click', '#js_rubrics_edit_addassignment', function(e) {
+			var tier = 2;
+			log("JQUERY/user", "Rubrics > Edit > Bind Assignment");
+			changeColor(tier, $(this));
+			createTier(tier, "Pick an assignment");
+			callServer(tier, "/teacher/rubrics/view/addassignment.php", 
+			{
+				NUM: $(this).data('num')
+			});
+			return false;
+		});
+			//addassignnment: submit 
+			$(document).on('click', '.js_rubrics_addassignment_select', function(e) {
+				var tier = 3;
+				log("JQUERY/user", "Rubrics > Edit > Bind Assignment > Select");
+				changeColor(tier, $(this));
+				createTier(tier, "Selecting...");
+				callServer(tier, "/teacher/rubrics/view/addassignment/select.php", 
+				{
+					NUM: $(this).data('num'),
+					ASSIGNMENT_NUM: $(this).data('assignmentnum')
+				});
+				return false;
+			});
 		//edit: editrubric
 		$(document).on('click', '#js_rubrics_edit_editrubric', function(e) {
 			var tier = 2;

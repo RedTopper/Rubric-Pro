@@ -16,7 +16,7 @@ include "../../restricted/headrubric.php";
 <div class="object subtitle">
 	<h2>Assignments:</h2>
 </div>
-<a id="js_rubrics_edit_bindrubric" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Bind this rubric to an assignment</h3></a>
+<a id="js_rubrics_edit_addassignment" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Bind this rubric to an assignment</h3></a>
 <div class="object subtext">
 	<p>You can use the button above to bind a rubric to an assignment.
 </div>
