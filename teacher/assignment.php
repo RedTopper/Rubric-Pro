@@ -10,7 +10,7 @@ include "../restricted/functions.php";
 include "../restricted/sql.php";
 ?>
 <div class="object subtitle">
-	<h2>Your assignments</h2>
+	<h2>Your Assignments</h2>
 </div>
 <a id="js_assignment_create" class="object create" href="#">
 	<div class="arrow">

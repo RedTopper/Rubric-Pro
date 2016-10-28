@@ -15,7 +15,7 @@ if($STUDENT == "") {
 
 #Check to see if there is really a student!
 if(!sql_isTeacherAndStudentLinked($_SESSION["NUM"], $STUDENT)) {
-	db_showError("Whoops!", "Something went wrong when requesting that student.", "Check to see if the student still exists and is linked to your account.", 400);
+	db_showError("Whoops!", "Something went wrong when requesting that student.", "Check to see if the student still exists and is linked to your account.", 500);
 }
 $info = sql_getStudentInformation($STUDENT);
 

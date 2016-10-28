@@ -6,6 +6,7 @@ include "../../../restricted/headrubric.php";
 
 #output creation zone?>
 <div class="object subtitle">
+	<a href="#" data-document="CRITERIA" class="js_help"><img class="help" src="images/help.svg" alt="Help" title="Help"></a>
 	<h2>Create a new criteria</h2>
 </div>
 <div class="editor">
@@ -25,6 +26,3 @@ if($criteria === null) {
 } else {
 	fun_listCriterion("js_rubrics_edit_addcriteria_addcomponent", $criteria, "selectable", $rubric["NUM"]);
 }
-
-#Quick table to show the user what they are editing
-fun_createExampleTableCriteria(); 

@@ -54,6 +54,18 @@ body {
 	margin: 0;
 	float: left;
 }
+.js_help {
+	display: block;
+	width: 30px;
+	height: 30px;
+	padding: 10px;
+	margin: -10px 0 0 0;
+	float: right;
+}
+.help {
+	width: 100%;
+	height: 100%;
+}
 
 /* Logo at the top of the Navigation Bar */
 #logo {

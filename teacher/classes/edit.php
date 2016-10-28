@@ -27,40 +27,68 @@ if($class == null) {
 	<p><?php echo "Term: " . $class["TERM"]; ?>.
 	<p><?php echo htmlentities($class["PERIOD"]); ?>.
 	<p><?php echo ($class["DESCRIPTOR"] !== "" ? "Description: " . htmlentities($class["DESCRIPTOR"]) . "." : "");  ?>
+</div>
+
+<div class="object subtitle">
+	<h2>Current assignments:</h2>
 </div><?php
 
-#Project management section ?>
+$currentAssignments = null; #sql_getAllCurrentAssignments($CLASS);
+if($currentAssignments === null) {
+	#There are no current assignments ?>
+	</div>
+		<div class="object subtext">
+		<p>No assignments are currently active in this class.
+		<p>Try adding some through the "Assignmments" tab.
+	</div><?php
+} else {
+	#fun_listAssignments($currentAssignments); ?>
+	</div>
+		<div class="object subtext">
+		<p>You can assign assignments through the "Assignmments" tab.
+	</div><?php
+} ?>
+
 <div class="object subtitle">
-	<h2>Assignment management:</h2>
-</div>
-<a id="js_classes_edit_viewprojects" class="object create" href="#"><div class="arrow"></div>
-	<h3>Bind</h3>
-</a>
-<a id="js_classes_edit_createprojects" class="object warn white" href="#"><div class="arrow"></div>
-	<h3>Unbind</h3>
-</a>
-<?php
+	<h2>Past assignments:</h2>
+</div><?php
+
+$pastAssignments = null; #sql_getAllPastAssignments($CLASS);
+if($pastAssignments === null) {
+	#No past assignments either. ?>
+	</div>
+		<div class="object subtext">
+		<p>No assignments have ever been active in this class.
+		<p>Try adding some through the "Assignmments" tab.
+	</div><?php
+} else {
+	#fun_listAssignments($pastAssignments);	?>
+	</div>
+		<div class="object subtext">
+		<p>You can assign assignments through the "Assignmments" tab.
+	</div><?php
+} 
 
 #Students that belong to this class ?>
 <div class="object subtitle">
-	<h2>Current members:</h2>
+	<h2>Students:</h2>
 </div>
 <?php
 
 #Gets a list of students in a class that belongs to the logged in teacher.
 $students = sql_getListOfStudentsViaClass($class["NUM"]);
-if($students == null) { ?>
+if($students == null) { 
+	#There are no students.?>
 	</div>
 		<div class="object subtext">
-		<p>No students belong to this class. Try adding some through the accounts tab.
+		<p>No students belong to this class.
+		<p>Try adding some through the accounts tab.
+	</div><?php
+} else {
+	#Display students. Last false means not selectable (as in you cannot click on it)
+	fun_listStudents("idkbro", $students, false); ?>
 	</div>
-	<?php die();
+		<div class="object subtext">
+		<p>You can add and remove more students throught the "Accounts" tab.
+	</div><?php
 }
-
-#Display students. Last false means not selectable (as in you cannot click on it)
-fun_listStudents("idkbro", $students, false); ?>
-
-</div>
-	<div class="object subtext">
-	<p>You can add and remove more students throught the "Accounts" tab.
-</div>

@@ -17,7 +17,7 @@ if(strlen($SUBTITLE) < 2) {
 
 #Validate that the points are actually numbers.
 if(!(is_numeric($MAX_POINTS_PER_CRITERIA) && $MAX_POINTS_PER_CRITERIA >= 0)) {
-	db_showError("Error creating rubric!", "The points per criteria needs to be a number greater than 0.", "Sorry about that!", 400);
+	db_showError("Error creating rubric!", "The points per criteria needs to be a number greater than or equal to 0.", "Sorry about that!", 400);
 }
 
 #Write to database.

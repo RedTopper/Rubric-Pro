@@ -9,7 +9,7 @@ if(!isset($needsFunction)) die();
  * $type The css type of the list. Curently available: "selectable" - generic grey "destroy" - Appears red "create" - Appears green. 
  *		 "selectable" by default
  */
-function fun_listClasses($classname, $data, $type = "selectable") {
+function fun_listClasses($classname, $data, $type = "selectable", $prependText = "") {
 	foreach($data as $row) { ?>
 		<a class="<?php echo $classname; ?> object <?php echo $type; ?>" href="#" data-num="<?php echo $row["NUM"] ?>">
 		<div class="arrow"></div>
@@ -17,7 +17,7 @@ function fun_listClasses($classname, $data, $type = "selectable") {
 			<?php 
 
 			#Outputs the classes
-			echo htmlentities($row["NAME"]) . "<br><div class='monospace'>" .
+			echo $prependText . htmlentities($row["NAME"]) . "<br><div class='monospace'>" .
 			"Year " . $row["YEAR"] . "<br>" .
 			"Term " . $row["TERM"] . "<br>" . 
 			htmlentities($row["PERIOD"]) . 

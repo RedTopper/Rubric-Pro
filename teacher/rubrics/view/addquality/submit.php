@@ -12,7 +12,7 @@ if(strlen($POINTS) < 1 || !is_numeric($POINTS)) {
 
 #Verification of name.
 if(strlen($QUALITY_TITLE) < 2) {
-	db_showError("Error creating quality!", "The name must be longer than 1 character.", "Check what you typed, then try again.", 400);
+	db_showError("Error creating quality!", "The name must be longer than 2 characters.", "Check what you typed, then try again.", 400);
 }
 
 sql_createQuality($rubric["NUM"], $POINTS, $QUALITY_TITLE);

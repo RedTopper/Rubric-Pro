@@ -558,6 +558,17 @@ $(document).on('click', '#js_consoleshow', function(e) {
 	return false;
 });
 
+//Anything that has to do with help
+$(document).on('click', '.js_help', function(e) {
+	var tier = parseInt($(this).parent().parent().attr('id').substring(4)); 
+	log("JQUERY/user", "The user requested help.");
+	createTier(tier, "Help");
+	callServer(tier, "/help.php",
+	{
+		DOCUMENT: $(this).data('document')
+	});
+	return false;
+});
 
 //======================================================================================================
 //=============Stuff beyond this point is used for sending and getting data from the server=============
@@ -1029,9 +1040,9 @@ $(document).on('click', '#js_rubrics', doRubrics);
 //Function used during a JS-Redirect: assignment
 function doAssignments(e) {
 	var tier = 0;
-	log("JQUERY/user", "Assignment");
+	log("JQUERY/user", "Assignments");
 	changeColor(tier, $(this));
-	createTier(tier, "Assignment Editor");
+	createTier(tier, "Assignments Editor");
 	callServer(tier, "/teacher/assignment.php");
 	return false;
 }
@@ -1039,7 +1050,7 @@ $(document).on('click', '#js_assignments', doAssignments);
 	//Assignment tab: create
 	$(document).on('click', '#js_assignment_create', function(e) {
 		var tier = 1;
-		log("JQUERY/user", "Assignment > Create");
+		log("JQUERY/user", "Assignments > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create New Assignment");
 		callServer(tier, "/teacher/assignment/create.php");

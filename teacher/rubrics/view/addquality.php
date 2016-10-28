@@ -6,6 +6,7 @@ include "../../../restricted/headrubric.php";
 
 #First, display the user input box so the user can actually create a new quality. ?>
 <div class="object subtitle">
+	<a href="#" data-document="QUALITY" class="js_help"><img class="help" src="images/help.svg" alt="Help" title="Help"></a>
 	<h2>Create a new quality</h2>
 </div>
 <div class="editor">
@@ -30,6 +31,3 @@ if($qualities === null) {
 } else {
 	fun_listQuality("test", $qualities, $rubric["MAX_POINTS_PER_CRITERIA"]);
 }
-			
-#Quick table to show the user what they are editing.
-fun_createExampleTableQualities(); 

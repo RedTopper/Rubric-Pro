@@ -37,4 +37,3 @@ sql_createClass($_SESSION["NUM"], $NAME, $YEAR, $PERIOD, $TERM, $DESCRIPTOR);
 header("JS-Redirect: classes");
 
 db_showError("Ok!", "The class has been created.", "", 201);
-?>

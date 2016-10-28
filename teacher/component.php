@@ -28,6 +28,7 @@ if($COMPONENT === null) {
 	
 	#Title for the root components. ?>
 	<div class="object subtitle">
+		<a href="#" data-document="COMPONENTEDITOR" class="js_help"><img class="help" src="images/help.svg" alt="Help" title="Help"></a>
 		<h2>Your root components:</h2>
 	</div>
 	<a class="js_component_create object create" href="#">
@@ -90,68 +91,4 @@ foreach($components as $comp) {
 			echo htmlentities($comp["DESCRIPTION"]); ?>
 		</div>
 	</a><?php 
-}
-
-#If we are at root, then display help information to the user.
-if($COMPONENT === null) { ?>
-
-<div class="object subtext spacer"></div>
-<div class="object subtitle">
-	<h2>How to use <br>"The Component Editor"</h2>
-</div>
-<div class="object subtext">
-	<p>Welcome to the component editor!
-	<p>Here you can specify parts of your curriculum so you can see the progress of your class as it relates to each component!
-	<p>To use this feature to the best of your ability, you should start with a broad subject in the "component root" (That's the section you are currently
-	looking at right now).
-	<p>For example, a root component might look like this:
-	<ul>
-		<li>Symbol: "CIS"
-		<li>Name: "Computer Science"
-		<li>Description: "My computer science curriculum!"
-	</ul>
-	<p>You can then add a component to your component to better section your class.
-	<p>Following the first example, you could do something like this:
-	<ul>
-		<li>Parent: "CIS"
-		<li>Symbol: "Chapter 1"
-		<li>Name: "Design"
-		<li>Description: "Understanding of the concepts of design, formatting, and structure of Programming"
-	</ul>
-	<p>You can even add components to those components!
-</div>
-<div class="object subtitle">
-	<h2>Getting started...</h2>
-</div>
-<div class="object subtext">
-	<ul>
-		<li>Use a class name as your "root component". For example: 
-		<ul>
-			<li>"History"
-			<li>"AP Calculus"
-			<li>"Computer Science"
-			<li>"Intro to Psych"
-			<li>etc...
-		</ul>
-		<li>Put chapter names inside your "root component". For example: 
-		<ul>
-			<li>"Chapter 1: Understanding mechanics"
-			<li>"Chapter 2: Class design"
-			<li>"Chapter 4: Civil War"
-			<li>"Part 1: Derivitives"
-			<li>"Outcome 2: Fitness"
-			<li>etc...
-		</ul>
-		<li>Put section names inside your chapter names. For example: 
-		<ul>
-			<li>"Section A: The Gear"
-			<li>"Part A: The for loop"
-			<li>"B: The Union and the Confederates"
-			<li>"VI: Limits"
-			<li>etc...
-		</ul>
-		<li>It's also possible that your curriculum is divided into components for you. Check your course outline for more details.
-	</ul>
-</div>
-<?php
 }
