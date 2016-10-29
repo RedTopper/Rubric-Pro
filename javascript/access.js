@@ -803,7 +803,7 @@ function doComponents(e) {
 	var tier = 0;
 	log("JQUERY/user", "Components");
 	changeColor(tier, $(this));
-	createTier(tier, "Component Editor");
+	createTier(tier, "Components");
 	callServer(tier, "/teacher/component.php");
 	return false;
 }
@@ -856,7 +856,7 @@ function doRubrics(e) {
 	var tier = 0;
 	log("JQUERY/user", "Rubrics");
 	changeColor(tier, $(this));
-	createTier(tier, "Rubrics Editor");
+	createTier(tier, "Rubrics");
 	callServer(tier, "/teacher/rubrics.php");
 	return false;
 }
@@ -1067,7 +1067,7 @@ function doAssignments(e) {
 	var tier = 0;
 	log("JQUERY/user", "Assignments");
 	changeColor(tier, $(this));
-	createTier(tier, "Assignments Editor");
+	createTier(tier, "Assignments");
 	callServer(tier, "/teacher/assignment.php");
 	return false;
 }

@@ -1,6 +1,8 @@
 <?php
 #Libraries.
+$needsFunction = true;
 include "../../restricted/headrubric.php";
+include "../../restricted/functions.php";
 ?>
 <div class="object subtitle">
 	<h2><?php echo htmlentities($rubric["SUBTITLE"])?>: </h2>
@@ -17,6 +19,22 @@ include "../../restricted/headrubric.php";
 	<h2>Assignments:</h2>
 </div>
 <a id="js_rubrics_edit_addassignment" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Bind this rubric to an assignment</h3></a>
-<div class="object subtext">
-	<p>You can use the button above to bind a rubric to an assignment.
-</div>
+
+<?php
+$assignments = sql_getListOfRubricAssignmentsViaTeacher($_SESSION['NUM'], $rubric["NUM"]);
+
+#If there are no classes
+if($assignments == null) {	
+	#Show a tip to add a student to a class. ?>
+	
+	<div class="object subtext">
+		<p>You can use the button above to bind a rubric to an assignment.
+	</div><?php
+} else {
+	
+	#Print every class.
+	fun_listAssignments("js_rubrics_view_removeassignment", $assignments, null, "Remove this rubric from ", "warn"); ?>
+	<div class="object subtext">
+		<p>You can add a rubric to as many assignments as you wish.
+	</div><?php
+}

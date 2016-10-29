@@ -346,6 +346,28 @@ SQL
 	}
 }
 
+function sql_getListOfRubricAssignmentsViaTeacher($teacherNum, $rubricNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT ASSIGNMENT.NUM, ASSIGNMENT.TITLE, ASSIGNMENT.DESCRIPTION
+FROM `ASSIGNMENT-RUBRIC_LINKER` ARL, ASSIGNMENT
+WHERE
+ARL.RUBRIC_NUM = :rubricNum AND 
+ARL.ASSIGNMENT_NUM = ASSIGNMENT.NUM AND
+ASSIGNMENT.TEACHER_NUM = :teacherNum
+ORDER BY TITLE
+SQL
+	);
+	$stmt->execute(array('rubricNum' =>  $rubricNum, 'teacherNum' => $teacherNum));
+	
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
+}
+
 /**
  * Gets a list of classes that belong to a specific teacher.
  *

@@ -10,7 +10,7 @@ include "../restricted/functions.php";
 include "../restricted/sql.php";
 ?>
 <div class="object subtitle">
-	<h2>Your classes</h2>
+	<h2>Your Classes</h2>
 </div>
 <a id="js_classes_create" class="object create" href="#"><div class="arrow"></div><h3>Create new class</h3></a>
 <?php

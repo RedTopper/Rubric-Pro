@@ -90,12 +90,12 @@ function fun_listRubrics($classname, $rubrics) {
  * $classname: The HTML class name for each button (used for JQuery binding in access.js)
  * $assignments: 2D array output from the database (you must call the database yourself!)
  */
-function fun_listAssignments($classname, $assignments, $rubricNumber = null) {
+function fun_listAssignments($classname, $assignments, $rubricNumber = null, $prependText = "", $type = "selectable") {
 	foreach($assignments as $row) {  ?>
-		<a class="<?php echo $classname;?> object selectable" href="#" 
+		<a class="<?php echo $classname;?> object <?php echo $type; ?>" href="#" 
 				data-assignmentnum="<?php echo $row["NUM"] ?>"<?php echo ($rubricNumber === null ? "" : " data-num='$rubricNumber'");?>><div class='arrow'></div>
 			<h3>
-			<?php echo htmlentities($row["TITLE"]); ?> 
+			<?php echo $prependText . htmlentities($row["TITLE"]); ?> 
 			</h3>
 		</a><?php
 	}
@@ -323,7 +323,7 @@ function fun_getCompiledSymbolTree($teacherNum, $num) {
 		} else {
 			
 			//Something happened where the teacher does not have the rights to that component.
-			showError("Whoops!", "That component doesn't belong to you.", "Try refreshing the page to fix the problem.", 400);
+			db_showError("Whoops!", "That component doesn't belong to you.", "Try refreshing the page to fix the problem.", 400);
 		}
 	} while(true);
 	return $tree;
