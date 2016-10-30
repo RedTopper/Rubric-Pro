@@ -31,9 +31,6 @@ var HEADER_RESIZE = "JS-Resize";
 //Header sent by PHP for redirecting a user.
 var HEADER_REDIRECT = "JS-Redirect";
 
-//If this needs to be a color, remove bkg as well. You'll need to update that in code.
-var BACKGROUND_FOR_SELECT = "linear-gradient(to bottom, rgba(0,75,150,1) 0%,rgba(0,38,76,1) 100%)";
-
 //Default of blue gears.
 var BACKGROUND_EDIT_IMAGE_LOAD = "url('/images/gears.svg')";
 
@@ -521,23 +518,23 @@ function changeColor(tier, object) {
 		//If we are looking at the navigation bar, we need to handle it specially
 		//because we are not in a "tier" yet.
 		$('#navigation').children().each(function () {
-			$(this).removeAttr('style');
+			$(this).removeClass('selectedsidebar');
 			$(this).removeAttr("select");
 		});
 		
 		//We'll set it to black.
-		object.css("background-color", "#000");
+		object.addClass("selectedsidebar");
 		object.attr("select", "true");
 	} else {
 		
 		//In a tier, it's fairly modular.
 		$('#tier' + tier).children().each(function () {
-			$(this).removeAttr('style');
+			$(this).removeClass('selectedpath');
 			$(this).removeAttr("select");
 		});
 		
 		//Gradient.
-		object.css("background", BACKGROUND_FOR_SELECT);
+		object.addClass("selectedpath");
 		object.attr("select", "true");
 	}
 }
@@ -665,7 +662,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 				});
 				return false;
 			});
-	//Accounts tab: Action on ANY student
+	//Accounts tab: view
 	$(document).on('click', '.js_accounts_view', function(e) {
 		var tier = 1;
 		changeColor(tier, $(this));
@@ -677,7 +674,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 		});
 		return false;
 	});
-		//Action on ANY student: add to class
+		//view: add to class
 		$(document).on('click', '#js_accounts_view_addclass', function(e) {
 			var tier = 2;
 			changeColor(tier, $(this));
@@ -705,7 +702,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 				});
 				return false;
 			});
-		//Action on ANY student: removal from a class
+		//view: removal from a class
 		$(document).on('click', '.js_accounts_view_removeclass', function(e) {
 			var tier = 2;
 			changeColor(tier, $(this));
@@ -721,7 +718,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 			});
 			return false;
 		});
-		//Action on ANY student: reset password
+		//view: reset password
 		$(document).on('click', '#js_accounts_view_reset', function(e) {
 			var tier = 2; 
 			changeColor(tier, $(this));
@@ -745,7 +742,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 				});
 				return false;
 			});
-		//Action on ANY student: unblind account
+		//view: unblind account
 		$(document).on('click', '#js_accounts_view_unbind', function(e) {
 			var tier = 2;
 			changeColor(tier, $(this));
@@ -823,10 +820,10 @@ $(document).on('click', '#js_classes', doClass);
 //Function used during a JS-Redirect: components
 function doComponents(e) {
 	var tier = 0;
-	log("JQUERY/user", "Components");
 	changeColor(tier, $(this));
 	createTier(tier, "Components");
-	callServer(tier, "/teacher/component.php");
+	log("JQUERY/user", "Components");
+	callServer(tier, "/teacher/components.php");
 	return false;
 }
 $(document).on('click', '#js_components', doComponents);
@@ -838,31 +835,31 @@ $(document).on('click', '#js_components', doComponents);
 		log("JQUERY/user", "Components > Select");
 		changeColor(tier, $(this));
 		createTier(tier, "");
-		callServer(tier, "/teacher/component.php",
+		callServer(tier, "/teacher/components.php",
 		{
 			COMPONENT_NUM: $(this).data('componentnum')
 		});
 		return false;
 	});
 	//Components tab: create
-	$(document).on('click', '.js_component_create', function(e) {
+	$(document).on('click', '.js_components_create', function(e) {
 		var tier = parseInt($(this).parent().attr('id').substring(4)); 
-		log("JQUERY/user", "Components > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create New Component");
-		callServer(tier, "/teacher/component/create.php",
+		log("JQUERY/user", "Components > Create");
+		callServer(tier, "/teacher/components/create.php",
 		{
-			PARENT_NUM: $(this).data('parentnum')
+			PARENT_NUM: $(this).data('componentnum')
 		});
 		return false;
 	});
 		//create: submit
-		$(document).on('click', '#js_component_create_submit', function(e) {
+		$(document).on('click', '#js_components_create_submit', function(e) {
 			var tier = parseInt($(this).parent().attr('id').substring(4)); 
-			log("JQUERY/user", "Components > Create > Submit");
 			changeColor(tier, $(this));
 			createTier(tier, "Submitting...");
-			callServer(tier, "/teacher/component/create/submit.php",
+			log("JQUERY/user", "Components > Create > Submit");
+			callServer(tier, "/teacher/components/create/submit.php",
 			{
 				PARENT_NUM: $(this).data('parentnum'),
 				SYMBOL: $("#symbol").val(),
@@ -876,9 +873,9 @@ $(document).on('click', '#js_components', doComponents);
 //Function used during a JS-Redirect: rubrics
 function doRubrics(e) {
 	var tier = 0;
-	log("JQUERY/user", "Rubrics");
 	changeColor(tier, $(this));
 	createTier(tier, "Rubrics");
+	log("JQUERY/user", "Rubrics");
 	callServer(tier, "/teacher/rubrics.php");
 	return false;
 }
@@ -886,18 +883,18 @@ $(document).on('click', '#js_rubrics', doRubrics);
 	//Rubrics tab: create
 	$(document).on('click', '#js_rubrics_create', function(e) {
 		var tier = 1;
-		log("JQUERY/user", "Rubrics > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create New Rubric");
+		log("JQUERY/user", "Rubrics > Create");
 		callServer(tier, "/teacher/rubrics/create.php");
 		return false;
 	});
 		//create: submit
 		$(document).on('click', '#js_rubrics_create_submit', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Rubrics > Create > Submit");
 			changeColor(tier, $(this));
 			createTier(tier, "Submitting...");
+			log("JQUERY/user", "Rubrics > Create > Submit");
 			callServer(tier, "/teacher/rubrics/create/submit.php",
 			{
 				MAX_POINTS_PER_CRITERIA: $("#maxpoints").val(),
@@ -905,24 +902,24 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			});
 			return false;
 		});
-	//Rubrics tab: edit
-	$(document).on('click', '.js_rubrics_select', function(e) {
+	//Rubrics tab: view
+	$(document).on('click', '.js_rubrics_view', function(e) {
 		var tier = 1;
-		log("JQUERY/user", "Rubrics > Edit");
 		changeColor(tier, $(this));
-		createTier(tier, "Edit");
+		createTier(tier, "View");
+		log("JQUERY/user", "Rubrics > View");
 		callServer(tier, "/teacher/rubrics/view.php",
 		{
 			RUBRIC_NUM: $(this).data('rubricnum')
 		});
 		return false;
 	});
-		//edit: addquality
-		$(document).on('click', '#js_rubrics_edit_addquality', function(e) {
+		//view: addquality
+		$(document).on('click', '#js_rubrics_view_addquality', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Rubrics > Edit > Add Quality");
 			changeColor(tier, $(this));
 			createTier(tier, "New Quality");
+			log("JQUERY/user", "Rubrics > View > Add Quality");
 			callServer(tier, "/teacher/rubrics/view/addquality.php",
 			{
 				RUBRIC_NUM: $(this).data('rubricnum')
@@ -930,11 +927,11 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			return false;
 		});
 			//addquality: submit
-			$(document).on('click', '#js_rubrics_edit_addquality_submit', function(e) {
+			$(document).on('click', '#js_rubrics_view_addquality_submit', function(e) {
 				var tier = 3;
-				log("JQUERY/user", "Rubrics > Add Quality > Submit");
 				changeColor(tier, $(this));
 				createTier(tier, "Submitting...");
+				log("JQUERY/user", "Rubrics > View > Add Quality > Submit");
 				callServer(tier, "/teacher/rubrics/view/addquality/submit.php",
 				{
 					RUBRIC_NUM: $(this).data('rubricnum'),
@@ -943,12 +940,12 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				});
 				return false;
 			});
-		//edit: addcriteria
-		$(document).on('click', '#js_rubrics_edit_addcriteria', function(e) {
+		//view: addcriteria
+		$(document).on('click', '#js_rubrics_view_addcriteria', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Rubrics > Edit > Add Criteria");
 			changeColor(tier, $(this));
 			createTier(tier, "New Criterion");
+			log("JQUERY/user", "Rubrics > View > Add Criteria");
 			callServer(tier, "/teacher/rubrics/view/addcriteria.php", 
 			{
 				RUBRIC_NUM: $(this).data('rubricnum')
@@ -956,11 +953,11 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			return false;
 		});
 			//addcriteria: submit
-			$(document).on('click', '#js_rubrics_edit_addcriteria_submit', function(e) {
+			$(document).on('click', '#js_rubrics_view_addcriteria_submit', function(e) {
 				var tier = 3;
-				log("JQUERY/user", "Rubrics > Edit > Add Criteria > Submit");
 				changeColor(tier, $(this));
 				createTier(tier, "Submitting...");
+				log("JQUERY/user", "Rubrics > View > Add Criteria > Submit");
 				callServer(tier, "/teacher/rubrics/view/addcriteria/submit.php",
 				{
 					RUBRIC_NUM: $(this).data('rubricnum'),
@@ -969,12 +966,12 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				return false;
 			});
 			//addcriteria: addcomponent
-			$(document).on('click', '.js_rubrics_edit_addcriteria_addcomponent', function(e) {
+			$(document).on('click', '.js_rubrics_view_addcriteria_component', function(e) {
 				//Basically like the regular components function.
 				var tier = parseInt($(this).parent().attr('id').substring(4)); 
-				log("JQUERY/user", "Rubrics > Edit > Add Criteria > Components");
 				changeColor(tier, $(this));
 				createTier(tier, "");
+				log("JQUERY/user", "Rubrics > View > Add Criteria > Component");
 				callServer(tier, "/teacher/rubrics/view/addcriteria/component.php",
 				{
 					COMPONENT_NUM: $(this).data('componentnum'),
@@ -983,11 +980,11 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				return false;
 			});
 				//addcomponent: select
-				$(document).on('click', '.js_rubrics_edit_addcriteria_addcomponent_select', function(e) {
+				$(document).on('click', '.js_rubrics_view_addcriteria_component_select', function(e) {
 					var tier = parseInt($(this).parent().attr('id').substring(4)); 
-					log("JQUERY/user", "Rubrics > Edit > Add Criteria > Components > Select");
 					changeColor(tier, $(this));
 					createTier(tier, "Selecting...");
+					log("JQUERY/user", "Rubrics > Edit > Add Criteria > Component > Select");
 					callServer(tier, "/teacher/rubrics/view/addcriteria/component/select.php", 
 					{
 						COMPONENT_NUM: $(this).data('componentnum'),
@@ -995,12 +992,12 @@ $(document).on('click', '#js_rubrics', doRubrics);
 					});
 					return false;
 				});
-		//edit: addassignnment 
-		$(document).on('click', '#js_rubrics_edit_addassignment', function(e) {
+		//view: addassignnment 
+		$(document).on('click', '#js_rubrics_view_addassignment', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Rubrics > Edit > Bind Assignment");
 			changeColor(tier, $(this));
 			createTier(tier, "Pick an assignment");
+			log("JQUERY/user", "Rubrics > View > Add Assignment");
 			callServer(tier, "/teacher/rubrics/view/addassignment.php", 
 			{
 				RUBRIC_NUM: $(this).data('rubricnum')
@@ -1008,11 +1005,11 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			return false;
 		});
 			//addassignnment: submit 
-			$(document).on('click', '.js_rubrics_addassignment_select', function(e) {
+			$(document).on('click', '.js_rubrics_view_addassignment_select', function(e) {
 				var tier = 3;
-				log("JQUERY/user", "Rubrics > Edit > Bind Assignment > Select");
 				changeColor(tier, $(this));
 				createTier(tier, "Selecting...");
+				log("JQUERY/user", "Rubrics > View > Add Assignment > Select");
 				callServer(tier, "/teacher/rubrics/view/addassignment/select.php", 
 				{
 					RUBRIC_NUM: $(this).data('rubricnum'),
@@ -1023,9 +1020,9 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		//edit: removeassignment 
 		$(document).on('click', '.js_rubrics_view_removeassignment', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Rubrics > Edit > Unbind Assignment");
 			changeColor(tier, $(this));
 			createTier(tier, "Selecting...");
+			log("JQUERY/user", "Rubrics > View > Remove Assignment");
 			callServer(tier, "/teacher/rubrics/view/removeassignment.php", 
 			{
 				RUBRIC_NUM: $(this).data('rubricnum'),
@@ -1034,9 +1031,9 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			return false;
 		});
 		//edit: editrubric
-		$(document).on('click', '#js_rubrics_edit_editrubric', function(e) {
+		$(document).on('click', '#js_rubrics_view_editrubric', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Rubrics > Edit > Build");
+			log("JQUERY/user", "Rubrics > View > Build");
 			changeColor(tier, $(this));
 			createTier(tier, "Builder");
 			callServer(tier, "/teacher/rubrics/view/build.php", 
@@ -1100,9 +1097,9 @@ $(document).on('click', '#js_rubrics', doRubrics);
 //Function used during a JS-Redirect: assignment
 function doAssignments(e) {
 	var tier = 0;
-	log("JQUERY/user", "Assignments");
 	changeColor(tier, $(this));
 	createTier(tier, "Assignments");
+	log("JQUERY/user", "Assignments");
 	callServer(tier, "/teacher/assignment.php");
 	return false;
 }
@@ -1110,18 +1107,18 @@ $(document).on('click', '#js_assignments', doAssignments);
 	//Assignment tab: create
 	$(document).on('click', '#js_assignment_create', function(e) {
 		var tier = 1;
-		log("JQUERY/user", "Assignments > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create New Assignment");
+		log("JQUERY/user", "Assignments > Create");
 		callServer(tier, "/teacher/assignment/create.php");
 		return false;
 	});
 		//create: submit
 		$(document).on('click', '#js_assignment_create_submit', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Assignment > Create > Submit");
 			changeColor(tier, $(this));
 			createTier(tier, "Submitting...");
+			log("JQUERY/user", "Assignment > Create > Submit");
 			callServer(tier, "/teacher/assignment/create/submit.php",
 			{
 				TITLE: $("#title").val(),
@@ -1130,11 +1127,11 @@ $(document).on('click', '#js_assignments', doAssignments);
 			return false;
 		});
 	//Assignment tab: view
-	$(document).on('click', '.js_assignments_select', function(e) {
+	$(document).on('click', '.js_assignments_view', function(e) {
 		var tier = 1;
-		log("JQUERY/user", "Assignment > Edit");
 		changeColor(tier, $(this));
-		createTier(tier, "Edit");
+		createTier(tier, "View");
+		log("JQUERY/user", "Assignment > View");
 		callServer(tier, "/teacher/assignment/view.php",
 		{
 			ASSIGNMENT_NUM: $(this).data('assignmentnum')
@@ -1144,9 +1141,9 @@ $(document).on('click', '#js_assignments', doAssignments);
 		//view: addclass 
 		$(document).on('click', '#js_assignment_view_bind', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Assignment > Edit > Bind Class");
 			changeColor(tier, $(this));
-			createTier(tier, "Pick a class");
+			createTier(tier, "Pick a Class");
+			log("JQUERY/user", "Assignment > View > Add Class");
 			callServer(tier, "/teacher/assignment/view/addclass.php", 
 			{
 				ASSIGNMENT_NUM: $(this).data('assignmentnum')

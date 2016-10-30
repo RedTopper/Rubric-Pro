@@ -32,7 +32,7 @@ if($parent === null) {
 	<label for="description">Description: </label>
 	<textarea id="description" name="DESCRIPTION" placeholder="College level computer science curriculum." rows="8"></textarea><br>
 </div>
-<a id="js_component_create_submit" class="object create" href="#"><div class="arrow"></div><h3>Submit</h3></a><?php	
+<a id="js_components_create_submit" class="object create" href="#"><div class="arrow"></div><h3>Submit</h3></a><?php	
 } else {
 	
 #Nailed a match, go ahead and give the user some information about creating sub components. ?>
@@ -45,5 +45,5 @@ if($parent === null) {
 	<label for="description">Description: </label>
 	<textarea id="description" name="DESCRIPTION" placeholder="General understanding of limits, derivitives, formulas, and their application." rows="8"></textarea><br>
 </div>
-<a id="js_component_create_submit" class="object create" href="#" data-parentnum="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div><h3>Submit</h3></a><?php
+<a id="js_components_create_submit" class="object create" href="#" data-parentnum="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div><h3>Submit</h3></a><?php
 }

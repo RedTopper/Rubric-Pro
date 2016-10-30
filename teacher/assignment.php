@@ -48,5 +48,5 @@ if($assignments === null) { ?>
 		<p>Try creating one with the button above!
 	</div><?php
 } else {
-	fun_listAssignments("js_assignments_select", $assignments);
+	fun_listAssignments("js_assignments_view", $assignments);
 }

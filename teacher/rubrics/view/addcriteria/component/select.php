@@ -38,6 +38,8 @@ foreach($components as $existingComponent) {
 header("JS-Redirect: removeto-3");
 
 #Now it gets fun....
+#Fetch the tree....
+$addingComponents = fun_getCompiledSymbolTree($_SESSION["NUM"], $COMPONENT_NUM);
 
 //Check to see if the component we are adding is a SUBSET of what's there.
 //(in other words, check if the component we are adding is a parent of a child component that is already there.)
@@ -73,21 +75,19 @@ if($amountDeleted > 0) {
 	
 	#Replace it with the component we are adding.
 	$stmt = $conn->prepare("INSERT INTO CRITERION (RUBRIC_CRITERIA_NUM, COMPONENT_NUM, COMPILED_SYMBOL_TREE) VALUES (:criteria, :component, :tree)");
-	$stmt->execute(array('criteria' => $CRITERIA_NUM, "component" => $COMPONENT_NUM, "tree" => $parent["TREE"]));
+	$stmt->execute(array('criteria' => $CRITERIA_NUM, "component" => $COMPONENT_NUM, "tree" => $addingComponents[0]["TREE"]));
 	
 	#Show to user. We'll be nice and show the replaced name if it's only one thing.
-	db_showError("Update!", "Automatically swapped " . ($amountDeleted == 1 ? "the component '" . $lastNameDeleted . "'" : $amountDeleted . " component(s)") . " for the less specific component '" . $parent["TREE"] . "'.",
+	db_showError("Update!", "Automatically swapped " . ($amountDeleted == 1 ? "the component '" . $lastNameDeleted . "'" : $amountDeleted . " component(s)") . " for the less specific component '" . $addingComponents[0]["TREE"] . "'.",
 	"You can continue to select more components if you want.", 200);
 }
 
 //Now we need to check to see if the component we are adding is a SUPERSET of a component we already have 
 //(in other words, check if the component we are adding has a child of something already there.)
 //If it is, delete that and replace it with the MORE specific component.
-#Fetch the tree....
-$parents = fun_getCompiledSymbolTree($_SESSION["NUM"], $COMPONENT_NUM);
 
-#...then foreach component in the tree of the component we are adding...
-foreach($parents as $parent) {
+#foreach component in the tree of the component we are adding...
+foreach($addingComponents as $parent) {
 	
 	#...then foreach existing component...
 	foreach($components as $existingComponent) {
@@ -101,17 +101,17 @@ foreach($parents as $parent) {
 			
 			#replace it with the component we are adding.
 			$stmt = $conn->prepare("INSERT INTO CRITERION (RUBRIC_CRITERIA_NUM, COMPONENT_NUM, COMPILED_SYMBOL_TREE) VALUES (:criteria, :component, :tree)");
-			$stmt->execute(array('criteria' => $CRITERIA_NUM, "component" => $COMPONENT_NUM, "tree" => $parents[0]["TREE"]));
+			$stmt->execute(array('criteria' => $CRITERIA_NUM, "component" => $COMPONENT_NUM, "tree" => $addingComponents[0]["TREE"]));
 			
 			#show to user.
 			db_showError("Update!", "Automatically swapped the component '" . fun_getCompiledSymbolTree($_SESSION["NUM"], $existingComponent["COMPONENT_NUM"])[0]["TREE"] . 
-			"' for the more specific component '" . $parents[0]["TREE"] . "'.", "You can continue to select more components if you want.", 200);
+			"' for the more specific component '" . $addingComponents[0]["TREE"] . "'.", "You can continue to select more components if you want.", 200);
 		}
 	}
 }
 
 #Worst case. Nothings there. Plain and simple add.
 $stmt = $conn->prepare("INSERT INTO CRITERION (RUBRIC_CRITERIA_NUM, COMPONENT_NUM, COMPILED_SYMBOL_TREE) VALUES (:criteria, :component, :tree)");
-$stmt->execute(array('criteria' => $CRITERIA_NUM, "component" => $COMPONENT_NUM, "tree" => $parents[0]["TREE"]));
+$stmt->execute(array('criteria' => $CRITERIA_NUM, "component" => $COMPONENT_NUM, "tree" => $addingComponents[0]["TREE"]));
 
 db_showError("Ok!", "The new component has been added.","You can continue to select more components if you want.", 200);

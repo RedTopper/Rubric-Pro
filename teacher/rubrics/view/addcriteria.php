@@ -13,7 +13,7 @@ include "../../../restricted/headrubric.php";
 	<label for="criterianame">Criteria name: </label>
 	<input id="criterianame" type="text" name="CRITERIA_TITLE" placeholder="Spelling and Accuracy"><br>
 </div>
-<a id="js_rubrics_edit_addcriteria_submit" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php 
+<a id="js_rubrics_view_addcriteria_submit" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php 
 
 #Show contents of the rubric. ?>
 <div class="object subtitle">
@@ -24,5 +24,5 @@ $criteria = sql_getAllCriteriaInRubric($rubric["NUM"]);
 if($criteria === null) {
 	?><div class="object subtext"><p>There's nothing here.</p></div><?php
 } else {
-	fun_listCriterion("js_rubrics_edit_addcriteria_addcomponent", $criteria, "selectable", $rubric["NUM"]);
+	fun_listCriterion("js_rubrics_view_addcriteria_component", $criteria, "selectable", $rubric["NUM"]);
 }

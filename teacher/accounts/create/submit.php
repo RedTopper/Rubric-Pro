@@ -56,8 +56,7 @@ if(sql_isUsernameInStudentDatabase($USERNAME, $studentNum)) {
 		<p>If this is <b>NOT</b> the student you are looking for, edit the fields to the left, then submit the request again.
 	</div>
 
-	<a id="js_accounts_create_submit_bind" class="object create" href="#" 
-	data-studentnum="<?php echo $studentNum; ?>" data-username="<?php echo htmlentities($student["USERNAME"]); ?>">
+	<a id="js_accounts_create_submit_bind" class="object create" href="#" data-studentnum="<?php echo $studentNum; ?>" data-username="<?php echo htmlentities($student["USERNAME"]); ?>">
 		<div class="arrow"></div>
 		<h3>Bind Accounts</h3>
 	</a>

@@ -151,6 +151,13 @@ body {
 	margin-right: 10%;
 }
 
+.selectedpath {
+	background: linear-gradient(to bottom, rgba(0,75,150,1) 0%, rgba(0,38,76,1) 100%) !important;
+}
+.selectedsidebar {
+	background-color: #000 !important;
+}
+
 .smallspacer{
 	height: 50px;
 }

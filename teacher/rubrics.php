@@ -44,5 +44,5 @@ if($rubrics === null) { ?>
 	<p>Looks like you don't have any rubrics yet.<br>Try creating one with the button above!</p>
 </div><?php
 } else {
-	fun_listRubrics("js_rubrics_select", $rubrics);
+	fun_listRubrics("js_rubrics_view", $rubrics);
 }

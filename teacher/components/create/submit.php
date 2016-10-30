@@ -7,7 +7,7 @@ $needsSQL = true;
 include "../../../restricted/db.php";
 include "../../../restricted/sql.php";
 
-$PARENT = isset($_POST["PARENT"]) ? $_POST["PARENT"] : null;
+$PARENT_NUM = isset($_POST["PARENT_NUM"]) ? $_POST["PARENT_NUM"] : null;
 $SYMBOL = isset($_POST["SYMBOL"]) ? $_POST["SYMBOL"] : "";
 $NAME = isset($_POST["NAME"]) ? $_POST["NAME"] : "";
 $DESCRIPTION = isset($_POST["DESCRIPTION"]) ? $_POST["DESCRIPTION"] : "";
@@ -21,12 +21,12 @@ if(strlen($SYMBOL) < 1) {
 }
 
 #Validate that the parent can be null or a number greater than 0
-if(!($PARENT == null || is_numeric($PARENT) && $PARENT > 0)) {
+if(!($PARENT_NUM == null || is_numeric($PARENT_NUM) && $PARENT_NUM > 0)) {
 	db_showError("Whoops", "I didn't quite understand the request...", "Sorry about that!", 400);
 }
 
 #Get parent information
-$parent = sql_getComponent($_SESSION["NUM"], $PARENT);
+$parent = sql_getComponent($_SESSION["NUM"], $PARENT_NUM);
 
 if($parent === null) {
 

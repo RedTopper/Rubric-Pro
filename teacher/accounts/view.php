@@ -46,8 +46,8 @@ $classes = sql_getAllStudentClasses($_SESSION['NUM'], $info["NUM"]);
 
 #If there are no classes
 if($classes == null) {	
+
 	#Show a tip to add a student to a class. ?>
-	
 	<div class="object subtext">
 		<p>Use the button above to add the student to a class.
 	</div><?php

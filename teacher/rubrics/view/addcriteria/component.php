@@ -55,7 +55,7 @@ if($COMPONENT_NUM === null) {
 	<div class="object subtitle">
 		<h2>Components</h2>
 	</div>
-	<a class="js_rubrics_edit_addcriteria_addcomponent_select object create" href="#" 
+	<a class="js_rubrics_view_addcriteria_component_select object create" href="#" 
 			data-componentnum="<?php echo $parent["NUM"] ?>" 
 			data-criterionnum="<?php echo $CRITERIA_NUM ?>">
 		<div class="arrow"></div>
@@ -105,7 +105,7 @@ foreach($components as $row) {
 		}
 	}?>
 	
-	<a class="js_rubrics_edit_addcriteria_addcomponent object selectable" href="#" 
+	<a class="js_rubrics_view_addcriteria_component object selectable" href="#" 
 			data-componentnum="<?php echo $row["NUM"] ?>" 
 			data-criterionnum="<?php echo $CRITERIA_NUM ?>">
 		<div class="arrow"></div><?php

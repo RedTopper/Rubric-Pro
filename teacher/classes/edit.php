@@ -9,9 +9,9 @@ include "../../restricted/db.php";
 include "../../restricted/functions.php";
 include "../../restricted/sql.php";
 
-$CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
+$CLASS_NUM = isset($_POST["CLASS_NUM"]) ? $_POST["CLASS_NUM"] : "";
 
-$class = sql_doesTeacherOwnClass($_SESSION["NUM"], $CLASS);
+$class = sql_doesTeacherOwnClass($_SESSION["NUM"], $CLASS_NUM);
 
 #Check to see if there is really a student!
 if($class == null) {
