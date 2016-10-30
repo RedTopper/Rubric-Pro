@@ -52,7 +52,7 @@ header("JS-Resize: auto");
 			echo "<th>"; 
 			echo $criteria[$introw]["CRITERIA_TITLE"];
 			foreach($trees as $tree) {
-				echo "<div class='rubriccriteria'>" . $tree["COMPILED_SYMBOL_TREE"] . "</div>";
+				echo "<div class='rubriccriteria'>" . htmlentities($tree["COMPILED_SYMBOL_TREE"]) . "</div>";
 			}
 			echo "</th>";
 			

@@ -550,10 +550,32 @@ SELECT COMPILED_SYMBOL_TREE
 FROM CRITERION 
 WHERE 
 RUBRIC_CRITERIA_NUM = :criteria
+ORDER BY COMPILED_SYMBOL_TREE
 SQL
 	);
 	$stmt->execute(array('criteria' => $criteriaNum));
 	return $stmt->fetchAll();
+}
+
+function sql_getAllCompiledSymbolTreesFromRubric($rubricNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT COMPILED_SYMBOL_TREE, NAME
+FROM CRITERION, RUBRIC_CRITERIA, COMPONENT
+WHERE 
+RUBRIC_CRITERIA.RUBRIC_NUM = :rubricNum AND
+CRITERION.RUBRIC_CRITERIA_NUM = RUBRIC_CRITERIA.NUM AND
+CRITERION.COMPONENT_NUM = COMPONENT.NUM
+ORDER BY COMPILED_SYMBOL_TREE
+SQL
+	);
+	$stmt->execute(array('rubricNum' => $rubricNum));
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
 }
 
 function sql_getAllAssignments($teacherNum) {

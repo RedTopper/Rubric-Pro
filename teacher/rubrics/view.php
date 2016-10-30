@@ -37,3 +37,22 @@ if($assignments == null) {
 		<p>You can add a rubric to as many assignments as you wish.
 	</div><?php
 }
+
+$componentTrees = sql_getAllCompiledSymbolTreesFromRubric($rubric["NUM"]); ?>
+
+<div class="object spacer"></div>
+<div class="object subtitle">
+	<h2>Attached Components:</h2>
+</div><?php
+
+if($componentTrees === null) { ?>
+<div class="object subtext">
+	<p>Looks like you don't have any attached components.<br>You'll need to edit your criteria and bind some!</p>
+</div><?php
+} else { ?>
+	<div class="object subtext"><?php
+	foreach($componentTrees as $tree) {
+		echo "<div class='rubriccriteria'>" . htmlentities($tree["COMPILED_SYMBOL_TREE"]) . " (" . htmlentities($tree["NAME"]) . ")</div>";
+	} ?>
+	</div><?php
+}
