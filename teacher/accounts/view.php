@@ -42,7 +42,7 @@ if($info["PASSWORD"] != "CHANGE") { ?>
 </a><?php
 
 #Gets a list of classes that the student belongs to in relation to the currently logged in teacher.
-$classes = sql_getListOfStudentClassesViaTeacher($_SESSION['NUM'], $info["NUM"]);
+$classes = sql_getAllStudentClasses($_SESSION['NUM'], $info["NUM"]);
 
 #If there are no classes
 if($classes == null) {	

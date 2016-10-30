@@ -73,7 +73,7 @@ if($components === null) { ?>
 
 #We need to see if the component that's being added to the list is already in the criteria 
 #that we are adding so the user has some visual basis to see what's already added.
-$criteriaComponents = getAllCriteriaComponents($CRITERIA_NUM);
+$criteriaComponents = sql_getAllCriteriaComponents($CRITERIA_NUM);
 
 #Display all components from the data array.
 foreach($components as $row) { 

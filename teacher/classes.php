@@ -15,6 +15,6 @@ include "../restricted/sql.php";
 <a id="js_classes_create" class="object create" href="#"><div class="arrow"></div><h3>Create new class</h3></a>
 <?php
 
-$classes = sql_getListOfClassesViaTeacher($_SESSION["NUM"]);
+$classes = sql_getAllClasses($_SESSION["NUM"]);
 fun_listClasses("js_classes_edit", $classes);
 ?>

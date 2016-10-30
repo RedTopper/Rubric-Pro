@@ -9,5 +9,5 @@ include "../../../restricted/functions.php"; ?>
 </div>
 
 <?php
-$classes = sql_getListOfClassesViaTeacher($_SESSION["NUM"]);
+$classes = sql_getAllClasses($_SESSION["NUM"]);
 fun_listClasses("js_accounts_student_addclass_select", $classes);

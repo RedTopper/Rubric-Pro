@@ -238,9 +238,13 @@ function createTier(tier, name) {
  * data: The data we wish to append (basically raw HTML).
  */
 function appendServerResponse(tier, data) {
-	$("#tier" + tier).append(data);
-	
-	scrollPage();
+	if(!$("#tier" + tier).data("appended")) {
+		$("#tier" + tier).data("appended", true);
+		$("#tier" + tier).append(data);
+		scrollPage();
+	} else {
+		log("JQUERY/warning", "Callback blocked because data was likely already appended!");
+	}
 }
 
 /**
@@ -590,6 +594,11 @@ $(document).on('click', '#js_accounts_search_last', function(e) {
 //Accounts tab: search accounts by first name.
 $(document).on('click', '#js_accounts_search_first', function(e) {
 	search(0, "Accounts", "/teacher/accounts.php", "#js_accounts_search", "student", "FIRST");
+	return false;
+});
+//Rubrics tab: search rubrics by name.
+$(document).on('click', '#js_rubrics_search', function(e) {
+	search(0, "Accounts", "/teacher/rubrics.php", "#js_rubrics_search_box", "rubrics", "NAME");
 	return false;
 });
 
@@ -998,6 +1007,19 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				});
 				return false;
 			});
+		//edit: removeassignment 
+		$(document).on('click', '.js_rubrics_view_removeassignment', function(e) {
+			var tier = 2;
+			log("JQUERY/user", "Rubrics > Edit > Unbind Assignment");
+			changeColor(tier, $(this));
+			createTier(tier, "Selecting...");
+			callServer(tier, "/teacher/rubrics/view/removeassignment.php", 
+			{
+				NUM: $(this).data('num'),
+				ASSIGNMENT_NUM: $(this).data('assignmentnum')
+			});
+			return false;
+		});
 		//edit: editrubric
 		$(document).on('click', '#js_rubrics_edit_editrubric', function(e) {
 			var tier = 2;

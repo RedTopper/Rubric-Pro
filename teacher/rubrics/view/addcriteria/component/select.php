@@ -25,7 +25,7 @@ if($rubric === null) {
 }
 
 #Fetch all of the linked components in the criteria.
-$components = getAllCriteriaComponents($CRITERIA_NUM);
+$components = sql_getAllCriteriaComponents($CRITERIA_NUM);
 
 #Simple check to see if the component we are adding already exists.
 foreach($components as $existingComponent) {

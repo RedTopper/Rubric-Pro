@@ -18,7 +18,7 @@ if($class == null) {
 #If there is a duplicate, deny it.
 #We don't need 10,000 of the same entry
 if(sql_doesStudentAlreadyExistInClass($STUDENT, $CLASS)) {
-	db_showError("Whoops!", "That student already belongs in that class!", "Try selecting another class or student.", 400);
+	db_showError("Whoops!", "That student already belongs to that class!", "Try selecting another class or student.", 400);
 }
 
 #Use access.js to clear all things after tier 1 (so the user doesn't loose their search)

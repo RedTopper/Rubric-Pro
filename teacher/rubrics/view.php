@@ -21,7 +21,7 @@ include "../../restricted/functions.php";
 <a id="js_rubrics_edit_addassignment" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Bind this rubric to an assignment</h3></a>
 
 <?php
-$assignments = sql_getListOfRubricAssignmentsViaTeacher($_SESSION['NUM'], $rubric["NUM"]);
+$assignments = sql_getAllRubricAssignments($_SESSION['NUM'], $rubric["NUM"]);
 
 #If there are no classes
 if($assignments == null) {	
@@ -33,7 +33,7 @@ if($assignments == null) {
 } else {
 	
 	#Print every class.
-	fun_listAssignments("js_rubrics_view_removeassignment", $assignments, null, "Remove this rubric from ", "warn"); ?>
+	fun_listAssignments("js_rubrics_view_removeassignment", $assignments, $NUM, "Remove this rubric from ", "warn"); ?>
 	<div class="object subtext">
 		<p>You can add a rubric to as many assignments as you wish.
 	</div><?php

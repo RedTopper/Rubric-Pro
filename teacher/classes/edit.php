@@ -76,7 +76,7 @@ if($pastAssignments === null) {
 <?php
 
 #Gets a list of students in a class that belongs to the logged in teacher.
-$students = sql_getListOfStudentsViaClass($class["NUM"]);
+$students = sql_getAllStudentsInClass($class["NUM"]);
 if($students == null) { 
 	#There are no students.?>
 	</div>
