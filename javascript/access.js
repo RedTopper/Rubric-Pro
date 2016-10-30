@@ -241,6 +241,14 @@ function appendServerResponse(tier, data) {
 	if(!$("#tier" + tier).data("appended")) {
 		$("#tier" + tier).data("appended", true);
 		$("#tier" + tier).append(data);
+		$(".datepicker").datepicker({
+			inline: true,
+			nextText: '&rarr;',
+			prevText: '&larr;',
+			showOtherMonths: true,
+			dateFormat: 'mm/dd/yy',
+			dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+		});
 		scrollPage();
 	} else {
 		log("JQUERY/warning", "Callback blocked because data was likely already appended!");
@@ -1133,3 +1141,15 @@ $(document).on('click', '#js_assignments', doAssignments);
 		});
 		return false;
 	});
+		//view: addclass 
+		$(document).on('click', '#js_assignment_view_bind', function(e) {
+			var tier = 2;
+			log("JQUERY/user", "Assignment > Edit > Bind Class");
+			changeColor(tier, $(this));
+			createTier(tier, "Pick a class");
+			callServer(tier, "/teacher/assignment/view/addclass.php", 
+			{
+				ASSIGNMENT_NUM: $(this).data('assignmentnum')
+			});
+			return false;
+		});

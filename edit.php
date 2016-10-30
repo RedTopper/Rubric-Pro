@@ -13,12 +13,14 @@ $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen(
 	<title>Rubric Pro</title>
 	<link rel="stylesheet" href="css/style.php"> 
 	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Ubuntu+Mono|Amatic+SC" rel="stylesheet"> 
+	<link rel="stylesheet" href="css/ui.css">
 	<link rel='stylesheet' href='javascript/nprogress.css'/>
 	<meta charset="UTF-8">
 	<meta name="author" content="Aaron Walter (2016)">
 	<meta name="description" content="Edit your class rubrics and track progress with Rubric Pro!">
 	<meta name="viewport" content="width=device-width, initial-scale=0.6">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script src="/javascript/access.js"></script>
 	<script src='/javascript/nprogress.js'></script>
 </head>
