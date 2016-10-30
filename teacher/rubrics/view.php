@@ -32,7 +32,7 @@ if($assignments == null) {
 } else {
 	
 	#Print every class.
-	fun_listAssignments("js_rubrics_view_removeassignment", $assignments, "warn", "Remove this rubric from ", $RUBRIC_NUM); ?>
+	fun_listAssignments("js_rubrics_view_removeassignment", $assignments, "warn white", "Remove this rubric from ", $RUBRIC_NUM); ?>
 	<div class="object subtext">
 		<p>You can add a rubric to as many assignments as you wish.
 	</div><?php

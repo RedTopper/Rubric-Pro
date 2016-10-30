@@ -84,7 +84,7 @@ if($students == null) {
 	</div>
 		<div class="object subtext">
 		<p>No students belong to this class.
-		<p>Try adding some through the accounts tab.
+		<p>Try adding some through the "Accounts" tab.
 	</div><?php
 } else {
 	#Display students. Last false means not selectable (as in you cannot click on it)
