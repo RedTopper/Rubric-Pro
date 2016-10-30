@@ -44,12 +44,10 @@ if($SEARCH === "") {
 <div class="editor">
 	<input id="js_accounts_search" class="full" type="text" name="SEARCH" placeholder="Filter">
 </div>
-<div class="object subtitle">
-	<h2>Filter by...</h2>
-</div>
-<a id="js_accounts_search_username" class="object query" href="#"><h3>Username</h3></a>
-<a id="js_accounts_search_last" class="object query" href="#"><h3>Last name</h3></a>
-<a id="js_accounts_search_first" class="object query" href="#"><h3>First name</h3></a><?php 
+<a id="js_accounts_search_username" class="object query" href="#"><h3>Filter by Username</h3></a>
+<a id="js_accounts_search_last" class="object query" href="#"><h3>Filter by Last Name</h3></a>
+<a id="js_accounts_search_first" class="object query" href="#"><h3>Filter by First Name</h3></a>
+<div class="object spacer"></div><?php 
 
 
 #If we are searching, tell the user what we searched, otherwise just say "Everything"

@@ -219,7 +219,25 @@ SQL
 }
 
 function sql_getAllAssignmentClasses($teacherNum, $assignmentNum) {
-	return null;
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT CLASS.NUM, CLASS.NAME, CLASS.YEAR, CLASS.PERIOD, CLASS.TERM, CLASS.DESCRIPTOR
+FROM `ASSIGNMENT-CLASS_LINKER` ASL, CLASS
+WHERE
+ASL.ASSIGNMENT_NUM = :assignmentNum AND 
+ASL.CLASS_NUM = CLASS.NUM AND
+CLASS.TEACHER_NUM = :teacherNum
+ORDER BY YEAR DESC, TERM DESC, PERIOD
+SQL
+	);
+	$stmt->execute(array('assignmentNum' =>  $assignmentNum, 'teacherNum' => $teacherNum));
+	
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
 }
 
 /**
@@ -526,6 +544,22 @@ SQL
 	} else {
 		return null;
 	}
+}
+
+function sql_getAllAssignmentsBasedOnSearch($teacherNum, $searchTerm) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT NUM, TITLE
+FROM ASSIGNMENT
+WHERE 
+TEACHER_NUM = :teachernum AND
+TITLE LIKE CONCAT('%',:search,'%') 
+ORDER BY TITLE
+SQL
+	);
+	$stmt->execute(array('teachernum' => $teacherNum, 'search' => $searchTerm));
+	return $stmt->fetchAll();
 }
 
 /**

@@ -598,7 +598,12 @@ $(document).on('click', '#js_accounts_search_first', function(e) {
 });
 //Rubrics tab: search rubrics by name.
 $(document).on('click', '#js_rubrics_search', function(e) {
-	search(0, "Accounts", "/teacher/rubrics.php", "#js_rubrics_search_box", "rubrics", "NAME");
+	search(0, "Rubrics", "/teacher/rubrics.php", "#js_rubrics_search_box", "rubrics", "NAME");
+	return false;
+});
+//Assignments tab: search assignment by name.
+$(document).on('click', '#js_assignments_search', function(e) {
+	search(0, "Assignments", "/teacher/assignment.php", "#js_assignments_search_box", "assignment", "NAME");
 	return false;
 });
 

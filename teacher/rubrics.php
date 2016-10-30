@@ -23,10 +23,8 @@ if($SEARCH === "") {
 <div class="editor">
 	<input id="js_rubrics_search_box" class="full" type="text" name="SEARCH" placeholder="Filter">
 </div>
-<div class="object subtitle">
-	<h2>Filter by...</h2>
-</div>
-<a id="js_rubrics_search" class="object query" href="#"><h3>Rubric name</h3></a><?php
+<a id="js_rubrics_search" class="object query" href="#"><h3>Filter by Name</h3></a>
+<div class="object spacer"></div><?php
 
 #If we are searching, tell the user what we searched, otherwise just say "Everything"
 if($SEARCH !== "") { ?>
