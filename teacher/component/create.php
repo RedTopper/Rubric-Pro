@@ -7,15 +7,15 @@ $needsSQL = true;
 include "../../restricted/db.php";
 include "../../restricted/sql.php";
 
-$PARENT = isset($_POST["PARENT"]) ? $_POST["PARENT"] : null;
+$PARENT_NUM = isset($_POST["PARENT_NUM"]) ? $_POST["PARENT_NUM"] : null;
 
 #Validate that the parent can be null or a number greater than 0
-if(!($PARENT == null || is_numeric($PARENT) && $PARENT > 0)) {
+if(!($PARENT_NUM == null || is_numeric($PARENT_NUM) && $PARENT_NUM > 0)) {
 	db_showError("Whoops", "I didn't quite understand the request...", "Sorry about that!", 400);
 }
 
 #Get parent information
-$parent = sql_getComponent($_SESSION["NUM"], $PARENT);
+$parent = sql_getComponent($_SESSION["NUM"], $PARENT_NUM);
 
 #Check to see if there is really a parent!
 if($parent === null) {
@@ -45,5 +45,5 @@ if($parent === null) {
 	<label for="description">Description: </label>
 	<textarea id="description" name="DESCRIPTION" placeholder="General understanding of limits, derivitives, formulas, and their application." rows="8"></textarea><br>
 </div>
-<a id="js_component_create_submit" class="object create" href="#" data-num="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div><h3>Submit</h3></a><?php
+<a id="js_component_create_submit" class="object create" href="#" data-parentnum="<?php echo $parent["NUM"]; ?>"><div class="arrow"></div><h3>Submit</h3></a><?php
 }

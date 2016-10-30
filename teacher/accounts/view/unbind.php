@@ -20,7 +20,7 @@ include "../../../restricted/headaccount.php"; ?>
 	<p>This operation makes it easy for YOU to manage your students! Unbinding a student from your account is NOT a dangerous operation, so it's reccomended to unbind a student at the end of the term or year!
 	<p>To undo these changes, navigate to Accounts > Create new account > Enter student username > Submit
 </div>
-<a id="js_accounts_student_unbind_yes" class="object warn white" href="#" data-studentnum="<?php echo $info["NUM"]; ?>">
+<a id="js_accounts_view_unbind_select" class="object warn white" href="#" data-studentnum="<?php echo $info["NUM"]; ?>">
 	<div class="arrow"></div>
 	<h3>Yes, unbind <?php echo  htmlentities($info["FIRST_NAME"]) . " " . htmlentities($info["LAST_NAME"]); ?></h3>
 </a>

@@ -10,4 +10,4 @@ include "../../../restricted/functions.php"; ?>
 
 <?php
 $classes = sql_getAllClasses($_SESSION["NUM"]);
-fun_listClasses("js_accounts_student_addclass_select", $classes);
+fun_listClasses("js_accounts_view_addclass_select", $classes);

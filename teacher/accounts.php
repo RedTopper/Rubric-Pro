@@ -67,4 +67,4 @@ if(isset($SEARCH) && $SEARCH !== "") { ?>
 
 
 #Display students
-fun_listStudents("js_accounts_student", $students);
+fun_listStudents("js_accounts_view", $students);

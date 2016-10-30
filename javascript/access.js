@@ -619,9 +619,9 @@ $(document).on('click', '#js_assignments_search', function(e) {
 //Bound to function because it can be called during a JS-Redirect: account
 function doAccounts(e) {
 	var tier = 0; //This function originates from the sidebar, a tier 0 item.
-	log("JQUERY/user", "Accounts");
 	changeColor(tier, $(this));
 	createTier(tier, "Accounts");
+	log("JQUERY/user", "Accounts");
 	callServer(tier, "/teacher/accounts.php");
 	return false;
 }
@@ -629,18 +629,18 @@ $(document).on('click', '#js_accounts', doAccounts);
 	//Accounts tab: Create accounts
 	$(document).on('click', '#js_accounts_create', function(e) {
 		var tier = 1; 
-		log("JQUERY/user", "Accounts > Create");
 		changeColor(tier, $(this));
 		createTier(tier, "Create a new account");
+		log("JQUERY/user", "Accounts > Create");
 		callServer(tier, "/teacher/accounts/create.php");
 		return false;
 	});
 		//Create accounts: submit
 		$(document).on('click', '#js_accounts_create_submit', function(e) {
 			var tier = 2;
-			log("JQUERY/user", "Accounts > Create > Submit");
 			changeColor(tier, $(this));
 			createTier(tier, "Submitting...");
+			log("JQUERY/user", "Accounts > Create > Submit");
 			callServer(tier, "/teacher/accounts/create/submit.php", 
 			{
 				USERNAME: $("#username").val(),
@@ -655,9 +655,9 @@ $(document).on('click', '#js_accounts', doAccounts);
 			//Submit: bind
 			$(document).on('click', '#js_accounts_create_submit_bind', function(e) {
 				var tier = 3;
-				log("JQUERY/user", "Accounts > Create > Submit > Bind");
 				changeColor(tier, $(this));
 				createTier(tier, "Binding...");
+				log("JQUERY/user", "Accounts > Create > Submit > Bind");
 				callServer(tier, "/teacher/accounts/create/submit/bind.php",
 				{
 					STUDENT_NUM: $(this).data('studentnum'),
@@ -666,11 +666,11 @@ $(document).on('click', '#js_accounts', doAccounts);
 				return false;
 			});
 	//Accounts tab: Action on ANY student
-	$(document).on('click', '.js_accounts_student', function(e) {
-		var tier = 1; 
-		log("JQUERY/user", "Accounts > Student");
+	$(document).on('click', '.js_accounts_view', function(e) {
+		var tier = 1;
 		changeColor(tier, $(this));
 		createTier(tier, "Edit a student");
+		log("JQUERY/user", "Accounts > View");
 		callServer(tier, "/teacher/accounts/view.php",
 		{
 			STUDENT_NUM: $(this).data('studentnum')
@@ -678,11 +678,11 @@ $(document).on('click', '#js_accounts', doAccounts);
 		return false;
 	});
 		//Action on ANY student: add to class
-		$(document).on('click', '#js_accounts_student_addclass', function(e) {
-			var tier = 2; 
-			log("JQUERY/user", "Accounts > Student > Bind to Class");
+		$(document).on('click', '#js_accounts_view_addclass', function(e) {
+			var tier = 2;
 			changeColor(tier, $(this));
 			createTier(tier, "Pick a class");
+			log("JQUERY/user", "Accounts > View > Add to Class");
 			callServer(tier, "/teacher/accounts/view/addclass.php",
 			{
 				STUDENT_NUM: $(this).data('studentnum')
@@ -690,15 +690,15 @@ $(document).on('click', '#js_accounts', doAccounts);
 			return false;
 		});
 			//add to class: actual selection of the class
-			$(document).on('click', '.js_accounts_student_addclass_select', function(e) {
-				var tier = 3; 
-				log("JQUERY/user", "Accounts > Student > Bind to Class > Select");
+			$(document).on('click', '.js_accounts_view_addclass_select', function(e) {
+				var tier = 3;
 				changeColor(tier, $(this));
 				createTier(tier, "Adding...");
+				log("JQUERY/user", "Accounts > View > Add to Class > Select");
 				callServer(tier, "/teacher/accounts/view/addclass/select.php",
 				{
 					//Student is found from previous tier ID.
-					STUDENT_NUM: $("#js_accounts_student_addclass").data('studentnum'),
+					STUDENT_NUM: $("#js_accounts_view_addclass").data('studentnum'),
 					
 					//Class is the current data entry for the clicked object when this class is selected.
 					CLASS_NUM: $(this).data('classnum')
@@ -706,15 +706,15 @@ $(document).on('click', '#js_accounts', doAccounts);
 				return false;
 			});
 		//Action on ANY student: removal from a class
-		$(document).on('click', '.js_accounts_student_removeclass', function(e) {
-			var tier = 2; 
-			log("JQUERY/user", "Accounts > Student > Unbind from Class ");
+		$(document).on('click', '.js_accounts_view_removeclass', function(e) {
+			var tier = 2;
 			changeColor(tier, $(this));
 			createTier(tier, "Removing...");
+			log("JQUERY/user", "Accounts > View > Drop from Class ");
 			callServer(tier, "/teacher/accounts/view/removeclass.php",
 			{
 				//Student is found from the unbind account field. A little bit hacky.
-				STUDENT_NUM: $("#js_accounts_student_unbind").data('studentnum'),
+				STUDENT_NUM: $("#js_accounts_view_unbind").data('studentnum'),
 				
 				//Class is found natively in the button.
 				CLASS_NUM: $(this).data('classnum')
@@ -722,11 +722,11 @@ $(document).on('click', '#js_accounts', doAccounts);
 			return false;
 		});
 		//Action on ANY student: reset password
-		$(document).on('click', '#js_accounts_student_reset', function(e) {
+		$(document).on('click', '#js_accounts_view_reset', function(e) {
 			var tier = 2; 
-			log("JQUERY/user", "Accounts > Student > Reset Password");
 			changeColor(tier, $(this));
 			createTier(tier, "Reset Password");
+			log("JQUERY/user", "Accounts > View > Reset Password");
 			callServer(tier, "/teacher/accounts/view/reset.php",
 			{
 				STUDENT_NUM: $(this).data('studentnum')
@@ -734,11 +734,11 @@ $(document).on('click', '#js_accounts', doAccounts);
 			return false;
 		});
 			//reset password: agree!
-			$(document).on('click', '#js_accounts_student_reset_yes', function(e) {
-				var tier = 3; 
-				log("JQUERY/user", "Accounts > Student > Reset Password > Submit");
+			$(document).on('click', '#js_accounts_view_reset_select', function(e) {
+				var tier = 3;
 				changeColor(tier, $(this));
 				createTier(tier, "Resetting...");
+				log("JQUERY/user", "Accounts > View > Reset Password > Select");
 				callServer(tier, "/teacher/accounts/view/reset/select.php",
 				{
 					STUDENT_NUM: $(this).data('studentnum')
@@ -746,11 +746,11 @@ $(document).on('click', '#js_accounts', doAccounts);
 				return false;
 			});
 		//Action on ANY student: unblind account
-		$(document).on('click', '#js_accounts_student_unbind', function(e) {
-			var tier = 2; 
-			log("JQUERY/user", "Accounts > Student > Unbind Account");
+		$(document).on('click', '#js_accounts_view_unbind', function(e) {
+			var tier = 2;
 			changeColor(tier, $(this));
 			createTier(tier, "Unbind account");
+			log("JQUERY/user", "Accounts > Student > Unbind Account");
 			callServer(tier, "/teacher/accounts/view/unbind.php",
 			{
 				STUDENT_NUM: $(this).data('studentnum')
@@ -758,11 +758,11 @@ $(document).on('click', '#js_accounts', doAccounts);
 			return false;
 		});
 			//unblind account: agree!
-			$(document).on('click', '#js_accounts_student_unbind_yes', function(e) {
+			$(document).on('click', '#js_accounts_view_unbind_select', function(e) {
 				var tier = 3; 
-				log("JQUERY/user", "Accounts > Student > Unbind Account > Submit");
 				changeColor(tier, $(this));
 				createTier(tier, "Unbound!");
+				log("JQUERY/user", "Accounts > Student > Unbind Account > Select");
 				callServer(tier, "/teacher/accounts/view/unbind/select.php",
 				{
 					STUDENT_NUM: $(this).data('studentnum')
@@ -840,7 +840,7 @@ $(document).on('click', '#js_components', doComponents);
 		createTier(tier, "");
 		callServer(tier, "/teacher/component.php",
 		{
-			COMPONENT: $(this).data('num')
+			COMPONENT_NUM: $(this).data('componentnum')
 		});
 		return false;
 	});
@@ -852,7 +852,7 @@ $(document).on('click', '#js_components', doComponents);
 		createTier(tier, "Create New Component");
 		callServer(tier, "/teacher/component/create.php",
 		{
-			PARENT: $(this).data('num')
+			PARENT_NUM: $(this).data('parentnum')
 		});
 		return false;
 	});
@@ -864,7 +864,7 @@ $(document).on('click', '#js_components', doComponents);
 			createTier(tier, "Submitting...");
 			callServer(tier, "/teacher/component/create/submit.php",
 			{
-				PARENT: $(this).data('num'),
+				PARENT_NUM: $(this).data('parentnum'),
 				SYMBOL: $("#symbol").val(),
 				NAME: $("#componentname").val(),
 				DESCRIPTION: $("#description").val()

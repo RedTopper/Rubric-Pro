@@ -18,14 +18,14 @@ include "../../restricted/functions.php";
 
 #Do not display the ability to reset the password if the password is reset already!
 if($info["PASSWORD"] != "CHANGE") { ?>
-	<a id="js_accounts_student_reset" class="object warn white" href="#" data-studentnum="<?php echo $info["NUM"]; ?>">
+	<a id="js_accounts_view_reset" class="object warn white" href="#" data-studentnum="<?php echo $info["NUM"]; ?>">
 		<div class="arrow"></div>
 		<h3>Reset password</h3>
 	</a><?php 
 }
 
 #Add the ability to unbind the account from the teacher. ?>
-<a id="js_accounts_student_unbind" class="object warn white" href="#" data-studentnum="<?php echo $info["NUM"]; ?>">
+<a id="js_accounts_view_unbind" class="object warn white" href="#" data-studentnum="<?php echo $info["NUM"]; ?>">
 	<div class="arrow"></div>
 	<h3>Unbind account</h3>
 </a>
@@ -37,7 +37,7 @@ if($info["PASSWORD"] != "CHANGE") { ?>
 	<h2>Class Management:</h2>
 </div>
 
-<a id="js_accounts_student_addclass" class="object create" href="#" data-studentnum="<?php echo $info["NUM"]; ?>"><div class="arrow"></div>
+<a id="js_accounts_view_addclass" class="object create" href="#" data-studentnum="<?php echo $info["NUM"]; ?>"><div class="arrow"></div>
 	<h3>Bind this student to a class</h3>
 </a><?php
 
@@ -54,7 +54,7 @@ if($classes == null) {
 } else {
 	
 	#Print every class.
-	fun_listClasses("js_accounts_student_removeclass", $classes, "warn", "Drop this student from "); ?>
+	fun_listClasses("js_accounts_view_removeclass", $classes, "warn", "Drop this student from "); ?>
 	<div class="object subtext">
 		<p>You can add a student to as many classes as you wish.
 	</div><?php
