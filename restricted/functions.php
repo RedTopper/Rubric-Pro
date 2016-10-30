@@ -11,7 +11,7 @@ if(!isset($needsFunction)) die();
  */
 function fun_listClasses($classname, $classes, $type = "selectable", $prependText = "", $assignmentNum = null) {
 	foreach($classes as $row) { ?>
-		<a class="<?php echo $classname; ?> object <?php echo $type; ?>" href="#" data-num="<?php echo $row["NUM"] ?>"<?php echo ($assignmentNum === null ? "" : " data-assignmentnum='$assignmentNum'");?>>
+		<a class="<?php echo $classname; ?> object <?php echo $type; ?>" href="#" data-classnum="<?php echo $row["NUM"] ?>"<?php echo ($assignmentNum === null ? "" : " data-assignmentnum='$assignmentNum'");?>>
 		<div class="arrow"></div>
 			<h3>
 			<?php 
@@ -39,7 +39,7 @@ function fun_listClasses($classname, $classes, $type = "selectable", $prependTex
 function fun_listStudents($classname, $students, $selectable = true) {
 	foreach($students as $row) {  ?>
 		<?php if ($selectable) { ?>
-			<a class="<?php echo $classname;?> object selectable" href="#" data-num="<?php echo $row["NUM"] ?>">
+			<a class="<?php echo $classname;?> object selectable" href="#" data-studentnum="<?php echo $row["NUM"] ?>">
 			<div class='arrow'></div>
 		<?php } else { ?>
 			<div class="object">

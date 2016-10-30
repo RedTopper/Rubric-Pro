@@ -660,7 +660,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 				createTier(tier, "Binding...");
 				callServer(tier, "/teacher/accounts/create/submit/bind.php",
 				{
-					NUM: $(this).data('num'),
+					STUDENT_NUM: $(this).data('studentnum'),
 					USERNAME: $(this).data('username')
 				});
 				return false;
@@ -673,7 +673,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 		createTier(tier, "Edit a student");
 		callServer(tier, "/teacher/accounts/view.php",
 		{
-			STUDENT: $(this).data('num')
+			STUDENT_NUM: $(this).data('studentnum')
 		});
 		return false;
 	});
@@ -685,7 +685,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 			createTier(tier, "Pick a class");
 			callServer(tier, "/teacher/accounts/view/addclass.php",
 			{
-				STUDENT: $(this).data('num')
+				STUDENT_NUM: $(this).data('studentnum')
 			});
 			return false;
 		});
@@ -698,10 +698,10 @@ $(document).on('click', '#js_accounts', doAccounts);
 				callServer(tier, "/teacher/accounts/view/addclass/select.php",
 				{
 					//Student is found from previous tier ID.
-					STUDENT: $("#js_accounts_student_addclass").data('num'),
+					STUDENT_NUM: $("#js_accounts_student_addclass").data('studentnum'),
 					
 					//Class is the current data entry for the clicked object when this class is selected.
-					CLASS: $(this).data('num')
+					CLASS_NUM: $(this).data('classnum')
 				});
 				return false;
 			});
@@ -714,10 +714,10 @@ $(document).on('click', '#js_accounts', doAccounts);
 			callServer(tier, "/teacher/accounts/view/removeclass.php",
 			{
 				//Student is found from the unbind account field. A little bit hacky.
-				STUDENT: $("#js_accounts_student_unbind").data('num'),
+				STUDENT_NUM: $("#js_accounts_student_unbind").data('studentnum'),
 				
 				//Class is found natively in the button.
-				CLASS: $(this).data('num')
+				CLASS_NUM: $(this).data('classnum')
 			});
 			return false;
 		});
@@ -729,7 +729,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 			createTier(tier, "Reset Password");
 			callServer(tier, "/teacher/accounts/view/reset.php",
 			{
-				STUDENT: $(this).data('num')
+				STUDENT_NUM: $(this).data('studentnum')
 			});
 			return false;
 		});
@@ -741,7 +741,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 				createTier(tier, "Resetting...");
 				callServer(tier, "/teacher/accounts/view/reset/select.php",
 				{
-					STUDENT: $(this).data('num')
+					STUDENT_NUM: $(this).data('studentnum')
 				});
 				return false;
 			});
@@ -753,7 +753,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 			createTier(tier, "Unbind account");
 			callServer(tier, "/teacher/accounts/view/unbind.php",
 			{
-				STUDENT: $(this).data('num')
+				STUDENT_NUM: $(this).data('studentnum')
 			});
 			return false;
 		});
@@ -765,7 +765,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 				createTier(tier, "Unbound!");
 				callServer(tier, "/teacher/accounts/view/unbind/select.php",
 				{
-					STUDENT: $(this).data('num')
+					STUDENT_NUM: $(this).data('studentnum')
 				});
 				return false;
 			});
@@ -814,7 +814,7 @@ $(document).on('click', '#js_classes', doClass);
 		createTier(tier, "Edit this class");
 		callServer(tier, "/teacher/classes/edit.php",
 		{
-			CLASS: $(this).data('num')
+			CLASS_NUM: $(this).data('classnum')
 		});
 		return false;
 	});

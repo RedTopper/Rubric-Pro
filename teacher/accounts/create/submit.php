@@ -57,7 +57,7 @@ if(sql_isUsernameInStudentDatabase($USERNAME, $studentNum)) {
 	</div>
 
 	<a id="js_accounts_create_submit_bind" class="object create" href="#" 
-	data-num="<?php echo $studentNum; ?>" data-username="<?php echo htmlentities($student["USERNAME"]); ?>">
+	data-studentnum="<?php echo $studentNum; ?>" data-username="<?php echo htmlentities($student["USERNAME"]); ?>">
 		<div class="arrow"></div>
 		<h3>Bind Accounts</h3>
 	</a>

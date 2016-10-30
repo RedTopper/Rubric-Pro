@@ -2,13 +2,13 @@
 #Libraries.
 include "../../../restricted/headaccount.php";
 
-$CLASS = isset($_POST["CLASS"]) ? $_POST["CLASS"] : "";
+$CLASS_NUM = isset($_POST["CLASS_NUM"]) ? $_POST["CLASS_NUM"] : "";
 
-if($CLASS == "") {
+if($CLASS_NUM == "") {
 	db_showError("Whoops!", "You didn't select a class!", "Try selecting a class first.", 400);
 }
 
-$class = sql_doesTeacherOwnClass($_SESSION["NUM"], $CLASS);
+$class = sql_doesTeacherOwnClass($_SESSION["NUM"], $CLASS_NUM);
 
 #Check if the teacher owns the class!
 if($class == null) {
@@ -19,7 +19,7 @@ if($class == null) {
 header("JS-Redirect: removeto1");
 
 #Unbind!
-sql_unbindStudentFromClass($STUDENT, $CLASS);
+sql_unbindStudentFromClass($STUDENT_NUM, $CLASS_NUM);
 
 #Show that it's been unbound
 db_showError("Ok!", htmlentities($info["FIRST_NAME"]) . " " . htmlentities($info["LAST_NAME"]) . " has been unbound from " . htmlentities($class["NAME"]) . ".", "", 201);

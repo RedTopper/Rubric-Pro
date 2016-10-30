@@ -8,7 +8,7 @@ include "../../../restricted/headaccount.php"; ?>
 <div class="object subtext">
 	<p>They'll be able to set a new password the next time they log in.
 </div>
-<a id="js_accounts_student_reset_yes" class="object warn white" href="#" data-num="<?php echo $info["NUM"]; ?>">
+<a id="js_accounts_student_reset_yes" class="object warn white" href="#" data-studentnum="<?php echo $info["NUM"]; ?>">
 	<div class="arrow"></div>
 	<h3>Yes, really reset their password</h3>
 </a>
