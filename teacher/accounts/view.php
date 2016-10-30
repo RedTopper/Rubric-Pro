@@ -36,7 +36,7 @@ if($info["PASSWORD"] != "CHANGE") { ?>
 </div>
 
 <a id="js_accounts_view_addclass" class="object create" href="#" data-studentnum="<?php echo $info["NUM"]; ?>"><div class="arrow"></div>
-	<h3>Bind this student to a class</h3>
+	<h3>Add to class</h3>
 </a><?php
 
 #Gets a list of classes that the student belongs to in relation to the currently logged in teacher.
@@ -52,7 +52,7 @@ if($classes == null) {
 } else {
 	
 	#Print every class.
-	fun_listClasses("js_accounts_view_removeclass", $classes, "warn", "Drop this student from "); ?>
+	fun_listClasses("js_accounts_view_removeclass", $classes, "warn", "Drop student from "); ?>
 	<div class="object subtext">
 		<p>You can add a student to as many classes as you wish.
 	</div><?php

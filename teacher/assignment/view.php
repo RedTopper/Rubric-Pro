@@ -16,7 +16,7 @@ include "../../restricted/functions.php";
 </div>
 <a id="js_assignment_view_bind" class="object create white" href="#" data-assignmentnum="<?php echo $assignment["NUM"] ?>">
 	<div class="arrow"></div>
-	<h3>Bind this assignment to a class</h3>
+	<h3>Add to class</h3>
 </a>
 
 <?php
@@ -32,7 +32,7 @@ if($classes === null) {
 } else {
 	
 	#Print every class.
-	 fun_listClasses("js_assignment_view_removeclasses", $classes, "warn", "Remove this assignment from ", $assignment["NUM"]); ?>
+	 fun_listClasses("js_assignment_view_removeclasses", $classes, "warn", "Remove from ", $assignment["NUM"]); ?>
 	<div class="object subtext">
 		<p>You can add an assignment to as many classes as you wish.
 	</div><?php

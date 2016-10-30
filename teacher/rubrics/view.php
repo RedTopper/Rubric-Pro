@@ -7,17 +7,17 @@ include "../../restricted/functions.php";
 <div class="object subtitle">
 	<h2><?php echo htmlentities($rubric["SUBTITLE"])?>: </h2>
 </div>
-<a id="js_rubrics_view_editrubric" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Edit this rubric</h3></a>
+<a id="js_rubrics_view_editrubric" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Edit cells</h3></a>
 <a id="js_rubrics_view_addquality" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Edit qualities</h3></a>
 <a id="js_rubrics_view_addcriteria" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Edit criteria</h3></a>
-<a id="js_rubrics_view_destroyquality" class="object warn white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Choose and destroy qualities</h3></a>
-<a id="js_rubrics_view_destroycriteria" class="object warn create" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Choose and destroy criteria</h3></a>
-<a id="js_rubrics_view_destroyrubric" class="object destroy" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Destroy this rubric</h3></a>
+<a id="js_rubrics_view_destroyquality" class="object warn white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Destroy qualities</h3></a>
+<a id="js_rubrics_view_destroycriteria" class="object warn create" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Destroy criteria</h3></a>
+<a id="js_rubrics_view_destroyrubric" class="object destroy" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Destroy <?php echo htmlentities($rubric["SUBTITLE"])?></h3></a>
 
 <div class="object subtitle">
 	<h2>Assignments:</h2>
 </div>
-<a id="js_rubrics_view_addassignment" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Bind this rubric to an assignment</h3></a>
+<a id="js_rubrics_view_addassignment" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Add to assignment</h3></a>
 
 <?php
 $assignments = sql_getAllRubricAssignments($_SESSION['NUM'], $rubric["NUM"]);
@@ -32,7 +32,7 @@ if($assignments == null) {
 } else {
 	
 	#Print every class.
-	fun_listAssignments("js_rubrics_view_removeassignment", $assignments, "warn white", "Remove this rubric from ", $RUBRIC_NUM); ?>
+	fun_listAssignments("js_rubrics_view_removeassignment", $assignments, "warn white", "Remove from ", $RUBRIC_NUM); ?>
 	<div class="object subtext">
 		<p>You can add a rubric to as many assignments as you wish.
 	</div><?php
