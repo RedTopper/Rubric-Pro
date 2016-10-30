@@ -913,7 +913,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 		createTier(tier, "Edit");
 		callServer(tier, "/teacher/rubrics/view.php",
 		{
-			NUM: $(this).data('num')
+			RUBRIC_NUM: $(this).data('rubricnum')
 		});
 		return false;
 	});
@@ -925,7 +925,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			createTier(tier, "New Quality");
 			callServer(tier, "/teacher/rubrics/view/addquality.php",
 			{
-				NUM: $(this).data('num')
+				RUBRIC_NUM: $(this).data('rubricnum')
 			});
 			return false;
 		});
@@ -937,7 +937,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				createTier(tier, "Submitting...");
 				callServer(tier, "/teacher/rubrics/view/addquality/submit.php",
 				{
-					NUM: $(this).data('num'),
+					RUBRIC_NUM: $(this).data('rubricnum'),
 					QUALITY_TITLE: $("#qualityname").val(),
 					POINTS: $("#qualitypoints").val(),
 				});
@@ -951,7 +951,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			createTier(tier, "New Criterion");
 			callServer(tier, "/teacher/rubrics/view/addcriteria.php", 
 			{
-				NUM: $(this).data('num')
+				RUBRIC_NUM: $(this).data('rubricnum')
 			});
 			return false;
 		});
@@ -963,7 +963,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				createTier(tier, "Submitting...");
 				callServer(tier, "/teacher/rubrics/view/addcriteria/submit.php",
 				{
-					NUM: $(this).data('num'),
+					RUBRIC_NUM: $(this).data('rubricnum'),
 					CRITERIA_TITLE: $("#criterianame").val()
 				});
 				return false;
@@ -977,7 +977,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				createTier(tier, "");
 				callServer(tier, "/teacher/rubrics/view/addcriteria/component.php",
 				{
-					COMPONENT: $(this).data('num'),
+					COMPONENT_NUM: $(this).data('componentnum'),
 					CRITERIA_NUM: $(this).data('criterionnum'),
 				});
 				return false;
@@ -990,7 +990,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 					createTier(tier, "Selecting...");
 					callServer(tier, "/teacher/rubrics/view/addcriteria/component/select.php", 
 					{
-						COMPONENT_NUM: $(this).data('num'),
+						COMPONENT_NUM: $(this).data('componentnum'),
 						CRITERIA_NUM: $(this).data('criterionnum'),
 					});
 					return false;
@@ -1003,7 +1003,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			createTier(tier, "Pick an assignment");
 			callServer(tier, "/teacher/rubrics/view/addassignment.php", 
 			{
-				NUM: $(this).data('num')
+				RUBRIC_NUM: $(this).data('rubricnum')
 			});
 			return false;
 		});
@@ -1015,7 +1015,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				createTier(tier, "Selecting...");
 				callServer(tier, "/teacher/rubrics/view/addassignment/select.php", 
 				{
-					NUM: $(this).data('num'),
+					RUBRIC_NUM: $(this).data('rubricnum'),
 					ASSIGNMENT_NUM: $(this).data('assignmentnum')
 				});
 				return false;
@@ -1028,7 +1028,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			createTier(tier, "Selecting...");
 			callServer(tier, "/teacher/rubrics/view/removeassignment.php", 
 			{
-				NUM: $(this).data('num'),
+				RUBRIC_NUM: $(this).data('rubricnum'),
 				ASSIGNMENT_NUM: $(this).data('assignmentnum')
 			});
 			return false;
@@ -1041,7 +1041,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			createTier(tier, "Builder");
 			callServer(tier, "/teacher/rubrics/view/build.php", 
 			{
-				NUM: $(this).data('num')
+				RUBRIC_NUM: $(this).data('rubricnum')
 			});
 			return false;
 		});
@@ -1076,7 +1076,7 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				//if changed, publish to the server.
 				callServer(0, "/teacher/rubrics/view/build/update.php", 
 				{
-					NUM: textbox.data('num'),
+					RUBRIC_NUM: textbox.data('rubricnum'),
 					RUBRIC_QUALITY_NUM: textbox.data('quality'),
 					RUBRIC_CRITERIA_NUM: textbox.data('criteria'),
 					CONTENTS: textbox.val()

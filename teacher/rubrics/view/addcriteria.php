@@ -13,7 +13,7 @@ include "../../../restricted/headrubric.php";
 	<label for="criterianame">Criteria name: </label>
 	<input id="criterianame" type="text" name="CRITERIA_TITLE" placeholder="Spelling and Accuracy"><br>
 </div>
-<a id="js_rubrics_edit_addcriteria_submit" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php 
+<a id="js_rubrics_edit_addcriteria_submit" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php 
 
 #Show contents of the rubric. ?>
 <div class="object subtitle">

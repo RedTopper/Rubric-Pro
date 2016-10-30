@@ -16,7 +16,7 @@ if($cell === null) {
 
 #Then, check to see if the parent of the cell belongs to the rubric that we are editing.
 $rubric = sql_getRubricNumberFromRubricQuality($cell["RUBRIC_QUALITY_NUM"]);
-if($rubric["RUBRIC_NUM"] !== $NUM) {
+if($rubric["RUBRIC_NUM"] !== $RUBRIC_NUM) {
 	db_showError("Whoops!","You cannot edit cells that do not belong to your account.","Try refreshing the page to fix the problem.",400);
 }
 

@@ -7,10 +7,10 @@ include "../../../restricted/headrubric.php";
 #We need the qualities so we can populate the top of the rubric.
 #Make sure to sort by the points!
 $qualitiesCount = 0;
-$qualities = sql_getAllQualitiesInRubric($NUM, $qualitiesCount);
+$qualities = sql_getAllQualitiesInRubric($RUBRIC_NUM, $qualitiesCount);
 
 #Next, to complete our masterpeice, we need the criteria of each row.
-$criteria = sql_getAllCriteriaInRubric($NUM);
+$criteria = sql_getAllCriteriaInRubric($RUBRIC_NUM);
 
 #check to make sure that contents actually exist within the table
 if($qualities === null || $criteria === null) {
@@ -18,7 +18,7 @@ if($qualities === null || $criteria === null) {
 }
 	
 #Ok, now get the actual cell data
-$cells = sql_getAllRubricCells($NUM);
+$cells = sql_getAllRubricCells($RUBRIC_NUM);
 
 #Tell access.js that we need to be able to make this col huuuuge.
 header("JS-Resize: auto");
@@ -64,7 +64,7 @@ header("JS-Resize: auto");
 		echo "<td><textarea rows='8' cols='18' class='rubricbox" .
 		
 		#rubric number
-		"' data-num='" . $NUM . 
+		"' data-rubricnum='" . $RUBRIC_NUM . 
 		
 		#quality number of cell
 		"' data-quality='" . $cell["RUBRIC_QUALITY_NUM"] . 

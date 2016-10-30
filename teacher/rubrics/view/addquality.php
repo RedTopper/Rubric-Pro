@@ -15,7 +15,7 @@ include "../../../restricted/headrubric.php";
 	<label for="qualitypoints">Points out of <?php echo $rubric["MAX_POINTS_PER_CRITERIA"] ?>: </label>
 	<input id="qualitypoints" type="number" name="POINTS" placeholder="<?php echo $rubric["MAX_POINTS_PER_CRITERIA"] ?>"><br>
 </div>
-<a id="js_rubrics_edit_addquality_submit" class="object create white" href="#" data-num="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php
+<a id="js_rubrics_edit_addquality_submit" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Submit</h3></a><?php
 
 #Then, output the qualities that are already in the table. ?>
 <div class="object subtitle">

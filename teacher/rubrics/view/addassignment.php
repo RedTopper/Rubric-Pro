@@ -10,4 +10,4 @@ include "../../../restricted/functions.php"; ?>
 
 <?php
 $assignments = sql_getAllAssignments($_SESSION["NUM"]);
-fun_listAssignments("js_rubrics_addassignment_select", $assignments, $NUM);
+fun_listAssignments("js_rubrics_addassignment_select", $assignments, "selectable", "", $RUBRIC_NUM);

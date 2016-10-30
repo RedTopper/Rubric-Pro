@@ -10,17 +10,17 @@ include "../../../../restricted/functions.php";
 include "../../../../restricted/sql.php";
 
 $CRITERIA_NUM = isset($_POST["CRITERIA_NUM"]) ? $_POST["CRITERIA_NUM"] : null;
-$COMPONENT = isset($_POST["COMPONENT"]) ? $_POST["COMPONENT"] : null;
+$COMPONENT_NUM = isset($_POST["COMPONENT_NUM"]) ? $_POST["COMPONENT_NUM"] : null;
 
 #Validate that the component can be null or a number greater than 0
-if(!($COMPONENT == null || is_numeric($COMPONENT) && $COMPONENT > 0)) {
+if(!($COMPONENT_NUM == null || is_numeric($COMPONENT_NUM) && $COMPONENT_NUM > 0)) {
 	showError("Whoops", "I didn't quite understand the request...", "Sorry about that!", 400);
 }
 
 #List of selected components
 $components = null;
 
-if($COMPONENT === null) {
+if($COMPONENT_NUM === null) {
 	
 	#If it's null, request the root elements
 	$components = sql_getAllRootComponents($_SESSION["NUM"]);
@@ -37,7 +37,7 @@ if($COMPONENT === null) {
 } else {
 
 	#Otherwise we need to fetch the elemetns that the user requested as well as it's parent.
-	$parent = sql_getComponent($_SESSION["NUM"], $COMPONENT);
+	$parent = sql_getComponent($_SESSION["NUM"], $COMPONENT_NUM);
 
 	#If we do not have a matching parent show an error.
 	if($parent === null) { ?>
@@ -46,7 +46,7 @@ if($COMPONENT === null) {
 	}
 
 	#Get all components from that parent
-	$components = sql_getAllSubComponentsFromComponent($_SESSION["NUM"], $COMPONENT);
+	$components = sql_getAllSubComponentsFromComponent($_SESSION["NUM"], $COMPONENT_NUM);
 	
 	#Title for the sub components. ?>
 	<div class="title">
@@ -56,7 +56,7 @@ if($COMPONENT === null) {
 		<h2>Components</h2>
 	</div>
 	<a class="js_rubrics_edit_addcriteria_addcomponent_select object create" href="#" 
-			data-num="<?php echo $parent["NUM"] ?>" 
+			data-componentnum="<?php echo $parent["NUM"] ?>" 
 			data-criterionnum="<?php echo $CRITERIA_NUM ?>">
 		<div class="arrow"></div>
 		<h3>Select "<?php echo htmlentities($parent["NAME"]); ?>"</h3>
@@ -106,7 +106,7 @@ foreach($components as $row) {
 	}?>
 	
 	<a class="js_rubrics_edit_addcriteria_addcomponent object selectable" href="#" 
-			data-num="<?php echo $row["NUM"] ?>" 
+			data-componentnum="<?php echo $row["NUM"] ?>" 
 			data-criterionnum="<?php echo $CRITERIA_NUM ?>">
 		<div class="arrow"></div><?php
 		

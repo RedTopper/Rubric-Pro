@@ -7,13 +7,13 @@ $needsSQL = true;
 include "db.php";
 include "sql.php";
 
-$NUM = isset($_POST["NUM"]) ? $_POST["NUM"] : "";
+$RUBRIC_NUM = isset($_POST["RUBRIC_NUM"]) ? $_POST["RUBRIC_NUM"] : "";
 
-if($NUM == "") {
+if($RUBRIC_NUM == "") {
 	db_showError("Whoops!", "You need to select a rubric.", "Try refreshing the page to fix the problem.", 400);
 }
 
-$rubric = sql_doesTeacherOwnRubric($_SESSION["NUM"], $NUM);
+$rubric = sql_doesTeacherOwnRubric($_SESSION["NUM"], $RUBRIC_NUM);
 
 #Check to see if there is really a student!
 if($rubric === null) {

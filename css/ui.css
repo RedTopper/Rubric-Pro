@@ -56,8 +56,8 @@ Thanks for the Datepicker UI! */
 	width: 100%;
 }
 .ui-datepicker thead {
-	background-color: #f7f7f7;
-	background-image: linear-gradient(top,  #f7f7f7 0%,#f1f1f1 100%);
+	background: #f7f7f7;
+	background: linear-gradient(to top,  #f7f7f7 0%,#f1f1f1 100%);
 	border-bottom: 1px solid #bbb;
 }
 .ui-datepicker th {
@@ -93,7 +93,7 @@ Thanks for the Datepicker UI! */
 /* Date Picker Hover & Active */
 .ui-datepicker-calendar .ui-state-default {
 	background: #ededed;
-	background: linear-gradient(top,  #ededed 0%,#dedede 100%);
+	background: linear-gradient(to top,  #ededed 0%,#dedede 100%);
 	box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
 }
 .ui-datepicker-calendar .ui-state-hover {

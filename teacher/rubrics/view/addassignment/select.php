@@ -16,7 +16,7 @@ if($assignment == null) {
 }
 
 #If there is a duplicate, deny it.
-if(sql_doesRubricAlreadyExistInAssignment($NUM, $ASSIGNMENT_NUM)) {
+if(sql_doesRubricAlreadyExistInAssignment($RUBRIC_NUM, $ASSIGNMENT_NUM)) {
 	db_showError("Whoops!", "That rubric already belongs in that assignment!", "Try selecting another rubric or assignment.", 400);
 }
 
@@ -24,7 +24,7 @@ if(sql_doesRubricAlreadyExistInAssignment($NUM, $ASSIGNMENT_NUM)) {
 header("JS-Redirect: removeto-3");
 
 #Bind!
-sql_bindRubricToAssignment($NUM, $ASSIGNMENT_NUM);
+sql_bindRubricToAssignment($RUBRIC_NUM, $ASSIGNMENT_NUM);
 
 #Show that it's been bound
 db_showError("Ok!", htmlentities($rubric["SUBTITLE"]) . " has been bound to " . htmlentities($assignment["TITLE"]) . ".", "", 201);

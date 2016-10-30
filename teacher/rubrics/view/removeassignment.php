@@ -17,7 +17,7 @@ if($assignment == null) {
 header("JS-Redirect: removeto-2");
 
 #Unbind!
-sql_unbindRubricFromAssignment($NUM, $ASSIGNMENT_NUM);
+sql_unbindRubricFromAssignment($RUBRIC_NUM, $ASSIGNMENT_NUM);
 
 #Show that it's been unbound
 db_showError("Ok!", htmlentities($rubric["SUBTITLE"]) . " has been unbound from " . htmlentities($assignment["TITLE"]) . ".", "", 201);

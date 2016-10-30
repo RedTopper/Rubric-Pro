@@ -1065,7 +1065,7 @@ SQL
 	foreach($criteria as $criterion) {
 		$stmt->execute(array(
 		'criteria' => $criterion["NUM"],
-		'quality' => $qualityTitle));
+		'quality' => $qualityNum));
 	}
 }
 

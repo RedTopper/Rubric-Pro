@@ -4,14 +4,14 @@ if(!isset($needsFunction)) die();
 /**
  * This function lists all of the classes in a formatted list.
  *
- * $classname The HTML class name for each button (used for JQuery binding in access.js)
- * $data 2D array output from the database
- * $type The css type of the list. Curently available: "selectable" - generic grey "destroy" - Appears red "create" - Appears green. 
+ * $classname: The HTML class name for each button (used for JQuery binding in access.js)
+ * $classes: 2D array output from the database
+ * $type: The css type of the list. Curently available: "selectable" - generic grey "destroy" - Appears red "create" - Appears green. 
  *		 "selectable" by default
  */
-function fun_listClasses($classname, $data, $type = "selectable", $prependText = "", $assignmentNum = null) {
-	foreach($data as $row) { ?>
-		<a class="<?php echo $classname; ?> object <?php echo $type; ?>" href="#" data-num="<?php echo $row["NUM"] ?>"<?php echo ($assignmentNum === null ? "" : " data-num='$assignmentNum'");?>>
+function fun_listClasses($classname, $classes, $type = "selectable", $prependText = "", $assignmentNum = null) {
+	foreach($classes as $row) { ?>
+		<a class="<?php echo $classname; ?> object <?php echo $type; ?>" href="#" data-num="<?php echo $row["NUM"] ?>"<?php echo ($assignmentNum === null ? "" : " data-assignmentnum='$assignmentNum'");?>>
 		<div class="arrow"></div>
 			<h3>
 			<?php 
@@ -70,7 +70,7 @@ function fun_listStudents($classname, $students, $selectable = true) {
  */
 function fun_listRubrics($classname, $rubrics) {
 	foreach($rubrics as $row) {  ?>
-		<a class="<?php echo $classname;?> object selectable" href="#" data-num="<?php echo $row["NUM"] ?>"><div class='arrow'></div>
+		<a class="<?php echo $classname;?> object selectable" href="#" data-rubricnum="<?php echo $row["NUM"] ?>"><div class='arrow'></div>
 			<h3>
 			<?php 
 			#rubric information
@@ -90,10 +90,10 @@ function fun_listRubrics($classname, $rubrics) {
  * $classname: The HTML class name for each button (used for JQuery binding in access.js)
  * $assignments: 2D array output from the database (you must call the database yourself!)
  */
-function fun_listAssignments($classname, $assignments, $rubricNumber = null, $prependText = "", $type = "selectable") {
+function fun_listAssignments($classname, $assignments, $type = "selectable", $prependText = "", $rubricNumber = null) {
 	foreach($assignments as $row) {  ?>
 		<a class="<?php echo $classname;?> object <?php echo $type; ?>" href="#" 
-				data-assignmentnum="<?php echo $row["NUM"] ?>"<?php echo ($rubricNumber === null ? "" : " data-num='$rubricNumber'");?>><div class='arrow'></div>
+				data-assignmentnum="<?php echo $row["NUM"] ?>"<?php echo ($rubricNumber === null ? "" : " data-rubricnum='$rubricNumber'");?>><div class='arrow'></div>
 			<h3>
 			<?php echo $prependText . htmlentities($row["TITLE"]); ?> 
 			</h3>
