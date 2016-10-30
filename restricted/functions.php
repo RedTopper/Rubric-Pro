@@ -9,9 +9,9 @@ if(!isset($needsFunction)) die();
  * $type The css type of the list. Curently available: "selectable" - generic grey "destroy" - Appears red "create" - Appears green. 
  *		 "selectable" by default
  */
-function fun_listClasses($classname, $data, $type = "selectable", $prependText = "") {
+function fun_listClasses($classname, $data, $type = "selectable", $prependText = "", $assignmentNum = null) {
 	foreach($data as $row) { ?>
-		<a class="<?php echo $classname; ?> object <?php echo $type; ?>" href="#" data-num="<?php echo $row["NUM"] ?>">
+		<a class="<?php echo $classname; ?> object <?php echo $type; ?>" href="#" data-num="<?php echo $row["NUM"] ?>"<?php echo ($assignmentNum === null ? "" : " data-num='$assignmentNum'");?>>
 		<div class="arrow"></div>
 			<h3>
 			<?php 

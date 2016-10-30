@@ -218,6 +218,10 @@ SQL
 	}
 }
 
+function sql_getAllAssignmentClasses($teacherNum, $assignmentNum) {
+	return null;
+}
+
 /**
  * Gets a list of classes that belong to a specific teacher.
  *

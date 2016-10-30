@@ -1116,3 +1116,15 @@ $(document).on('click', '#js_assignments', doAssignments);
 			});
 			return false;
 		});
+	//Assignment tab: view
+	$(document).on('click', '.js_assignments_select', function(e) {
+		var tier = 1;
+		log("JQUERY/user", "Assignment > Edit");
+		changeColor(tier, $(this));
+		createTier(tier, "Edit");
+		callServer(tier, "/teacher/assignment/view.php",
+		{
+			ASSIGNMENT_NUM: $(this).data('assignmentnum')
+		});
+		return false;
+	});

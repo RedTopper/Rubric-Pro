@@ -33,8 +33,8 @@ $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen(
 				</div>
 				<div id="navigation">
 					<a href="#" id="js_dashboard"><img class="navicon" src="images/sidebar/dashboard.svg"><span>Dashboard</span></a>
-					<a href="#" id="js_accounts"><img class="navicon" src="images/sidebar/accounts.svg"><span>Accounts</span></a>
 					<a href="#" id="js_components"><img class="navicon" src="images/sidebar/component.svg"><span>Components</span></a>
+					<a href="#" id="js_accounts"><img class="navicon" src="images/sidebar/accounts.svg"><span>Accounts</span></a>
 					<a href="#" id="js_rubrics"><img class="navicon" src="images/sidebar/rubrics.svg"><span>Rubrics</span></a>
 					<a href="#" id="js_assignments"><img class="navicon" src="images/sidebar/assignment.svg"><span>Assignments</span></a>
 					<a href="#" id="js_classes"><img class="navicon" src="images/sidebar/class.svg"><span>Classes</span></a>
