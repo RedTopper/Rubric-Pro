@@ -11,9 +11,8 @@ include "../../restricted/functions.php";
 	<p><?php echo ($assignment["DESCRIPTION"] !== "" ? "Description: <p>" . htmlentities($assignment["DESCRIPTION"]) : "No description.");  ?>
 </div>
 
-<div class="object spacer"></div>
 <div class="object subtitle">
-	<h2>Class Management:</h2>
+	<h2>Classes:</h2>
 </div>
 <a id="js_assignment_view_bind" class="object create white" href="#" data-assignmentnum="<?php echo $assignment["NUM"] ?>">
 	<div class="arrow"></div>
@@ -37,4 +36,19 @@ if($classes === null) {
 	<div class="object subtext">
 		<p>You can add an assignment to as many classes as you wish.
 	</div><?php
+}
+
+$rubrics = sql_getAllRubricsInAssignment($_SESSION['NUM'], $assignment["NUM"]); ?>
+
+<div class="object spacer"></div>
+<div class="object subtitle">
+	<h2>Attached Rubrics:</h2>
+</div><?php
+
+if($rubrics === null) { ?>
+<div class="object subtext">
+	<p>Looks like you don't have any rubrics bound to this assignment yet.<br>Try binding one with the button above!</p>
+</div><?php
+} else {
+	fun_listRubrics("nothing", $rubrics, "");
 }

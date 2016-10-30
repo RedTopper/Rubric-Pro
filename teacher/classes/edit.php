@@ -29,8 +29,10 @@ if($class == null) {
 	<p><?php echo ($class["DESCRIPTOR"] !== "" ? "Description: " . htmlentities($class["DESCRIPTOR"]) . "." : "");  ?>
 </div>
 
+<div class="object spacer"></div>
+
 <div class="object subtitle">
-	<h2>Current assignments:</h2>
+	<h2>Attached Current Assignments:</h2>
 </div><?php
 
 $currentAssignments = null; #sql_getAllCurrentAssignments($CLASS);
@@ -50,7 +52,7 @@ if($currentAssignments === null) {
 } ?>
 
 <div class="object subtitle">
-	<h2>Past assignments:</h2>
+	<h2>Attached Past Assignments:</h2>
 </div><?php
 
 $pastAssignments = null; #sql_getAllPastAssignments($CLASS);
@@ -71,7 +73,7 @@ if($pastAssignments === null) {
 
 #Students that belong to this class ?>
 <div class="object subtitle">
-	<h2>Students:</h2>
+	<h2>Attached Students:</h2>
 </div>
 <?php
 

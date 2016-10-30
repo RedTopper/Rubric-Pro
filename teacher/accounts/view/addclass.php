@@ -10,4 +10,10 @@ include "../../../restricted/functions.php"; ?>
 
 <?php
 $classes = sql_getAllClasses($_SESSION["NUM"]);
-fun_listClasses("js_accounts_view_addclass_select", $classes);
+if($classes === null) { ?>
+	<div class="object subtext">
+		<p>Looks like you don't have any classes yet.<br>Try creating one in the sidebar!
+	</div><?php
+} else {
+	fun_listClasses("js_accounts_view_addclass_select", $classes);
+}

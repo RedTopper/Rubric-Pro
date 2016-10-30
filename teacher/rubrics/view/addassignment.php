@@ -10,4 +10,10 @@ include "../../../restricted/functions.php"; ?>
 
 <?php
 $assignments = sql_getAllAssignments($_SESSION["NUM"]);
-fun_listAssignments("js_rubrics_view_addassignment_select", $assignments, "selectable", "", $RUBRIC_NUM);
+if($assignments === null) { ?>
+	<div class="object subtext">
+		<p>Looks like you don't have any assignments yet.<br>Try creating one in the sidebar!
+	</div><?php
+} else {
+	fun_listAssignments("js_rubrics_view_addassignment_select", $assignments, "selectable", "", $RUBRIC_NUM);
+}

@@ -8,13 +8,12 @@ include "../../restricted/functions.php";
 	<h2><?php echo htmlentities($rubric["SUBTITLE"])?>: </h2>
 </div>
 <a id="js_rubrics_view_editrubric" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Edit this rubric</h3></a>
-<a id="js_rubrics_view_addquality" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Create or view qualities</h3></a>
-<a id="js_rubrics_view_addcriteria" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Create, edit, or view criteria</h3></a>
+<a id="js_rubrics_view_addquality" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Edit qualities</h3></a>
+<a id="js_rubrics_view_addcriteria" class="object create white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Edit criteria</h3></a>
 <a id="js_rubrics_view_destroyquality" class="object warn white" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Choose and destroy qualities</h3></a>
 <a id="js_rubrics_view_destroycriteria" class="object warn create" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Choose and destroy criteria</h3></a>
 <a id="js_rubrics_view_destroyrubric" class="object destroy" href="#" data-rubricnum="<?php echo $rubric["NUM"] ?>"><div class="arrow"></div><h3>Destroy this rubric</h3></a>
 
-<div class="object spacer"></div>
 <div class="object subtitle">
 	<h2>Assignments:</h2>
 </div>

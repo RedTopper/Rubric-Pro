@@ -68,18 +68,19 @@ function fun_listStudents($classname, $students, $selectable = true) {
  * $classname The HTML class name for each button (used for JQuery binding in access.js)
  * $rubrics 2D array output from the database (you must call the database yourself!)
  */
-function fun_listRubrics($classname, $rubrics) {
+function fun_listRubrics($classname, $rubrics, $type = "selectable") {
 	foreach($rubrics as $row) {  ?>
-		<a class="<?php echo $classname;?> object selectable" href="#" data-rubricnum="<?php echo $row["NUM"] ?>"><div class='arrow'></div>
+		<<?php echo ($type === "" ? "div" : "a") ?>  class="<?php echo $classname;?> object <?php echo $type; ?>" href="#" data-rubricnum="<?php echo $row["NUM"] ?>">
+			<?php echo ($type === "" ? "" : "<div class='arrow'></div>") ?>
 			<h3>
 			<?php 
 			#rubric information
-			echo htmlentities($row["SUBTITLE"]) . "</div><br><div class='monospace'>" . 
+			echo htmlentities($row["SUBTITLE"]) . "<br><div class='monospace'>" . 
 			$row["MAX_POINTS_PER_CRITERIA"] . " points per criteria, <br>" . 
 			$row["TOTAL_POINTS"] . " points possible.</div>";
 			?> 
 			</h3>
-		</a>
+		</<?php echo ($type === "" ? "div" : "a") ?>>
 		<?php
 	}
 }

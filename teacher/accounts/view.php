@@ -30,11 +30,9 @@ if($info["PASSWORD"] != "CHANGE") { ?>
 	<h3>Unbind account</h3>
 </a>
 
-<div class="object subtext spacer"></div>
-
 <div class="object subtitle">
 	<a href="#" data-document="CLASSMGMT" class="js_help"><img class="help" src="images/help.svg" alt="Help" title="Help"></a>
-	<h2>Class Management:</h2>
+	<h2>Classes:</h2>
 </div>
 
 <a id="js_accounts_view_addclass" class="object create" href="#" data-studentnum="<?php echo $info["NUM"]; ?>"><div class="arrow"></div>

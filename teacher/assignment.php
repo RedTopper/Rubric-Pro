@@ -44,8 +44,7 @@ if($SEARCH !== "") { ?>
 
 if($assignments === null) { ?>
 	<div class="object subtext">
-		<p>Looks like you don't have any assignments yet.
-		<p>Try creating one with the button above!
+		<p>Looks like you don't have any assignments yet.<br>Try creating one with the button above!
 	</div><?php
 } else {
 	fun_listAssignments("js_assignments_view", $assignments);

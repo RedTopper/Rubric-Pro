@@ -258,7 +258,11 @@ ORDER BY YEAR DESC, TERM DESC, PERIOD
 SQL
 	);
 	$stmt->execute(array('teacherNum' => $_SESSION["NUM"]));	
-	return $stmt->fetchAll();
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
 }
 
 /**
@@ -390,6 +394,31 @@ SQL
 	return $stmt->fetchAll();
 }
 
+function sql_getAllRubricsInAssignment($teacherNum, $assignmentNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT RUBRIC.NUM, TEACHER_NUM, MAX_POINTS_PER_CRITERIA, SUBTITLE, ((
+	SELECT COUNT(*) 
+	FROM RUBRIC_CRITERIA
+	WHERE
+	TEACHER_NUM = :teachernum AND
+	RUBRIC_NUM = RUBRIC.NUM) * MAX_POINTS_PER_CRITERIA) AS TOTAL_POINTS 
+FROM RUBRIC, `ASSIGNMENT-RUBRIC_LINKER` ASL
+WHERE
+ASL.ASSIGNMENT_NUM = :assignmentNum AND 
+ASL.RUBRIC_NUM = RUBRIC.NUM AND
+TEACHER_NUM = :teachernum
+ORDER BY SUBTITLE
+SQL
+	);
+	$stmt->execute(array('teachernum' => $teacherNum, 'assignmentNum' => $assignmentNum));	
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
+}
 /**
  * Fetches all qualities that are bound to a rubric.
  *

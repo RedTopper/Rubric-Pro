@@ -16,5 +16,11 @@ include "../restricted/sql.php";
 <?php
 
 $classes = sql_getAllClasses($_SESSION["NUM"]);
-fun_listClasses("js_classes_edit", $classes);
+if($classes === null) { ?>
+	<div class="object subtext">
+		<p>Looks like you don't have any classes yet.<br>Try creating one with the button above!
+	</div><?php
+} else {
+	fun_listClasses("js_classes_edit", $classes);
+}
 ?>
