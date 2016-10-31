@@ -14,7 +14,7 @@ include "../../restricted/functions.php";
 <div class="object subtitle">
 	<h2>Classes:</h2>
 </div>
-<a id="js_assignment_view_bind" class="object create white" href="#" data-assignmentnum="<?php echo $assignment["NUM"] ?>">
+<a id="js_assignment_view_addclass" class="object create white" href="#" data-assignmentnum="<?php echo $assignment["NUM"] ?>">
 	<div class="arrow"></div>
 	<h3>Add to class</h3>
 </a>

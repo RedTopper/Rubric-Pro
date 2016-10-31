@@ -7,7 +7,7 @@ include "../../../restricted/functions.php"; ?>
 	<h2>First, choose a due date:</h2>
 </div>
 <div class="editor">
-	<input id="js_assignments_addclass_datepick" class="full datepicker" type="text" name="DUE_DATE" value="<?php echo date("m/d/Y")?>">
+	<input id="js_assignments_addclass_datepick" class="full datepicker" type="text" name="DUE_DATE" placeholder="Press here to set a due date">
 </div>
 
 <div class="object subtitle">
@@ -16,4 +16,4 @@ include "../../../restricted/functions.php"; ?>
 
 <?php
 $assignments = sql_getAllClasses($_SESSION["NUM"]);
-fun_listClasses("js_assignments_addclass_select", $assignments, "selectable", "", $ASSIGNMENT_NUM);
+fun_listClasses("js_assignments_view_addclass_select", $assignments, "selectable", "", $ASSIGNMENT_NUM);

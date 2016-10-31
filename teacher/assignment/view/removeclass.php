@@ -17,7 +17,7 @@ if($class == null) {
 header("JS-Redirect: removeto-2");
 
 #Unbind!
-sql_unbindAssignmentFromClass($NUM, $ASSIGNMENT_NUM);
+sql_unbindAssignmentFromClass($ASSIGNMENT_NUM, $CLASS_NUM);
 
 #Show that it's been unbound
 db_showError("Ok!", htmlentities($assignment["TITLE"]) . " has been unbound from " . htmlentities($class["NAME"]) . ".", "", 201);

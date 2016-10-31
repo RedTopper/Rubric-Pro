@@ -1139,7 +1139,7 @@ $(document).on('click', '#js_assignments', doAssignments);
 		return false;
 	});
 		//view: addclass 
-		$(document).on('click', '#js_assignment_view_bind', function(e) {
+		$(document).on('click', '#js_assignment_view_addclass', function(e) {
 			var tier = 2;
 			changeColor(tier, $(this));
 			createTier(tier, "Pick a Class");
@@ -1147,6 +1147,33 @@ $(document).on('click', '#js_assignments', doAssignments);
 			callServer(tier, "/teacher/assignment/view/addclass.php", 
 			{
 				ASSIGNMENT_NUM: $(this).data('assignmentnum')
+			});
+			return false;
+		});
+			//addclass: select 
+			$(document).on('click', '.js_assignments_view_addclass_select', function(e) {
+				var tier = 3;
+				changeColor(tier, $(this));
+				createTier(tier, "Selecting...");
+				log("JQUERY/user", "Assignment > View > Add Class > Select");
+				callServer(tier, "/teacher/assignment/view/addclass/select.php", 
+				{
+					ASSIGNMENT_NUM: $(this).data('assignmentnum'),
+					CLASS_NUM: $(this).data('classnum'),
+					DUE_DATE: $("#js_assignments_addclass_datepick").val()
+				});
+				return false;
+			});
+		//view: removeclass 
+		$(document).on('click', '.js_assignment_view_removeclasses', function(e) {
+			var tier = 2;
+			changeColor(tier, $(this));
+			createTier(tier, "Removing...");
+			log("JQUERY/user", "Assignment > View > Remove Class");
+			callServer(tier, "/teacher/assignment/view/removeclass.php", 
+			{
+				ASSIGNMENT_NUM: $(this).data('assignmentnum'),
+				CLASS_NUM: $(this).data('classnum')
 			});
 			return false;
 		});

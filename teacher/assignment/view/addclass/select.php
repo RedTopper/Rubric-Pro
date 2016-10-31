@@ -2,30 +2,39 @@
 #Libraries.
 include "../../../../restricted/headassignment.php";
 
-$ASSIGNMENT_NUM = isset($_POST["ASSIGNMENT_NUM"]) ? $_POST["ASSIGNMENT_NUM"] : "";
+$CLASS_NUM = isset($_POST["CLASS_NUM"]) ? $_POST["CLASS_NUM"] : "";
 $DUE_DATE = isset($_POST["DUE_DATE"]) ? $_POST["DUE_DATE"] : "";
 
-if($ASSIGNMENT_NUM == "") {
-	db_showError("Whoops!", "You didn't select an assignment!", "Try selecting an assignment first.", 400);
+if($CLASS_NUM == "") {
+	db_showError("Whoops!", "You didn't select a class!", "Try selecting a class first.", 400);
 }
 
-$assignment = sql_doesTeacherOwnAssignment($_SESSION["NUM"], $ASSIGNMENT_NUM);
+if($DUE_DATE == "") {
+	db_showError("Whoops!", "You didn't select a date!", "You need to assign a due date to continue.", 400);
+}
+
+$dateParts = explode("/", $DUE_DATE);
+if(!(count($dateParts) === 3 && checkdate ($dateParts[0] , $dateParts[1] , $dateParts[2]))) {
+	db_showError("Whoops!", "Something seems wrong about that date!", "You need to pick a date or format it in MM/DD/YYYY.", 400);
+}
+
+$class = sql_doesTeacherOwnClass($_SESSION["NUM"], $CLASS_NUM);
 
 #Check if the teacher owns the assignment
-if($assignment == null) {
-	db_showError("Whoops!", "You can't add a rubric to an assignment that doesn't belong to you!", "Try selecting another assignment.", 400);
+if($class == null) {
+	db_showError("Whoops!", "You can't add an assignment to a class that doesn't belong to you!", "Try selecting another class or assignment.", 400);
 }
 
 #If there is a duplicate, deny it.
-if(sql_doesRubricAlreadyExistInAssignment($NUM, $ASSIGNMENT_NUM)) {
-	db_showError("Whoops!", "That rubric already belongs in that assignment!", "Try selecting another rubric or assignment.", 400);
+if(sql_doesAssignmentAlreadyExistInClass($ASSIGNMENT_NUM, $CLASS_NUM)) {
+	db_showError("Whoops!", "That assignment already belongs in that class!", "Try selecting another assignment or class.", 400);
 }
 
-#Use access.js to clear all things after tier 1 (so the user doesn't loose their search)
+#Use access.js to clear all things after tier 1
 header("JS-Redirect: removeto-3");
 
 #Bind!
-sql_bindRubricToAssignment($NUM, $ASSIGNMENT_NUM);
+sql_bindAssignmentToClass($ASSIGNMENT_NUM, $CLASS_NUM, $dateParts[2],  $dateParts[0],  $dateParts[1]);
 
 #Show that it's been bound
-db_showError("Ok!", htmlentities($rubric["SUBTITLE"]) . " has been bound to " . htmlentities($assignment["TITLE"]) . ".", "", 201);
+db_showError("Ok!", htmlentities($assignment["TITLE"]) . " has been bound to " . htmlentities($class["NAME"]) . " with the due date " . htmlentities($DUE_DATE) . ".", "", 201);

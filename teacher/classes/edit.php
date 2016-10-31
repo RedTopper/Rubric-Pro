@@ -23,16 +23,16 @@ if($class == null) {
 	<h2><?php echo htmlentities($class["NAME"]); ?></h2>
 </div>
 	<div class="object subtext">
-	<p><?php echo "Year: " . $class["YEAR"]; ?>.
-	<p><?php echo "Term: " . $class["TERM"]; ?>.
-	<p><?php echo htmlentities($class["PERIOD"]); ?>.
+	<p><?php echo "Year: " . $class["YEAR"]; ?>
+	<p><?php echo "Term: " . $class["TERM"]; ?>
+	<p><?php echo htmlentities($class["PERIOD"]); ?>
 	<p><?php echo ($class["DESCRIPTOR"] !== "" ? "Description: " . htmlentities($class["DESCRIPTOR"]) . "." : "");  ?>
 </div>
 
 <div class="object spacer"></div>
 
 <div class="object subtitle">
-	<h2>Attached Current Assignments:</h2>
+	<h2>Attached Active Assignments:</h2>
 </div><?php
 
 $currentAssignments = null; #sql_getAllCurrentAssignments($CLASS);

@@ -713,10 +713,25 @@ SELECT RUBRIC_NUM, ASSIGNMENT_NUM
 FROM `ASSIGNMENT-RUBRIC_LINKER`
 WHERE 
 RUBRIC_NUM = :rubricnum AND
-ASSIGNMENT_NUM = :assnnum
+ASSIGNMENT_NUM = :assignmentNum
 SQL
 	);
-	$stmt->execute(array('rubricnum' => $rubricNum, 'assnnum' => $assignmentNum));
+	$stmt->execute(array('rubricnum' => $rubricNum, 'assignmentNum' => $assignmentNum));
+	return $stmt->rowCount() > 0;
+}
+
+function sql_doesAssignmentAlreadyExistInClass($assignmentNum, $classNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT CLASS_NUM, ASSIGNMENT_NUM 
+FROM `ASSIGNMENT-CLASS_LINKER`
+WHERE 
+CLASS_NUM = :classNum AND
+ASSIGNMENT_NUM = :assignmentNum
+SQL
+	);
+	$stmt->execute(array('classNum' => $classNum, 'assignmentNum' => $assignmentNum));
 	return $stmt->rowCount() > 0;
 }
 
@@ -865,6 +880,19 @@ SQL
 	$stmt->execute(array('rubricnum' => $rubricNum, 'assignmentnum' => $assignmentNum));
 }
 
+function sql_bindAssignmentToClass($assignmentNum, $classNum, $year, $month, $day) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+INSERT INTO `ASSIGNMENT-CLASS_LINKER`
+(CLASS_NUM, ASSIGNMENT_NUM, DUE_DATE)
+VALUES
+(:classNum, :assignmentNum, CONCAT(:year, '-', :month, '-', :day))
+SQL
+	);
+	$stmt->execute(array('classNum' => $classNum, 'assignmentNum' => $assignmentNum, 'year' => $year, 'month' => $month, 'day' => $day));
+}
+
 /**
  * This function will attempt to disconnect a student from a teacher account
  *
@@ -912,6 +940,18 @@ ASSIGNMENT_NUM = :assignmentnum
 SQL
 	);
 	$stmt->execute(array('rubricnum' => $rubricNum, 'assignmentnum' => $assignmentNum));
+}
+
+function sql_unbindAssignmentFromClass($assignmentNum, $classNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+DELETE FROM `ASSIGNMENT-CLASS_LINKER` 
+WHERE CLASS_NUM = :classNum AND 
+ASSIGNMENT_NUM = :assignmentNum
+SQL
+	);
+	$stmt->execute(array('classNum' => $classNum, 'assignmentNum' => $assignmentNum));
 }
 
 /**
