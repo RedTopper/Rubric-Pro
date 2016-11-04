@@ -128,7 +128,6 @@ body {
 	width: auto;
 	float: left;
 }
-
 #contentscroller {
 	position: absolute; 
 	-webkit-overflow-scrolling: touch;
@@ -149,6 +148,11 @@ body {
 	/* WARNING: If you update this value here, you'll need to   *
 	 * fix the JS variable RIGHT_SPACE_MULTIPLYER in access.js! */
 	margin-right: 10%;
+}
+
+.floatinglink {
+	text-decoration: none;
+	color: #1B96FE;
 }
 
 .selectedpath {

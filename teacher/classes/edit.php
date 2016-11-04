@@ -35,19 +35,19 @@ if($class == null) {
 	<h2>Attached Active Assignments:</h2>
 </div><?php
 
-$currentAssignments = null; #sql_getAllCurrentAssignments($CLASS);
+$currentAssignments = sql_getAllCurrentAssignments($CLASS_NUM);
 if($currentAssignments === null) {
 	#There are no current assignments ?>
 	</div>
 		<div class="object subtext">
 		<p>No assignments are currently active in this class.
-		<p>Try adding some through the "Assignmments" tab.
+		<p>Try adding some through the <a href="#" id="js_assignments" class="floatinglink"><span>Assignments</span></a> tab.
 	</div><?php
 } else {
-	#fun_listAssignments($currentAssignments); ?>
+	fun_listAssignments("js_assignments_view_link", $currentAssignments, "selectable", "", null, true); ?>
 	</div>
 		<div class="object subtext">
-		<p>You can assign assignments through the "Assignmments" tab.
+		<p>You can add and remove more assignments through <a href="#" id="js_assignments" class="floatinglink"><span>Assignments</span></a>.
 	</div><?php
 } ?>
 
@@ -55,19 +55,17 @@ if($currentAssignments === null) {
 	<h2>Attached Past Assignments:</h2>
 </div><?php
 
-$pastAssignments = null; #sql_getAllPastAssignments($CLASS);
+$pastAssignments = sql_getAllPastAssignments($CLASS_NUM);
 if($pastAssignments === null) {
 	#No past assignments either. ?>
-	</div>
-		<div class="object subtext">
+	<div class="object subtext">
 		<p>No assignments have ever been active in this class.
-		<p>Try adding some through the "Assignmments" tab.
+		<p>Try adding some through the <a href="#" id="js_assignments" class="floatinglink"><span>Assignments</span></a> tab.
 	</div><?php
 } else {
-	#fun_listAssignments($pastAssignments);	?>
-	</div>
-		<div class="object subtext">
-		<p>You can assign assignments through the "Assignmments" tab.
+	fun_listAssignments("js_assignments_view_link", $pastAssignments, "selectable", "", null, true);	?>
+	<div class="object subtext">
+		<p>You can add and remove more assignments through <a href="#" id="js_assignments" class="floatinglink"><span>Assignments</span></a>.
 	</div><?php
 } 
 
@@ -81,16 +79,14 @@ if($pastAssignments === null) {
 $students = sql_getAllStudentsInClass($class["NUM"]);
 if($students == null) { 
 	#There are no students.?>
-	</div>
-		<div class="object subtext">
+	<div class="object subtext">
 		<p>No students belong to this class.
-		<p>Try adding some through the "Accounts" tab.
+		<p>Try adding some through the <a href="#" id="js_accounts" class="floatinglink"><span>Accounts</span></a> tab.
 	</div><?php
 } else {
 	#Display students. Last false means not selectable (as in you cannot click on it)
-	fun_listStudents("idkbro", $students, false); ?>
-	</div>
-		<div class="object subtext">
-		<p>You can add and remove more students throught the "Accounts" tab.
+	fun_listStudents("js_accounts_view_link", $students); ?>
+	<div class="object subtext">
+		<p>You can add and remove more students through <a href="#" id="js_accounts" class="floatinglink"><span>Accounts</span></a>.
 	</div><?php
 }

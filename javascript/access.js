@@ -614,12 +614,12 @@ $(document).on('click', '#js_assignments_search', function(e) {
 
 //Sidebar: Accounts tab. 
 //Bound to function because it can be called during a JS-Redirect: account
-function doAccounts(e) {
+function doAccounts(e, callback) {
 	var tier = 0; //This function originates from the sidebar, a tier 0 item.
-	changeColor(tier, $(this));
+	changeColor(tier, $("#js_accounts"));
 	createTier(tier, "Accounts");
 	log("JQUERY/user", "Accounts");
-	callServer(tier, "/teacher/accounts.php");
+	callServer(tier, "/teacher/accounts.php", undefined, (callback == undefined ? undefined : callback));
 	return false;
 }
 $(document).on('click', '#js_accounts', doAccounts);
@@ -815,6 +815,34 @@ $(document).on('click', '#js_classes', doClass);
 		});
 		return false;
 	});
+		//editor: Click on an assignment link
+		$(document).on('click', '.js_assignments_view_link', function(e) {
+			var tier = 0; 
+			var assignmentNum = $(this).data('assignmentnum');
+			doAssignments("", function(parse){
+				appendServerResponse(tier + 1, parse.html);
+				$("#tier1").children().each(function(){
+					if($(this).data("assignmentnum") == assignmentNum) {
+						$(this).trigger("click");
+					}
+				});
+			});
+			return false;
+		});
+		//editor: Click on a student link
+		$(document).on('click', '.js_accounts_view_link', function(e) {
+			var tier = 0; 
+			var studentNum = $(this).data('studentnum');
+			doAccounts("", function(parse){
+				appendServerResponse(tier + 1, parse.html);
+				$("#tier1").children().each(function(){
+					if($(this).data("studentnum") == studentNum) {
+						$(this).trigger("click");
+					}
+				});
+			});
+			return false;
+		});
 
 //Sidebar: Components tab.
 //Function used during a JS-Redirect: components
@@ -871,12 +899,12 @@ $(document).on('click', '#js_components', doComponents);
 		
 //Sidebar: Rubrics tab.
 //Function used during a JS-Redirect: rubrics
-function doRubrics(e) {
+function doRubrics(e, callback) {
 	var tier = 0;
-	changeColor(tier, $(this));
+	changeColor(tier, $("#js_rubrics"));
 	createTier(tier, "Rubrics");
 	log("JQUERY/user", "Rubrics");
-	callServer(tier, "/teacher/rubrics.php");
+	callServer(tier, "/teacher/rubrics.php", undefined, (callback == undefined ? undefined : callback));
 	return false;
 }
 $(document).on('click', '#js_rubrics', doRubrics);
@@ -1095,12 +1123,12 @@ $(document).on('click', '#js_rubrics', doRubrics);
 			});
 //Sidebar: Assignment tab.
 //Function used during a JS-Redirect: assignment
-function doAssignments(e) {
+function doAssignments(e, callback) {
 	var tier = 0;
-	changeColor(tier, $(this));
+	changeColor(tier, $("#js_assignments"));
 	createTier(tier, "Assignments");
 	log("JQUERY/user", "Assignments");
-	callServer(tier, "/teacher/assignment.php");
+	callServer(tier, "/teacher/assignment.php", undefined, (callback == undefined ? undefined : callback));
 	return false;
 }
 $(document).on('click', '#js_assignments', doAssignments);
@@ -1174,6 +1202,20 @@ $(document).on('click', '#js_assignments', doAssignments);
 			{
 				ASSIGNMENT_NUM: $(this).data('assignmentnum'),
 				CLASS_NUM: $(this).data('classnum')
+			});
+			return false;
+		});
+		//view: Click on an rubric link
+		$(document).on('click', '.js_rubrics_view_link', function(e) {
+			var tier = 0; 
+			var rubricNum = $(this).data('rubricnum');
+			doRubrics("", function(parse){
+				appendServerResponse(tier + 1, parse.html);
+				$("#tier1").children().each(function(){
+					if($(this).data("rubricnum") == rubricNum) {
+						$(this).trigger("click");
+					}
+				});
 			});
 			return false;
 		});

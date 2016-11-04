@@ -613,6 +613,48 @@ SQL
 	return $stmt->fetchAll();
 }
 
+function sql_getAllCurrentAssignments($classNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT ASSIGNMENT.NUM, TITLE, DUE_DATE
+FROM ASSIGNMENT, `ASSIGNMENT-CLASS_LINKER` ACL
+WHERE 
+ACL.CLASS_NUM = :classNum AND
+ACL.ASSIGNMENT_NUM = ASSIGNMENT.NUM AND
+DUE_DATE > CURDATE()
+ORDER BY TITLE
+SQL
+	);
+	$stmt->execute(array('classNum' => $classNum));
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
+}
+
+function sql_getAllPastAssignments($classNum) {
+	global $conn;
+	$stmt = $conn->prepare(
+<<<SQL
+SELECT ASSIGNMENT.NUM, TITLE, DUE_DATE
+FROM ASSIGNMENT, `ASSIGNMENT-CLASS_LINKER` ACL
+WHERE 
+ACL.CLASS_NUM = :classNum AND
+ACL.ASSIGNMENT_NUM = ASSIGNMENT.NUM AND
+DUE_DATE < CURDATE()
+ORDER BY TITLE
+SQL
+	);
+	$stmt->execute(array('classNum' => $classNum));
+	if($stmt->rowCount() > 0) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
+}
+
 /**
  * Checks if the passed username already exists within the teachers database
  *

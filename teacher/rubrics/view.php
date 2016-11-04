@@ -46,9 +46,9 @@ $componentTrees = sql_getAllCompiledSymbolTreesFromRubric($rubric["NUM"]); ?>
 </div><?php
 
 if($componentTrees === null) { ?>
-<div class="object subtext">
-	<p>Looks like you don't have any attached components.<br>You'll need to edit your criteria and bind some!</p>
-</div><?php
+	<div class="object subtext">
+		<p>Looks like you don't have any attached components.<br>You'll need to edit your criteria and bind some!</p>
+	</div><?php
 } else { ?>
 	<div class="object subtext"><?php
 	foreach($componentTrees as $tree) {

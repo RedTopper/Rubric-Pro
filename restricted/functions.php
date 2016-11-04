@@ -12,17 +12,15 @@ if(!isset($needsFunction)) die();
 function fun_listClasses($classname, $classes, $type = "selectable", $prependText = "", $assignmentNum = null) {
 	foreach($classes as $row) { ?>
 		<a class="<?php echo $classname; ?> object <?php echo $type; ?>" href="#" data-classnum="<?php echo $row["NUM"] ?>"<?php echo ($assignmentNum === null ? "" : " data-assignmentnum='$assignmentNum'");?>>
-		<div class="arrow"></div>
-			<h3>
-			<?php 
+			<div class="arrow"></div>
+			<h3><?php 
 
 			#Outputs the classes
 			echo $prependText . htmlentities($row["NAME"]) . "<br><div class='monospace'>" .
 			"Year " . $row["YEAR"] . "<br>" .
 			"Term " . $row["TERM"] . "<br>" . 
 			htmlentities($row["PERIOD"]) . 
-			($row["DESCRIPTOR"] !== "" ? " <br>(" . htmlentities($row["DESCRIPTOR"]) . ")</div> " : " "); 
-			?>
+			($row["DESCRIPTOR"] !== "" ? " <br>(" . htmlentities($row["DESCRIPTOR"]) . ")</div> " : " "); ?>
 			</h3>
 		</a>
 		<?php 
@@ -36,29 +34,20 @@ function fun_listClasses($classname, $classes, $type = "selectable", $prependTex
  * $students 2D array output from the database (you must call the database yourself!)
  * $selectable True if the objects can be selected, false otherwise. True by default.
  */
-function fun_listStudents($classname, $students, $selectable = true) {
+function fun_listStudents($classname, $students) {
 	foreach($students as $row) {  ?>
-		<?php if ($selectable) { ?>
-			<a class="<?php echo $classname;?> object selectable" href="#" data-studentnum="<?php echo $row["NUM"] ?>">
+		<a class="<?php echo $classname;?> object selectable" href="#" data-studentnum="<?php echo $row["NUM"] ?>">
 			<div class='arrow'></div>
-		<?php } else { ?>
-			<div class="object">
-		<?php } ?>
-			
-		<h3>
-		<?php 
-		
-		#Student information
-		echo 
-		htmlentities($row["LAST_NAME"]) . ", " . 
-		htmlentities($row["FIRST_NAME"]) . 
-		htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " ")) .
-		"<br><div class='monospace'>[" . 
-		htmlentities($row["USERNAME"]) . "]</div> ";	
-		?> 
-		</h3>
-			
-		<?php echo ($selectable ? "</a>" : "</div>"); 
+			<h3><?php 
+				#Student information
+				echo 
+				htmlentities($row["LAST_NAME"]) . ", " . 
+				htmlentities($row["FIRST_NAME"]) . 
+				htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " ")) .
+				"<br><div class='monospace'>[" . 
+				htmlentities($row["USERNAME"]) . "]</div> "; ?> 
+			</h3>
+		</a><?php
 	}
 }
 
@@ -70,18 +59,15 @@ function fun_listStudents($classname, $students, $selectable = true) {
  */
 function fun_listRubrics($classname, $rubrics, $type = "selectable") {
 	foreach($rubrics as $row) {  ?>
-		<<?php echo ($type === "" ? "div" : "a") ?>  class="<?php echo $classname;?> object <?php echo $type; ?>" href="#" data-rubricnum="<?php echo $row["NUM"] ?>">
-			<?php echo ($type === "" ? "" : "<div class='arrow'></div>") ?>
-			<h3>
-			<?php 
-			#rubric information
-			echo htmlentities($row["SUBTITLE"]) . "<br><div class='monospace'>" . 
-			$row["MAX_POINTS_PER_CRITERIA"] . " points per criteria, <br>" . 
-			$row["TOTAL_POINTS"] . " points possible.</div>";
-			?> 
+		<a class="<?php echo $classname;?> object <?php echo $type; ?>" href="#" data-rubricnum="<?php echo $row["NUM"] ?>">
+			<div class='arrow'></div>
+			<h3><?php 
+				#rubric information
+				echo htmlentities($row["SUBTITLE"]) . "<br><div class='monospace'>" . 
+				$row["MAX_POINTS_PER_CRITERIA"] . " points per criteria, <br>" . 
+				$row["TOTAL_POINTS"] . " points possible.</div>"; ?> 
 			</h3>
-		</<?php echo ($type === "" ? "div" : "a") ?>>
-		<?php
+		</a><?php
 	}
 }
 
@@ -91,13 +77,16 @@ function fun_listRubrics($classname, $rubrics, $type = "selectable") {
  * $classname: The HTML class name for each button (used for JQuery binding in access.js)
  * $assignments: 2D array output from the database (you must call the database yourself!)
  */
-function fun_listAssignments($classname, $assignments, $type = "selectable", $prependText = "", $rubricNumber = null) {
+function fun_listAssignments($classname, $assignments, $type = "selectable", $prependText = "", $rubricNumber = null, $outputDueDate = false) {
 	foreach($assignments as $row) {  ?>
-		<a class="<?php echo $classname;?> object <?php echo $type; ?>" href="#" 
-				data-assignmentnum="<?php echo $row["NUM"] ?>"<?php echo ($rubricNumber === null ? "" : " data-rubricnum='$rubricNumber'");?>><div class='arrow'></div>
-			<h3>
-			<?php echo $prependText . htmlentities($row["TITLE"]); ?> 
-			</h3>
+		<a class="<?php echo $classname;?> object <?php echo $type; ?>" href="#" data-assignmentnum="<?php echo $row["NUM"] ?>"<?php echo ($rubricNumber === null ? "" : " data-rubricnum='$rubricNumber'");?>><div class='arrow'></div>
+			<h3><?php echo $prependText . htmlentities($row["TITLE"]); ?></h3><?php
+			
+			#Format the due date if needed.
+			if($outputDueDate) {
+				$date = explode("-", $row["DUE_DATE"]);
+				echo "<div class='monospace'>" . $date[1] . "/" . $date[2] . "/" . $date[0] . "</div>";
+			} ?>
 		</a><?php
 	}
 }
@@ -111,8 +100,7 @@ function fun_listAssignments($classname, $assignments, $type = "selectable", $pr
  */
 function fun_listQuality($classname, $qualities, $maxpointspercriteria, $type = "") {
 	
-	#Show a header
-	?>
+	#Show a header ?>
 	<div class="objectborder">
 		<div class="inlinesmall left subtext">
 			<div class="pad">Points</div>

@@ -46,9 +46,13 @@ $rubrics = sql_getAllRubricsInAssignment($_SESSION['NUM'], $assignment["NUM"]); 
 </div><?php
 
 if($rubrics === null) { ?>
-<div class="object subtext">
-	<p>Looks like you don't have any rubrics attached to this assignment yet.<br>Try attaching one through the "Rubrics" tab!</p>
-</div><?php
+	<div class="object subtext">
+		<p>Looks like you don't have any rubrics attached to this assignment yet.
+		<p>Try adding some through the <a href="#" id="js_rubrics" class="floatinglink"><span>Rubrics</span></a> tab.
+	</div><?php
 } else {
-	fun_listRubrics("nothing", $rubrics, "");
+	fun_listRubrics("js_rubrics_view_link", $rubrics, "selectable"); ?>
+	<div class="object subtext">
+		<p>You can add and remove more rubrics through <a href="#" id="js_rubrics" class="floatinglink"><span>Rubrics</span></a>.
+	</div><?php
 }
