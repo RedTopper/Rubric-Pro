@@ -501,9 +501,18 @@ body {
     animation-duration: 3s;
 	animation-iteration-count: infinite;
 }
+.tutorialbox .position {
+	display: block;
+	position: absolute;
+	text-align: center;
+	font-size: 30px;
+	bottom: 10px;
+	left: 120px;
+	right: 120px;
+}
 .tutorialbox {
 	width: 300px;
-	position: absolute;
+	position: fixed;
 	margin: 0 40px 0 40px;
 	background-color: #EEE;
 	line-height: normal;
@@ -511,26 +520,31 @@ body {
 	padding: 7px;
 	color: #000;
 	box-shadow: 0px 0px 20px #000;
+	z-index: 10;
+}
+.tutorialbox hr {
+	margin-bottom: 0;
 }
 .tutorialboxtriangle {
 	width: 0; 
 	height: 0; 
 	margin: 12px 0 0 25px;
-	position: absolute;
+	position: fixed;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent; 
 	border-right: 15px solid #EEE; 
+	z-index: 10;
 }
-.js_tutorial_next {
+.js_tutorial_next, .js_tutorial_skiptonext, .js_tutorial_quit.right {
 	float: right;
 }
-.js_tutorial_quit {
+.js_tutorial_quit, .js_tutorial_skiptoprevious {
 	float: left;
 }
-.tutorialbox a.js_tutorial_next, .tutorialbox a.js_tutorial_quit {
+.tutorialbox a {
 	text-align: center 			!important;
 	display: block 				!important;
-	margin: 10px 0 0 0			!important;
+	margin: 10px 0 0 0;
 	color: #FFF 				!important;
 	padding: 10px 20px 			!important;
 	width: 71px					!important;
@@ -539,7 +553,7 @@ body {
 	text-decoration: none 		!important;
 	background-color: #1B96FE 	!important;
 }
-.tutorialbox a.js_tutorial_next:hover {
+.tutorialbox a:hover {
 	background-color: #2AA5FF !important;
 }
 .monotut {
