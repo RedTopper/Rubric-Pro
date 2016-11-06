@@ -3,9 +3,12 @@ lastTutorialBox = $("<div></div>");
 lastTutorialBoxTriangle = $("<div></div>");
 navigation = $("<div></div>");
 
+OFFSET_DOWN = 50;
+TUTORIAL_BOX_WIDTH = 394;
+
 //Actual tutorial information.
 tutorial = [
-	["#js_tutorial","Welcome to the Rubric Pro tutorial!<br><br>This tutorial will guide you through the application and all of it's features.", function() {
+	["#js_tutorial","Welcome to the Rubric Pro tutorial!<br><br>This tutorial will guide you through the application and all of it's features. <br><br>Press Next to continue, or use &gt;&gt;&gt; or &lt;&lt;&lt; to skip to other sections of this tutorial.", function() {
 		changeColor(0, $("#js_tutorial")); //from access.js
 	}],
 	["#navigation","This is the navigation bar. You can control aspects of the application here.", function() {
@@ -32,21 +35,24 @@ tutorial = [
 	["#symbol", "Symbols are short representations of a component. Here is what one might look like for our math class.", function() {
 		slowType($("#symbol"), "APCAL");
 	}],
-	["#symbol", "A symbol will end up looking something like this:<br><div class='monotut'><ul><li>'APCAL.I.A.1'<li>'APCS.II.B.3.i'<li>'HIST.CIVWAR.A'<li>etc...</ul></div><br>If you are creating component <div class='monotut'>'1'</div>, for example, then you would type <div class='monotut'>'1'</div> in this feild, NOT <div class='monotut'>'APCAL.I.A.1'</div>"],
+	["#symbol", "A symbol will end up looking something like this:<br><div class='monotut'><ul><li>APCAL.I.A.1<li>APCS.II.B.3.i<li>HIST.CIVWAR.A<li>etc...</ul></div><br>If you are creating component <div class='monotut'>'1'</div>, for example, then you would type <div class='monotut'>'1'</div> in this feild, NOT <div class='monotut'>'APCAL.I.A.1'</div>"],
 	["#description", "In order for students to understand the curriculum better, a description can be typed here. Students will be able to view this description for more information.", function() {
 		slowType($("#description"), "A college level Math class that focuses on derivatives, integration, limits, and more.");
 	}],
-	["#js_components_create_submit", "This button creates the component. For the tutorial's sake, we'll create it as an example."],
-	[".js_components_select:first","This is a root component.",function() {
+	["#js_components_create_submit", "This button creates the root component. For the tutorial's sake, we'll create it as an example."],
+	["#js_components","I'll go ahead and select one of your root components to futher describe how you can use them.",function() {
 		alreadyHasTutorialComponent = false;
 		$(".js_components_select").each(function() {
 			if($(this).find("h3").html().trim() == "(APCAL) AP Calculus") {
 				alreadyHasTutorialComponent = true;
+				return false; //breaks out of searching for other components.
 			}
 		})
 		if(!alreadyHasTutorialComponent) {
 			$("#js_components_create_submit").trigger("click");
 		}
+	}],
+	[".js_components_select:first", "This is your root component.", function() {
 		$(".js_components_select:first").trigger("click");
 	}],
 	[".js_components_create:last", "We can further describe a cirriculum with sub components. This works exactly like a course outline."],
@@ -55,13 +61,38 @@ tutorial = [
 	["#js_accounts", "Next, we have student accounts.", function() {
 		$("#js_accounts").trigger("click");
 	}],
-	["#js_accounts_create", "This button allows you to create a new student or bind a student from another class to your account.<br><br>Binding an already existing student will allow that student to access both another teacher's class as well as your own class.", function() {
+	["#js_accounts_create", "This button allows you to create a new student or bind a student from another teacher to your account.<br><br>Binding an already existing student will allow that student to access both another teacher's class as well as your own class.", function() {
 		$("#js_accounts_create").trigger("click");
 	}],
+	["#username", "We start by typing in the usernname of the student.", function() {
+		slowType($("#username"), "0019247");
+	}],
+	["#js_accounts_create_submit", "If we submitted the form without typing in any extra information, Rubric Pro will search your school's database for a student that already exists."],
+	["#js_accounts_create_submit", "If the student does not exist within your school's database, Rubric Pro ask you to enter extra information."],
+	["#js_accounts_create_submit", "A student will be able to set their password when they first log in. If a student ever forgets their password, or another student 'steals their account' before they log in, you'll be able to reset it."],
+	["#js_accounts_create_submit", "For this tutorial, we'll bind the example student you your account. You can unbind it later. If you already have this student in your account, it'll produce an error. No worries! The tutorial will continue anyway."],
+	["#js_accounts","I'll go ahead and select one of your students to futher describe how you can use the features.",function() {
+		$("#js_accounts_create_submit").trigger("click");
+	}],
+	[".js_accounts_view:first", "Here is one of your students.", function() {
+		$(".js_accounts_view:first").trigger("click");
+	}],
+	["#js_accounts_view_unbind", "This button will unbind the student from your account. If you do so, you can re-add them through the 'Create new account' button as long as you know their username."],
+	["#js_accounts_view_unbind", "Unbinding a student account allows you to keep this list uncluttered."],
+	["#js_accounts_view_addclass", "You can also bind students to your classes through this tab."],
+	["#js_rubrics", "Rubrics are the core of this application. This is the rubrics tab.", function() {
+		$("#js_rubrics").trigger("click");
+	}],
+	["#js_rubrics_create", "We'll go ahead and create an example rubric.", function() {
+		$("#js_rubrics_create").trigger("click");
+	}],
+
+
+	
 	["#js_tutorial","Congratulations, you finished the Rubric Pro tutorial! Press Quit to exit.", function() {
 		changeColor(0, $("#js_tutorial")); //from access.js
 		removeToTier(0); //also from access.js
-	}]
+	}],
 ]
 
 //Checkpoints so the user can skip parts they already know.
@@ -69,7 +100,8 @@ checkpoints = [
 	0, //The beginning of the tutorial.
 	1, //Explanation of the nav bar.
 	7, //Components tutorial
-	19, //Students tutorial
+	20, //Students tutorial
+	32, //Rubrics tutorial
 	tutorial.length - 1, //the end
 	tutorial.length  //the end
 ]
@@ -92,17 +124,35 @@ function slowType(object, words, clear) {
 	}, 10 + Math.random() * 90);
 }
 
+/**
+ * Updates the position of the tutorial box. Should be called after it is created
+ * or on a scroll event. This method places the tutorial box to the right of the element.
+ * If the tutorial box were to overflow off the screen, it'll place the tutorial box fixed
+ * to the right of the screen, slightly offset below the hilighted element.
+ */
 function updateTutorialBoxPosition() {
 	
 	//get positions
-	tutorialObjectRight = $(tutorial[tutorialIndex][0]).offset().left + $(tutorial[tutorialIndex][0]).outerWidth(false);
-	tutorialObjectTop = $(tutorial[tutorialIndex][0]).offset().top;
+	tutorialObjectRight = $(tutorial[tutorialIndex][0]).position().left + $(tutorial[tutorialIndex][0]).outerWidth(false);
+	tutorialObjectTop = $(tutorial[tutorialIndex][0]).position().top;
 	
-	//set the position.
-	lastTutorialBox.css("left", tutorialObjectRight);
-	lastTutorialBox.css("top", tutorialObjectTop);
-	lastTutorialBoxTriangle.css("left", tutorialObjectRight);
-	lastTutorialBoxTriangle.css("top", tutorialObjectTop);
+	if(tutorialObjectRight + TUTORIAL_BOX_WIDTH > $(window).width()) {
+		
+		//set the position where the tutorial appears BELOW the element, FIXED TO THE RIGHT OF THE SCREEN.
+		lastTutorialBox.css("right", 0);
+		lastTutorialBox.css("top", tutorialObjectTop + OFFSET_DOWN);
+		lastTutorialBox.css("left", "");
+		lastTutorialBoxTriangle.css("display", "none");
+	} else {
+		
+		//set the position where the tutorial appears to the RIGHT of the element.
+		lastTutorialBox.css("left", tutorialObjectRight);
+		lastTutorialBox.css("top", tutorialObjectTop);
+		lastTutorialBox.css("right", "");
+		lastTutorialBoxTriangle.css("left", tutorialObjectRight);
+		lastTutorialBoxTriangle.css("top", tutorialObjectTop);
+		lastTutorialBoxTriangle.css("display", "");
+	}
 }
 function destroyTutorialBox() {
 	//remove the hilight
@@ -134,15 +184,15 @@ function createTutorialBox() {
 	}
 	
 	//append buttons
-	lastTutorialBox.append(tutorial[tutorialIndex][1]);
+	lastTutorialBox.append("(" + (tutorialIndex + 1) + ") " + tutorial[tutorialIndex][1]);
 	if(tutorialIndex != tutorial.length - 1) {
 		lastTutorialBox.append("<hr><a href='#' class='js_tutorial_quit'>Quit</a>");
 		lastTutorialBox.append("<a href='#' class='js_tutorial_next'>Next</a>")
-		lastTutorialBox.append("<a href='#' class='js_tutorial_skiptonext'>&gt;&gt;</a>");
-		lastTutorialBox.append("<a href='#' class='js_tutorial_skiptoprevious'>&lt;&lt;</a>");	
+		lastTutorialBox.append("<a href='#' class='js_tutorial_skiptonext'>&gt;&gt;&gt;</a>");
+		lastTutorialBox.append("<a href='#' class='js_tutorial_skiptoprevious'>&lt;&lt;&lt;</a>");	
 	} else {
 		lastTutorialBox.append("<hr><a href='#' class='js_tutorial_quit right'>Quit</a>");
-		lastTutorialBox.append("<a href='#' class='js_tutorial_skiptoprevious'>&lt;&lt;</a>");
+		lastTutorialBox.append("<a href='#' class='js_tutorial_skiptoprevious'>&lt;&lt;&lt;</a>");
 	}
 	
 	//position counter
@@ -164,6 +214,9 @@ function createTutorialBox() {
 	$("#contentscroller").on("scroll", updateTutorialBoxPosition);
 }
 
+/**
+ * Gets the position of the tutorial relative to the checkpoints.
+ */
 function getPositionOfTutorial() {
 	position = 0;
 	for(i = 0; i < checkpoints.length - 1; i++) {
