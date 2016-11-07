@@ -27,6 +27,13 @@ header("JS-Resize: auto");
 <div class="object subtitle">
 	<h2>Rubric Editor</h2>
 </div>
+<div class="padbox" >
+<textarea id="importer" placeholder="You can use this box to import text from Google Sheets, Microsoft Excel, Microsoft Word, or a website. Simply select all of the cells of the body of the rubric you would like to import, copy it, and then paste it into this box. WARNING: IMPORTING DATA IS A DESTRUCTIVE ACTION!" style="width: 100%; resize: none; box-sizing: border-box;" rows="6"></textarea>
+</div>
+<a href="#" id="js_rubrics_view_build_import" class="object destroy white">
+	<div class="arrow"></div>
+	<h3>Import above text</h3>
+</a>
 <table class="rubriceditor">
 	<tr>
 		<th class="corner"></th><?php
@@ -85,6 +92,3 @@ header("JS-Resize: auto");
 		$intcol++;
 	} ?>
 </table>
-<div class="padbox" >
-	<textarea placeholder="This is a temporary box that you can use when you need to move text to other boxes. It won't be saved." style="width: 100%; resize: none; box-sizing: border-box;" rows="10"></textarea>
-</div>

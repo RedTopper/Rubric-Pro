@@ -39,19 +39,8 @@ tutorial = [
 	["#description", "In order for students to understand the curriculum better, a description can be typed here. Students will be able to view this description for more information.", function() {
 		slowType($("#description"), "A college level Math class that focuses on derivatives, integration, limits, and more.");
 	}],
-	["#js_components_create_submit", "This button creates the root component. For the tutorial's sake, we'll create it as an example."],
-	["#js_components","I'll go ahead and select one of your root components to futher describe how you can use them.",function() {
-		alreadyHasTutorialComponent = false;
-		$(".js_components_select").each(function() {
-			if($(this).find("h3").html().trim() == "(APCAL) AP Calculus") {
-				alreadyHasTutorialComponent = true;
-				return false; //breaks out of searching for other components.
-			}
-		})
-		if(!alreadyHasTutorialComponent) {
-			$("#js_components_create_submit").trigger("click");
-		}
-	}],
+	["#js_components_create_submit", "This button creates the root component."],
+	["#js_components","I'll wait here for you to create your own root component. Once you have at least one root component, press Next."],
 	[".js_components_select:first", "This is your root component.", function() {
 		$(".js_components_select:first").trigger("click");
 	}],
@@ -70,11 +59,9 @@ tutorial = [
 	["#js_accounts_create_submit", "If we submitted the form without typing in any extra information, Rubric Pro will search your school's database for a student that already exists."],
 	["#js_accounts_create_submit", "If the student does not exist within your school's database, Rubric Pro ask you to enter extra information."],
 	["#js_accounts_create_submit", "A student will be able to set their password when they first log in. If a student ever forgets their password, or another student 'steals their account' before they log in, you'll be able to reset it."],
-	["#js_accounts_create_submit", "For this tutorial, we'll bind the example student you your account. You can unbind it later. If you already have this student in your account, it'll produce an error. No worries! The tutorial will continue anyway."],
-	["#js_accounts","I'll go ahead and select one of your students to futher describe how you can use the features.",function() {
-		$("#js_accounts_create_submit").trigger("click");
-	}],
-	[".js_accounts_view:first", "Here is one of your students.", function() {
+	["#js_accounts_create_submit", "This button will bind the student."],
+	["#js_accounts","I'll wait here for you to create your own  student. Once you have at least one student, press Next."],
+	[".js_accounts_view:first", "Here is your student.", function() {
 		$(".js_accounts_view:first").trigger("click");
 	}],
 	["#js_accounts_view_unbind", "This button will unbind the student from your account. If you do so, you can re-add them through the 'Create new account' button as long as you know their username."],
@@ -86,8 +73,33 @@ tutorial = [
 	["#js_rubrics_create", "We'll go ahead and create an example rubric.", function() {
 		$("#js_rubrics_create").trigger("click");
 	}],
-
-
+	["#subtitle", "Let's consider that we teach a science class. A rubric might be called something like this...", function() {
+		slowType($("#subtitle"), "Lab: Chemical Reactions");
+	}],
+	["#maxpoints", "Next, we need to deturmine how many points per criteria our rubric will be worth."],
+	["#maxpoints", "It is important to understand that this does NOT represent the total points of the rubric. It represents the max grade a student can obtain per criteria."],
+	["#maxpoints", "If your assignment requires a different amount of points in some criteria (for example, you have a criteria worth 10 points, and another that is worth 3 points), you should create another rubric and bind both of them to an assignment."],
+	["#maxpoints", "Also, if you plan to re-use parts of your rubrics a lot, consider breaking down your large rubrics into smaller rubrics. Then you do not have to copy and paste sections of your large rubrics many times because you can re-use your smaller rubrics in different assignments."],
+	["#maxpoints", "In this tutorial, we'll make each criteria worth 10 points.", function() {
+		slowType($("#maxpoints"), "10");
+	}],
+	["#js_rubrics_create_submit", "This button will create the rubric."],
+	["#js_rubrics","Again, I'll wait here for you to create your own rubric. Once you have at least one rubric, press Next."],
+	[".js_rubrics_view:first", "This is a rubric.", function() {
+		$(".js_rubrics_view:first").trigger("click");
+	}],
+	["#js_rubrics_view_addquality", "You can create or modify the qualities of your rubric here.", function() {
+		$("#js_rubrics_view_addquality").trigger("click");
+	}],
+	["#qualityname", "Qualities belong in the top row of your rubrics. They deturmine what grade a student can get on a criteria. Sometimes they have a name such as 'Not Included', 'Poor', 'Good', or 'Proficient'.<br><br>If you don't want to include a name, you can leave this blank."],
+	["#qualityname", "Also, you do not have to create a quality for every single point! You can manually enter a score for a student's grade later. Only add the qualities that you would like to describe in the rubric's body."],
+	["#js_rubrics_view_addcriteria", "Over here we have the criteria of a rubric.", function() {
+		$("#js_rubrics_view_addcriteria").trigger("click");
+	}],
+	["#criterianame", "You can type a name for a criteria here. If we were teaching an English class, a rubric might contain the criteria 'Claim', 'Originality', 'Style and Conventions', or 'Spelling and Accuracy'.", function() {
+		slowType($("#criterianame"), "Style and Conventions");
+	}],
+	
 	
 	["#js_tutorial","Congratulations, you finished the Rubric Pro tutorial! Press Quit to exit.", function() {
 		changeColor(0, $("#js_tutorial")); //from access.js
@@ -177,7 +189,7 @@ function createTutorialBox() {
 	//check to see if this element actually exists.
 	if(!$(tutorial[tutorialIndex][0]).exists()) {
 		modalAppendServerResponse("<div class='object subtitle'><h2>Hold up!</h2></div><div class='object subtext'>" +
-		"<p>The next element of the tutorial was not found!<p>Try refreshing the page.</div>");
+		"<p>The next element of the tutorial was not found!<p>Please follow the tutorial's instructions.</div>");
 		tutorialIndex--;
 	} else if(tutorial[tutorialIndex][2] != undefined) {
 		tutorial[tutorialIndex][2]();

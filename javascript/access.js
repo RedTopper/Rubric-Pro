@@ -1121,6 +1121,21 @@ $(document).on('click', '#js_rubrics', doRubrics);
 				});
 				return false;
 			});
+			$(document).on('click', '#js_rubrics_view_build_import', function(e) {
+				var importtext = $("#importer").val().split(/[\t\n]/);
+				delay = 0;
+				$('.rubricbox').each(function(i, obj) {
+					obj = $(this);
+					setTimeout(function() {
+						if(importtext[i] == undefined || !obj.exists()) return false;
+						obj.val(importtext[i]);
+						rubricEditStartText = "5bf1fd927dfb8679496a2e6cf00cbe50c1c87145";
+						obj.trigger("blur");
+					}, delay += 100);
+				});
+				$("#importer").val("");
+				return false;
+			});
 //Sidebar: Assignment tab.
 //Function used during a JS-Redirect: assignment
 function doAssignments(e, callback) {
@@ -1219,3 +1234,8 @@ $(document).on('click', '#js_assignments', doAssignments);
 			});
 			return false;
 		});
+
+//http://stackoverflow.com/a/920322
+$.fn.exists = function () {
+    return this.length !== 0;
+}

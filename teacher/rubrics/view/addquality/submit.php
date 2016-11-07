@@ -10,11 +10,6 @@ if(strlen($POINTS) < 1 || !is_numeric($POINTS)) {
 	db_showError("Error creating quality!", "The points must be numerical.", "Check what you typed, then try again.", 400);
 }
 
-#Verification of name.
-if(strlen($QUALITY_TITLE) < 2) {
-	db_showError("Error creating quality!", "The name must be longer than 2 characters.", "Check what you typed, then try again.", 400);
-}
-
 sql_createQuality($rubric["NUM"], $POINTS, $QUALITY_TITLE);
 
 header("JS-Redirect: removeto-2");
