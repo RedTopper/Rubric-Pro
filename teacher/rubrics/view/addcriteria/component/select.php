@@ -35,7 +35,7 @@ foreach($allExistingComponents as $existingComponent) {
 }
 
 #Redirect the page
-header("JS-Redirect: removeto-3");
+header("JS-Redirect: removeto3");
 
 #Now it gets fun....
 #Fetch the tree....
@@ -115,6 +115,6 @@ foreach($allAddingComponentParents as $addingComponentParent) {
 
 #Worst case. Nothings there. Plain and simple add.
 $stmt = $conn->prepare("INSERT INTO CRITERION (RUBRIC_CRITERIA_NUM, COMPONENT_NUM, COMPILED_SYMBOL_TREE) VALUES (:criteria, :component, :tree)");
-$stmt->execute(array('criteria' => $CRITERIA_NUM, "component" => $ADDING_COMPONENT_NUM, "tree" => $addingComponents[0]["TREE"]));
+$stmt->execute(array('criteria' => $CRITERIA_NUM, "component" => $ADDING_COMPONENT_NUM, "tree" => $allAddingComponentParents[0]["TREE"]));
 
 db_showError("Ok!", "The new component has been added.","You can continue to select more components if you want.", 200);

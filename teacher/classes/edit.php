@@ -31,7 +31,7 @@ if($class == null) {
 
 <div class="object spacer"></div>
 
-<div class="object subtitle">
+<div class="object subtitle" id="js_tutorial_activeassn">
 	<h2>Attached Active Assignments:</h2>
 </div><?php
 
@@ -51,7 +51,7 @@ if($currentAssignments === null) {
 	</div><?php
 } ?>
 
-<div class="object subtitle">
+<div class="object subtitle" id="js_tutorial_pastassn">
 	<h2>Attached Past Assignments:</h2>
 </div><?php
 
@@ -70,7 +70,7 @@ if($pastAssignments === null) {
 } 
 
 #Students that belong to this class ?>
-<div class="object subtitle">
+<div class="object subtitle" id="js_tutorial_student">
 	<h2>Attached Students:</h2>
 </div>
 <?php

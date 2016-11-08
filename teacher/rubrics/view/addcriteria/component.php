@@ -119,7 +119,7 @@ foreach($components as $viewComponent) {
 	}
 		?>
 	
-	<a class="js_rubrics_view_addcriteria_component object selectable" href="#" 
+	<a class="js_rubrics_view_addcriteria_component object selectable js_tutorial_component_rubric_selector" href="#" 
 			data-componentnum="<?php echo $viewComponent["NUM"] ?>" 
 			data-criterionnum="<?php echo $CRITERIA_NUM ?>">
 		<div class="arrow"></div><?php
