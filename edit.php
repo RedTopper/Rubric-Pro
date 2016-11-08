@@ -45,7 +45,7 @@ $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen(
 					<div class="smallspacer"></div>
 					<a href="/logout.php"><img class="navicon" src="images/sidebar/logout.svg"><span>Log out</span></a>
 					<a href="#" id="js_credits"><img class="navicon" src="images/sidebar/credits.svg"><span>Credits</span></a>
-					<a href="mailto:aj.walter@aol.com?subject=Rubric%20Pro%20Feedback&amp;body=Please%20describe%20the%20feedback%2C%20problem%2C%20or%20suggestion%20with%20detail%20here. Thanks%20for%20using%20Rubric%20Pro!" id="js_mail"><img class="navicon" src="images/sidebar/mail.svg"><span>Feedback</span></a>
+					<a href="mailto:red@rubric.me?subject=Rubric%20Pro%20Feedback&amp;body=Please%20describe%20the%20feedback%2C%20problem%2C%20or%20suggestion%20with%20detail%20here. Thanks%20for%20using%20Rubric%20Pro!" id="js_mail"><img class="navicon" src="images/sidebar/mail.svg"><span>Feedback</span></a>
 				</div>
 			</div>
 		</div>
