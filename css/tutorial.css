@@ -1,0 +1,82 @@
+@keyframes tutorialhilight {
+    0%   {box-shadow: inset 0 #FF980A, 0 #FF980A;}
+    40%  {box-shadow: inset 0 0 5px 2px #FF980A, 0 0 5px 2px #FF980A;}
+    60%  {box-shadow: inset 0 0 5px 2px #FF980A, 0 0 5px 2px #FF980A;}
+    90% {box-shadow: inset 0 #FF980A, 0 #FF980A;}
+}
+
+.tutorialface {
+	display: block;
+	float: left;
+	width: 54px;
+	height: 54px;
+	margin: 0 7px 0 0;
+}
+.tutorialpara {
+	min-height: 54px;
+}
+.tutorialhilight {
+	animation-name: tutorialhilight;
+    animation-duration: 3s;
+	animation-iteration-count: infinite;
+}
+.tutorialbox .position {
+	display: block;
+	position: absolute;
+	text-align: center;
+	font-size: 30px;
+	bottom: 10px;
+	left: 120px;
+	right: 120px;
+}
+.tutorialbox {
+	width: 300px;
+	position: fixed;
+	margin: 0 40px 0 40px;
+	background-color: #EEE;
+	line-height: normal;
+	white-space: initial;
+	padding: 7px;
+	color: #000;
+	box-shadow: 0px 0px 50px 10px #000;
+	z-index: 10;
+}
+.tutorialbox hr {
+	margin-bottom: 0;
+}
+.tutorialboxtriangle {
+	width: 0; 
+	height: 0; 
+	margin: 12px 0 0 25px;
+	position: fixed;
+	border-top: 15px solid transparent;
+	border-bottom: 15px solid transparent; 
+	border-right: 15px solid #EEE; 
+	z-index: 10;
+}
+.js_tutorial_next, .js_tutorial_skiptonext, .js_tutorial_quit.right {
+	float: right;
+}
+.js_tutorial_quit, .js_tutorial_skiptoprevious {
+	float: left;
+}
+.tutorialbox a {
+	text-align: center 			!important;
+	display: block 				!important;
+	margin: 10px 0 0 0;
+	color: #FFF 				!important;
+	padding: 10px 20px 			!important;
+	width: 71px					!important;
+	height: auto 				!important;
+	line-height: normal 		!important;
+	text-decoration: none 		!important;
+	background-color: #1B96FE 	!important;
+}
+.tutorialbox a:hover {
+	background-color: #2AA5FF !important;
+}
+.monotut {
+	font-family: 'Ubuntu Mono', monospace;
+	font-weight: 400;
+	display: inline-block;
+}
