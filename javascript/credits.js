@@ -8,6 +8,7 @@ credits = [
 	[IMAGE, "images/logo.png", "credits_logo", "Rubric Pro"],
 	[TITLE, "PRODUCTION"],
 	[PERSON, "Aaron Walter", "Rubric Pro Developer", "Support", "Database Manager", "High School Student"],
+	[IMAGE, "images/face.png", "credits_face", "My Face"],
 	[TITLE, "INSPARATION"],
 	[PERSON, "Mr. Miller", "Computer Science Educator", "Quality Assurance", "Being Awesome"],
 	[TITLE, "BETA TESTERS"],
@@ -21,7 +22,7 @@ credits = [
 	[LINK, "https://github.com/rstacruz/nprogress", "NProgress", "Loading Bar"],
 	[LINK, "https://jquery.org/team/", "the JQuery Team", "JavaScript"],
 	[TITLE, "HONORABLE MENTIONS"],
-	[PERSON, "Yorkville Information Technology Department", "For teaching me about Computer Security, Networking, and Firewalls"],
+	[PERSON, "Yorkville Information Technology Department", "For teaching me about networking and firewalls"],
 	[PERSON, "YOU", "For educating the future generations of students"],
 	[TITLE, "ICONS"],
 	[LINK, "http://www.flaticon.com/authors/madebyoliver",		"Madebyoliver", 			"Success and Failure icon"],
@@ -32,7 +33,6 @@ credits = [
 	[LINK, "http://www.flaticon.com/authors/dave-gandy", 		"Dave Gandy", 				"Dashboard icon"],
 	[LINK, "http://creativecommons.org/licenses/by/3.0/", 		"Licenced under CC 3.0", 	"Icons found on flaticon.com"],
 	[TITLE, "THANK YOU FOR USING RUBRIC PRO!"],
-	[IMAGE, "images/face.png", "credits_face", "My Face"],
 ]
 
 function initCredits() {
@@ -62,7 +62,8 @@ function initCredits() {
 $(document).on('click', '#js_credits', function(e) {
 	txt = $("<div class='creditbox'></div>");
 	changeColor(0, $("#js_credits")); //from access.js
-	createTier(0, "Credits");
+	createTier(0, "");
+	$("#tier1").append("<div class='title'><h1 style='text-align: center'>Credits</h1></div>")
 	log("JQUERY/user", "Credits");
 	initCredits();
 	
@@ -71,9 +72,11 @@ $(document).on('click', '#js_credits', function(e) {
 			$("#tier1").stop();
 		}
 	});
-	$("#tier1").animate({
-		scrollTop: txt.height() - $("#tier1").outerHeight(true) + 81,
-	}, 65000, "linear", function() {
-		$("#tier1").off("scroll DOMMouseScroll mousewheel touchmove keyup");
-	});
+	setTimeout(function() {
+		$("#tier1").animate({
+			scrollTop: txt.height() - $("#tier1").outerHeight(true) + 161,
+		}, 65000, "linear", function() {
+			$("#tier1").off("scroll DOMMouseScroll mousewheel touchmove keyup");
+		});
+	}, 2000);
 });
