@@ -16,6 +16,7 @@ if(!($PARENT_NUM == null || is_numeric($PARENT_NUM) && $PARENT_NUM > 0)) {
 
 #Get parent information
 $parent = sql_getComponent($_SESSION["NUM"], $PARENT_NUM);
+$number = count(sql_getAllSubComponentsFromComponent($_SESSION["NUM"], $PARENT_NUM)) + 1;
 
 #Check to see if there is really a parent!
 if($parent === null) {
@@ -41,7 +42,7 @@ if($parent === null) {
 	<label for="componentname">Name: </label>
 	<input id="componentname" type="text" name="NAME" placeholder="Derivitives"><br>
 	<label for="symbol">Symbol: </label>
-	<input id="symbol" type="text" name="TERM" placeholder="IV, Chapter 1, A, b, etc."><br>
+	<input id="symbol" type="text" name="TERM" placeholder="IV, Chapter 1, A, b, etc." value="<?php echo $number ?>"><br>
 	<label for="description">Description: </label>
 	<textarea id="description" name="DESCRIPTION" placeholder="General understanding of limits, derivitives, formulas, and their application." rows="8"></textarea><br>
 </div>

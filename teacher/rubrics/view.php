@@ -52,7 +52,7 @@ if($componentTrees === null) { ?>
 } else { ?>
 	<div class="object subtext"><?php
 	foreach($componentTrees as $tree) {
-		echo "<div class='rubriccriteria'>" . htmlentities($tree["COMPILED_SYMBOL_TREE"]) . " (" . htmlentities($tree["NAME"]) . ")</div>";
+		echo "<div class='rubriccriteria' title='" . htmlentities($tree["DESCRIPTION"]) . "'>" . htmlentities($tree["COMPILED_SYMBOL_TREE"]) . " (" . htmlentities($tree["NAME"]) . ")</div>";
 	} ?>
 	</div><?php
 }

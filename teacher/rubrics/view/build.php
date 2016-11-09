@@ -59,7 +59,7 @@ header("JS-Resize: auto");
 			echo "<th>"; 
 			echo $criteria[$introw]["CRITERIA_TITLE"];
 			foreach($trees as $tree) {
-				echo "<div class='rubriccriteria'>" . htmlentities($tree["COMPILED_SYMBOL_TREE"]) . "</div>";
+				echo "<div class='rubriccriteria' title='" . htmlentities($tree["DESCRIPTION"]) . "'>" . htmlentities($tree["COMPILED_SYMBOL_TREE"]) . "</div>";
 			}
 			echo "</th>";
 			
@@ -68,7 +68,7 @@ header("JS-Resize: auto");
 		}
 		
 		#Output all of the data.
-		echo "<td><textarea rows='8' cols='18' class='rubricbox" .
+		echo "<td><textarea class='rubricbox" .
 		
 		#rubric number
 		"' data-rubricnum='" . $RUBRIC_NUM . 

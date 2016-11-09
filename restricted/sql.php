@@ -332,7 +332,7 @@ FROM COMPONENT
 WHERE 
 TEACHER_NUM = :teacherNum AND
 PARENT_NUM = :componentNum 
-ORDER BY SYMBOL
+ORDER BY SYMBOL * 1
 SQL
 	);
 	$stmt->execute(array('teacherNum' => $teacherNum, 'componentNum' => $componentNum));
@@ -546,11 +546,11 @@ function sql_getAllCompiledSymbolTreesFromCriteria($criteriaNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
-SELECT COMPILED_SYMBOL_TREE 
-FROM CRITERION 
+SELECT COMPILED_SYMBOL_TREE,  DESCRIPTION
+FROM CRITERION, COMPONENT
 WHERE 
-RUBRIC_CRITERIA_NUM = :criteria
-ORDER BY COMPILED_SYMBOL_TREE
+RUBRIC_CRITERIA_NUM = :criteria AND
+COMPONENT.NUM = COMPONENT_NUM
 SQL
 	);
 	$stmt->execute(array('criteria' => $criteriaNum));
@@ -561,7 +561,7 @@ function sql_getAllCompiledSymbolTreesFromRubric($rubricNum) {
 	global $conn;
 	$stmt = $conn->prepare(
 <<<SQL
-SELECT COMPILED_SYMBOL_TREE, NAME
+SELECT COMPILED_SYMBOL_TREE, NAME, DESCRIPTION
 FROM CRITERION, RUBRIC_CRITERIA, COMPONENT
 WHERE 
 RUBRIC_CRITERIA.RUBRIC_NUM = :rubricNum AND

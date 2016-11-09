@@ -15,15 +15,13 @@ body {
 
 /* Console that appears at the bottom of the screen. */
 #logbar {
-	display: <?php echo $LOG_BAR_DISPLAY; //esc:?>;
+	display: none; /* Starts hidden. */
 	position: absolute;
 	width: 100%;
-	height: <?php echo $LOG_BAR_HEIGHT; //esc:?>;
+	height: 0; /* Starts hidden. */
 	bottom: 0;
 	overflow: auto;
 	font-size: 14px;
-	
-	/* Log settings */
 	color: #080;
 	background-color: rgba(0,0,0,0.8);
 	font-family: 'Ubuntu Mono', monospace;
@@ -36,16 +34,16 @@ body {
 	display: none;
 	position: absolute;
 	bottom: 0;
-	right: 36px;
-	width: 200px;
-	height: 36px;
-	line-height: 36px;
-	background-color: rgba(0,0,0,0.5);
+	right: 18px;
+	width: 90px;
+	height: 30px;
+	background-color: rgba(0,0,0,0.8);
 	color: #999;
 	text-align: center;
 	text-decoration: none;
-	border: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border: 1px solid #777;
 	border-bottom: none;
+	font-size: 12px;
 }
 .navicon {
 	display: block;
@@ -62,6 +60,7 @@ body {
 	padding: 10px;
 	margin: -10px 0 0 0;
 	float: right;
+	cursor: help;
 }
 .help {
 	width: 100%;
@@ -97,7 +96,7 @@ body {
 
 /* Navigation bar */
 #sidebar {
-	width: <?php echo $NAV_BAR_WIDTH; //esc:?>;
+	width: 180px;
 	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -110,8 +109,8 @@ body {
 }
 #navigation a {
 	width: 100%;
-	height: <?php echo $NAV_LINK_HEIGHT; //esc:?>;
-	line-height: <?php echo $NAV_LINK_HEIGHT; //esc:?>;
+	height: 50px;
+	line-height: 50px;
 	display: block;
 	text-align: left;
 }
@@ -134,7 +133,7 @@ body {
 	white-space: nowrap;
 	overflow-x: auto;
 	overflow-y: hidden;
-	bottom: <?php echo $LOG_BAR_HEIGHT; //esc:?>;
+	bottom: 0;
 	left: 0;
 	right: 0;
 	top: 0;
@@ -182,11 +181,14 @@ body {
 	background-color: rgba(0,0,0,0.2);
 	border-right: 1px solid #777;
 }
+.bar >:last-child {
+	margin-bottom: 80px;
+}
 
 .title {
 	background-color: #000;
 	padding: 10px 10px 10px 20px;
-	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border-bottom: 1px solid #777;
 }
 .title h1 {
 	margin: 0;
@@ -225,7 +227,7 @@ body {
 .object {
 	display: block;
 	padding: 10px 10px 10px 20px;
-	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border-bottom: 1px solid #777;
 	text-decoration: none;
 }
 .object h3 {
@@ -255,7 +257,7 @@ body {
 .padbox {
 	display: block;
 	padding: 20px;
-	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border-bottom: 1px solid #777;
 	text-decoration: none;
 }
 
@@ -264,7 +266,7 @@ body {
 	padding: 0;
 	margin: 0;
 	text-decoration: none;
-	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border-bottom: 1px solid #777;
 	color: #EEE;
 	font-size: 16px;
 }
@@ -277,7 +279,7 @@ body {
 	display: inline-block;
 }
 .inlinelarge.left, .inlinesmall.left {
-	border-right: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border-right: 1px solid #777;
 	margin-right: -1px;
 	text-align: right;
 }
@@ -302,6 +304,7 @@ body {
 				linear-gradient(to top, rgba(92,11,0, 0.6), rgba(148,17,0, 0.6));
 	
 	background-size: 200%;
+	background-position: 0;
 }
 .destroy:hover {
 	background: repeating-linear-gradient(-60deg, transparent, transparent 15px, #000 15px, #000 30px),
@@ -339,7 +342,7 @@ body {
 
 .editor {
 	padding: 10px;
-	border-bottom: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border-bottom: 1px solid #777;
 }
 .editor select {
 	display: inline-block;
@@ -418,12 +421,12 @@ body {
 }
 
 .example {
-	border: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border: 1px solid #777;
 	border-collapse: collapse;
 	margin: 30px auto;
 }
 .example td, .example tr {
-	border: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border: 1px solid #777;
 }
 .example td {
 	width: 40px;
@@ -447,13 +450,12 @@ body {
 }
 
 .rubriceditor {
-	border: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border: 1px solid #777;
 	border-collapse: collapse;
 	margin: 20px;
-	margin-bottom: 0;
 }
 .rubriceditor td, .rubriceditor tr, .rubriceditor th {
-	border: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border: 1px solid #777;
 	padding: 0;
 	margin: 0;
 }
@@ -466,6 +468,8 @@ body {
 	resize: none;
 	margin: 0;
 	display: block;
+	width: 180px;
+	height: 160px;
 }
 .rubriceditor .rubricbox:focus {
 	background-color: #EEE;
@@ -478,6 +482,7 @@ body {
 	font-weight: 400;
 	color: #CCC;
 	font-size: 14px;
+	cursor: help;
 }
 .modal {
 	position: absolute;
@@ -485,89 +490,11 @@ body {
 	left: -300px;
 	width: 300px;
 	background-color: #333;
-	border-right: <?php echo $SEPERATION_BORDER; //esc:?>;
+	border-right: 1px solid #777;
 	box-shadow: 5px 5px 20px 10px #111;
 }
 
-@keyframes tutorialhilight {
-    0%   {box-shadow: inset 0 #FF980A, 0 #FF980A;}
-    40%  {box-shadow: inset 0 0 5px 2px #FF980A, 0 0 5px 2px #FF980A;}
-    60%  {box-shadow: inset 0 0 5px 2px #FF980A, 0 0 5px 2px #FF980A;}
-    90% {box-shadow: inset 0 #FF980A, 0 #FF980A;}
-}
-
-.tutorialface {
-	display: block;
-	float: left;
-	width: 54px;
-	height: 54px;
-	margin: 0 7px 0 0;
-}
-.tutorialpara {
-	min-height: 54px;
-}
-.tutorialhilight {
-	animation-name: tutorialhilight;
-    animation-duration: 3s;
-	animation-iteration-count: infinite;
-}
-.tutorialbox .position {
-	display: block;
-	position: absolute;
-	text-align: center;
-	font-size: 30px;
-	bottom: 10px;
-	left: 120px;
-	right: 120px;
-}
-.tutorialbox {
-	width: 300px;
-	position: fixed;
-	margin: 0 40px 0 40px;
-	background-color: #EEE;
-	line-height: normal;
-	white-space: initial;
-	padding: 7px;
-	color: #000;
-	box-shadow: 0px 0px 50px 10px #000;
-	z-index: 10;
-}
-.tutorialbox hr {
-	margin-bottom: 0;
-}
-.tutorialboxtriangle {
-	width: 0; 
-	height: 0; 
-	margin: 12px 0 0 25px;
-	position: fixed;
-	border-top: 15px solid transparent;
-	border-bottom: 15px solid transparent; 
-	border-right: 15px solid #EEE; 
-	z-index: 10;
-}
-.js_tutorial_next, .js_tutorial_skiptonext, .js_tutorial_quit.right {
-	float: right;
-}
-.js_tutorial_quit, .js_tutorial_skiptoprevious {
-	float: left;
-}
-.tutorialbox a {
-	text-align: center 			!important;
-	display: block 				!important;
-	margin: 10px 0 0 0;
-	color: #FFF 				!important;
-	padding: 10px 20px 			!important;
-	width: 71px					!important;
-	height: auto 				!important;
-	line-height: normal 		!important;
-	text-decoration: none 		!important;
-	background-color: #1B96FE 	!important;
-}
-.tutorialbox a:hover {
-	background-color: #2AA5FF !important;
-}
-.monotut {
-	font-family: 'Ubuntu Mono', monospace;
-	font-weight: 400;
-	display: inline-block;
+.wrap{
+	white-space: pre-wrap; 
+	word-wrap: break-word;
 }

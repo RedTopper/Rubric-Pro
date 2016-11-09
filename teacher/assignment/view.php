@@ -8,7 +8,7 @@ include "../../restricted/functions.php";
 	<h2><?php echo htmlentities($assignment["TITLE"]); ?></h2>
 </div>
 	<div class="object subtext">
-	<p><?php echo ($assignment["DESCRIPTION"] !== "" ? "Description: <p>" . htmlentities($assignment["DESCRIPTION"]) : "No description.");  ?>
+	<p><?php echo ($assignment["DESCRIPTION"] !== "" ? "Description: <pre class='monospace wrap'>" . htmlentities($assignment["DESCRIPTION"]) . "</pre>" : "No description.");  ?>
 </div>
 
 <div class="object subtitle">
