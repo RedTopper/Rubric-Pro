@@ -78,16 +78,23 @@ function fun_listRubrics($classname, $rubrics, $type = "selectable") {
  * $assignments: 2D array output from the database (you must call the database yourself!)
  */
 function fun_listAssignments($classname, $assignments, $type = "selectable", $prependText = "", $rubricNumber = null, $outputDueDate = false) {
-	foreach($assignments as $row) {  ?>
-		<a class="<?php echo $classname;?> object <?php echo $type; ?>" href="#" data-assignmentnum="<?php echo $row["NUM"] ?>"<?php echo ($rubricNumber === null ? "" : " data-rubricnum='$rubricNumber'");?>><div class='arrow'></div>
-			<h3><?php echo $prependText . htmlentities($row["TITLE"]); ?></h3><?php
-			
-			#Format the due date if needed.
-			if($outputDueDate) {
-				$date = explode("-", $row["DUE_DATE"]);
-				echo "<div class='monospace'>" . $date[1] . "/" . $date[2] . "/" . $date[0] . "</div>";
+	foreach($assignments as $row) { ?>
+		<div class="extraoptions">
+			<a class="mainoption <?php echo $classname;?> object <?php echo $type; ?>" href="#" data-assignmentnum="<?php echo $row["NUM"] ?>"<?php echo ($rubricNumber === null ? "" : " data-rubricnum='$rubricNumber'");?>><div class='arrow'></div>
+				<h3><?php echo $prependText . htmlentities($row["TITLE"]); ?></h3><?php
+				
+				#Format the due date if needed.
+				if($outputDueDate) {
+					$date = explode("-", $row["DUE_DATE"]);
+					echo "<div class='monospace'>" . $date[1] . "/" . $date[2] . "/" . $date[0] . "</div>";
+				} ?>
+			</a><?php
+			if($outputDueDate) { ?>
+			<a class="extraoption object create <?php echo $classname ?>_grade" href="#" data-assignmentnum="<?php echo $row["NUM"] ?>"<?php echo ($rubricNumber === null ? "" : " data-rubricnum='$rubricNumber'");?>>
+				<h3>Grade</h3>
+			</a><?php
 			} ?>
-		</a><?php
+		</div><?php
 	}
 }
 

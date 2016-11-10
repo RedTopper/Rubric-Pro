@@ -501,3 +501,18 @@ body {
 	white-space: pre-wrap; 
 	word-wrap: break-word;
 }
+
+.extraoptions {
+	display:  flex;
+}
+.extraoption {
+	width: 90px;
+	border-left: 1px solid #777;
+}
+.extraoption h3 {
+	text-align: center;
+	padding-right: 10px;
+}
+.mainoption {
+	flex-grow: 1;
+}

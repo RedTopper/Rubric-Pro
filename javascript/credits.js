@@ -9,15 +9,15 @@ credits = [
 	[TITLE, "PRODUCTION"],
 	[PERSON, "Aaron Walter", "Rubric Pro Developer", "Support", "Database Manager", "High School Student"],
 	[IMAGE, "images/face.png", "credits_face", "My Face"],
-	[TITLE, "INSPARATION"],
+	[TITLE, "INSPIRATION"],
 	[PERSON, "Mr. Miller", "Computer Science Educator", "Quality Assurance", "Being Awesome"],
 	[TITLE, "BETA TESTERS"],
 	[PERSON, "Ms. Vriezen", "History Teacher"],
 	[PERSON, "Ms. Calder", "English Teacher"],
 	[PERSON, "Ms. Nauman", "Buisness Teacher"],
-	[PERSON, "Ryan Pizzo", "Funny Student", "Best Friend"],
+	[PERSON, "Ryan Pizzo", "Funny Student"],
 	[TITLE, "SECURITY"],
-	[PERSON, "Kurtis Bowen", "Engineering Student", "Hacking into the Mainframe", "Best Friend"],
+	[PERSON, "Kurtis Bowen", "Engineering Student", "Hacking into the Mainframe"],
 	[TITLE, "LIBRARIES"],
 	[LINK, "https://github.com/rstacruz/nprogress", "NProgress", "Loading Bar"],
 	[LINK, "https://jquery.org/team/", "the JQuery Team", "JavaScript Libraries"],
@@ -79,5 +79,5 @@ $(document).on('click', '#js_credits', function(e) {
 		}, 65000, "linear", function() {
 			$("#tier1").off("scroll DOMMouseScroll mousewheel touchmove keyup");
 		});
-	}, 2000);
+	}, 1500);
 });
