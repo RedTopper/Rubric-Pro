@@ -451,6 +451,7 @@ function callServer(tier, path, post, callback) {
 	
 	//procede to next tier.
 	tier = tier + 1;
+	$("#tier" + tier).addClass("gears");
 	params = {AJAX: true};
 	if(post !== undefined) {
 		params = $.extend({}, params, post);
@@ -477,6 +478,7 @@ function callServer(tier, path, post, callback) {
 				callback(parse);
 			}
 			NProgress.done();
+			$("#tier" + tier).removeClass("gears");
 		},
 		error: function(xhr, status, error) {
 			
@@ -488,6 +490,7 @@ function callServer(tier, path, post, callback) {
 				callback(parse);
 			}
 			NProgress.done();
+			$("#tier" + tier).removeClass("gears");
 		}
 	});
 }
@@ -528,10 +531,9 @@ function changeColor(tier, object) {
 	} else {
 		
 		//In a tier, it's fairly modular.
-		$('#tier' + tier).children().each(function () {
-			$(this).removeClass('selectedpath');
-			$(this).removeAttr("select");
-		});
+		var remove = $('#tier' + tier + " .selectedpath");
+		remove.removeClass('selectedpath');
+		remove.removeAttr("select");
 		
 		//Gradient.
 		object.addClass("selectedpath");
@@ -815,13 +817,46 @@ $(document).on('click', '#js_classes', doClass);
 		});
 		return false;
 	});
+		//editor: students
+		$(document).on('click', '.js_assignments_view_link_grade', function(e) {
+			var tier = 2; 
+			log("JQUERY/user", "Classes > Edit > Students");
+			changeColor(tier, $(this));
+			createTier(tier, $(this).parent().find("h3").html());
+			callServer(tier, "/teacher/classes/edit/students.php",
+			{
+				CLASS_NUM: $(".js_classes_edit.selectedpath").data('classnum'),
+				ASSIGNMENT_NUM: $(this).data("assignmentnum")
+			});
+			return false;
+		});
+			//students: grade
+			$(document).on('click', '.js_classes_edit_students_grade', function(e) {
+				var tier = 3; 
+				log("JQUERY/user", "Classes > Edit > Students > Grade");
+				changeColor(tier, $(this));
+				createTier(tier, $(this).find("h3").html());
+				callServer(tier, "/teacher/classes/edit/students/grade.php",
+				{
+					CLASS_NUM: $(".js_classes_edit.selectedpath").data('classnum'),
+					ASSIGNMENT_NUM: $(".js_assignments_view_link_grade.selectedpath").data('assignmentnum'),
+					STUDENT_NUM: $(this).data("studentnum")
+				});
+				return false;
+			});
+				$(document).on('click', ".rubriccell", function(e) {
+					$("#" + $(this).parent().attr("id")).children().each(function() {
+						$(this).removeClass("rubricselected"); 
+					});
+					$(this).addClass("rubricselected"); 
+				});
 		//editor: Click on an assignment link
 		$(document).on('click', '.js_assignments_view_link', function(e) {
 			var tier = 0; 
 			var assignmentNum = $(this).data('assignmentnum');
 			doAssignments("", function(parse){
 				appendServerResponse(tier + 1, parse.html);
-				$("#tier1").children().each(function(){
+				$(".js_assignments_view").each(function(){
 					if($(this).data("assignmentnum") == assignmentNum) {
 						$(this).trigger("click");
 					}
@@ -835,7 +870,7 @@ $(document).on('click', '#js_classes', doClass);
 			var studentNum = $(this).data('studentnum');
 			doAccounts("", function(parse){
 				appendServerResponse(tier + 1, parse.html);
-				$("#tier1").children().each(function(){
+				$(".js_accounts_view").each(function(){
 					if($(this).data("studentnum") == studentNum) {
 						$(this).trigger("click");
 					}

@@ -43,10 +43,11 @@ function fun_listStudents($classname, $students) {
 				echo 
 				htmlentities($row["LAST_NAME"]) . ", " . 
 				htmlentities($row["FIRST_NAME"]) . 
-				htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " ")) .
-				"<br><div class='monospace'>[" . 
-				htmlentities($row["USERNAME"]) . "]</div> "; ?> 
+				htmlentities(($row["NICK_NAME"] !== "" ? " (" . $row["NICK_NAME"] . ") " : " ")); ?> 
 			</h3>
+			<div class='monospace'><?php
+				echo "[" . htmlentities($row["USERNAME"]) . "]";
+			?></div>
 		</a><?php
 	}
 }
@@ -323,5 +324,59 @@ function fun_getCompiledSymbolTree($teacherNum, $num) {
 		}
 	} while(true);
 	return $tree;
+}
+
+function fun_gradeRubric($rubricNum) { 
+	$qualitiesCount = 0;
+	$qualities = sql_getAllQualitiesInRubric($rubricNum, $qualitiesCount);
+	$cells = sql_getAllRubricCells($rubricNum);
+	$criteria = sql_getAllCriteriaInRubric($rubricNum); ?>
+	
+	<table class="rubriceditor">
+		<tr>
+			<th class="corner"></th><?php
+
+			#Print out each quality at the top
+			foreach($qualities as $quality) {
+				echo "<th class='rubricquality'>" . htmlspecialchars($quality["QUALITY_TITLE"]) . "<br>" . $quality["POINTS"] . " points </th>"; 
+			} ?>
+		</tr><?php
+	
+		$intcol = 0;
+		$introw = 0;
+		foreach($cells as $cell) {
+			if($intcol == 0) {
+				
+				#Fetch all of the linked components in the criteria.
+				$trees = sql_getAllCompiledSymbolTreesFromCriteria($criteria[$introw]["NUM"]);
+				
+				#Begin a new column every 0.
+				echo "<tr id='criterianum" . $criteria[$introw]["NUM"] . "' data-criterianum='" . $criteria[$introw]["NUM"] . "'>";
+				
+				#Output the criteria for the row and the components.
+				echo "<th class='rubricside'>"; 
+				echo $criteria[$introw]["CRITERIA_TITLE"];
+				foreach($trees as $tree) {
+					echo "<div class='rubriccriteria' title='" . htmlentities($tree["DESCRIPTION"]) . "'>" . htmlentities($tree["COMPILED_SYMBOL_TREE"]) . "</div>";
+				}
+				echo "</th>";
+				
+				#Go to the next row.
+				$introw++;
+			}
+			
+			#Output all of the data.
+			echo "<td class='rubriccell'>" . htmlentities($cell["CONTENTS"]) . "</td>";
+			
+			#When we hit the end, finish the row and reset the column.
+			if($intcol == $qualitiesCount - 1) {
+				echo "</tr>";
+				$intcol = -1;
+			}
+			
+			#Go to the next column.
+			$intcol++;
+		} ?>
+	</table> <?php
 }
 ?>

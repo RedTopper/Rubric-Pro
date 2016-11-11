@@ -457,6 +457,25 @@ body {
 	border-collapse: collapse;
 	margin: 20px;
 }
+.rubriceditor .rubricside {
+	width: 180px;
+}
+.rubriceditor .rubricquality {
+	width: 140px;
+}
+.rubricselected {
+	box-shadow:0 0 10px #1B96FE inset;
+}
+.rubriceditor td.rubriccell {
+	background-color: #DDD;
+	padding: 10px 20px;
+	font-size: 14px;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
 .rubriceditor td, .rubriceditor tr, .rubriceditor th {
 	border: 1px solid #777;
 	padding: 0;
@@ -515,4 +534,11 @@ body {
 }
 .mainoption {
 	flex-grow: 1;
+}
+
+.gears {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 70px;
+	background-image: url('/images/gears.svg');
 }

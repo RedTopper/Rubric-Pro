@@ -13,7 +13,7 @@ $CLASS_NUM = isset($_POST["CLASS_NUM"]) ? $_POST["CLASS_NUM"] : "";
 
 $class = sql_doesTeacherOwnClass($_SESSION["NUM"], $CLASS_NUM);
 
-#Check to see if there is really a student!
+#Check to see if there is really a class!
 if($class == null) {
 	db_showError("Whoops!", "Something went wrong when requesting that class.", "Check to see if you are the owner of that class, or if your client sent the wrong class ID.", 400);
 }
@@ -84,7 +84,6 @@ if($students == null) {
 		<p>Try adding some through the <a href="#" id="js_accounts" class="floatinglink"><span>Accounts</span></a> tab.
 	</div><?php
 } else {
-	#Display students. Last false means not selectable (as in you cannot click on it)
 	fun_listStudents("js_accounts_view_link", $students); ?>
 	<div class="object subtext">
 		<p>You can add and remove more students through <a href="#" id="js_accounts" class="floatinglink"><span>Accounts</span></a>.
