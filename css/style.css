@@ -415,6 +415,20 @@ body {
 	background-color: #64B8FC;
 	transition: background-color 0.3s ease;
 }
+#points[type="text"],
+#points[type="number"] {
+	display: block;
+	padding: 5px;
+	margin: 10px auto;
+	width: 50px;
+	border: none;
+	border-bottom: solid 4px #c9c9c9;
+}
+#points[type="number"]:focus,
+#points[type="number"].focus {
+	border-bottom: solid 4px #1B96FE;
+	transition: border-bottom 0.3s;
+}
 
 .monospace {
 	font-family: 'Ubuntu Mono', monospace;

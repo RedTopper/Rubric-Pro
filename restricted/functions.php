@@ -340,7 +340,8 @@ function fun_gradeRubric($rubricNum) {
 			foreach($qualities as $quality) {
 				echo "<th class='rubricquality' data-qualitynum='" . $quality["NUM"] . "' data-points='" . $quality["POINTS"] . "'>" . htmlspecialchars($quality["QUALITY_TITLE"]) . "<br>" . $quality["POINTS"] . " points </th>"; 
 			} ?>
-			<th>Leave Comment</td>
+			<th>Leave Comment</th>
+			<th>Manual Entry</th>
 		</tr><?php
 	
 		$intcol = 0;
@@ -371,7 +372,12 @@ function fun_gradeRubric($rubricNum) {
 			
 			#When we hit the end, finish the row and reset the column.
 			if($intcol == $qualitiesCount - 1) { ?>
-				<td><a  href="#" class="js_classes_edit_students_grade_comment comment" data-criterianum="<?php echo $cell["RUBRIC_CRITERIA_NUM"]; ?>">Comment</a></td><?php
+				<td>
+					<a  href="#" class="js_classes_edit_students_grade_comment comment" data-criterianum="<?php echo $cell["RUBRIC_CRITERIA_NUM"]; ?>">Comment</a>
+				</td>
+				<td>
+					<input id="points" type="number" name="POINTS" tabindex="<?php echo $introw; ?>">
+				</td><?php
 				echo "</tr>";
 				$intcol = -1;
 			}

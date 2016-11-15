@@ -39,7 +39,6 @@ if($SEARCH === "") {
 	$students = sql_getAllStudentsBasedOnSearch($_SESSION["NUM"], $LOCATION, $SEARCH);
 }
 
-
 #Output a simple header for searching the database. ?>
 <div class="editor">
 	<input id="js_accounts_search" class="full" type="text" name="SEARCH" placeholder="Filter">
@@ -47,7 +46,6 @@ if($SEARCH === "") {
 <a id="js_accounts_search_username" class="object query" href="#"><h3>Filter by Username</h3></a>
 <a id="js_accounts_search_last" class="object query" href="#"><h3>Filter by Last Name</h3></a>
 <a id="js_accounts_search_first" class="object query" href="#"><h3>Filter by First Name</h3></a><?php 
-
 
 #If we are searching, tell the user what we searched, otherwise just say "Everything"
 if(isset($SEARCH) && $SEARCH !== "") { ?>
@@ -60,10 +58,8 @@ if(isset($SEARCH) && $SEARCH !== "") { ?>
 	</div><?php 
 }
 
-
 #Output a text box so the user can create a new account for a student. ?>
 <a id="js_accounts_create" class="object create" href="#"><div class="arrow"></div><h3>Create new account</h3></a><?php 
-
 
 #Display students
 fun_listStudents("js_accounts_view", $students);

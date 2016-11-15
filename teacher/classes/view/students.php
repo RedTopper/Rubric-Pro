@@ -22,8 +22,7 @@ if($class == null) {
 #Students that belong to this class ?>
 <div class="object subtitle">
 	<h2>Grade who?</h2>
-</div>
-<?php
+</div><?php
 
 #Gets a list of students in a class that belongs to the logged in teacher.
 $students = sql_getAllStudentsInClass($class["NUM"]);

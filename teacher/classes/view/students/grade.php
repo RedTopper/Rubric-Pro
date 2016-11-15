@@ -17,9 +17,8 @@ header("JS-Resize: auto"); ?>
 
  <div class="object subtitle">
 	<h2>Choose your grade:</h2>
-</div>
+</div><?php
 
-<?php
 $rubrics = sql_getAllRubricsInAssignment($_SESSION["NUM"], $ASSIGNMENT_NUM);
 
 if($rubrics == null) { 
@@ -29,4 +28,3 @@ if($rubrics == null) {
 foreach($rubrics as $rubric) {
 	fun_gradeRubric($rubric["NUM"]);
 }
-?>

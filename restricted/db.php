@@ -25,7 +25,7 @@ function db_showError($title = "Error", $header = "An unknown error occured.", $
 </head>
 <body>
 	<div id="login">
-		<img id="logo" src="/images/logo.png" alt="Rubric Pro">
+		<img id="logo" src="/images/logo.svg" alt="Rubric Pro">
 		<h1><?php echo $header; ?></h1>
 		<h2><?php echo $subheader; ?></h2>
 		<a href="/">Back to login page</a>

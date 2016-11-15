@@ -692,7 +692,7 @@ $(document).on('click', '#js_accounts', doAccounts);
 	$(document).on('click', '.js_accounts_view', function(e) {
 		var tier = 1;
 		changeColor(tier, $(this));
-		createTier(tier, "Edit a student");
+		createTier(tier, "View");
 		log("JQUERY/user", "Accounts > View");
 		callServer(tier, "/teacher/accounts/view.php",
 		{
@@ -832,10 +832,10 @@ $(document).on('click', '#js_classes', doClass);
 	//Classes tab: editor
 	$(document).on('click', '.js_classes_edit', function(e) {
 		var tier = 1; 
-		log("JQUERY/user", "Classes > Edit");
+		log("JQUERY/user", "Classes > View");
 		changeColor(tier, $(this));
-		createTier(tier, "Edit this class");
-		callServer(tier, "/teacher/classes/edit.php",
+		createTier(tier, "View");
+		callServer(tier, "/teacher/classes/view.php",
 		{
 			CLASS_NUM: $(this).data('classnum')
 		});
@@ -844,10 +844,10 @@ $(document).on('click', '#js_classes', doClass);
 		//editor: students
 		$(document).on('click', '.js_assignments_view_link_grade', function(e) {
 			var tier = 2; 
-			log("JQUERY/user", "Classes > Edit > Students");
+			log("JQUERY/user", "Classes > View > Students");
 			changeColor(tier, $(this));
 			createTier(tier, $(this).parent().find("h3").html());
-			callServer(tier, "/teacher/classes/edit/students.php",
+			callServer(tier, "/teacher/classes/view/students.php",
 			{
 				CLASS_NUM: $(".js_classes_edit.selectedpath").data('classnum'),
 				ASSIGNMENT_NUM: $(this).data("assignmentnum")
@@ -857,10 +857,10 @@ $(document).on('click', '#js_classes', doClass);
 			//students: grade
 			$(document).on('click', '.js_classes_edit_students_grade', function(e) {
 				var tier = 3; 
-				log("JQUERY/user", "Classes > Edit > Students > Grade");
+				log("JQUERY/user", "Classes > View > Students > Grade");
 				changeColor(tier, $(this));
 				createTier(tier, $(this).find("h3").html());
-				callServer(tier, "/teacher/classes/edit/students/grade.php",
+				callServer(tier, "/teacher/classes/view/students/grade.php",
 				{
 					CLASS_NUM: $(".js_classes_edit.selectedpath").data('classnum'),
 					ASSIGNMENT_NUM: $(".js_assignments_view_link_grade.selectedpath").data('assignmentnum'),

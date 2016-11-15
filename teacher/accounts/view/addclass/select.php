@@ -28,4 +28,4 @@ header("JS-Redirect: removeto1");
 sql_bindStudentToClass($STUDENT_NUM, $CLASS_NUM);
 
 #Show that it's been bound
-db_showError("Ok!", htmlentities($info["FIRST_NAME"]) . " " . htmlentities($info["LAST_NAME"]) . " has been bound to " . htmlentities($class["NAME"]) . ".", "", 201);
+db_showError("Ok!", htmlentities($student["FIRST_NAME"]) . " " . htmlentities($student["LAST_NAME"]) . " has been bound to " . htmlentities($class["NAME"]) . ".", "", 201);

@@ -18,8 +18,8 @@ if($SEARCH === "") {
 	$assignments = sql_getAllAssignments($_SESSION["NUM"]);
 } else {
 	$assignments = sql_getAllAssignmentsBasedOnSearch($_SESSION["NUM"], $SEARCH);
-}
-?>
+} ?>
+
 <div class="editor">
 	<input id="js_assignments_search_box" class="full" type="text" name="SEARCH" placeholder="Filter">
 </div>
@@ -34,12 +34,12 @@ if($SEARCH !== "") { ?>
 	<div class="object subtitle">
 		<h2>All Assignments:</h2>
 	</div><?php 
-}?>
+} ?>
+
 <a id="js_assignment_create" class="object create" href="#">
 	<div class="arrow">
 	</div><h3>Create new assignment</h3>
-</a>
-<?php
+</a><?php
 
 if($assignments === null) { ?>
 	<div class="object subtext">

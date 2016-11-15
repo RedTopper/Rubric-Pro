@@ -23,6 +23,7 @@ $components = null;
 $parent = null;
 
 if($COMPONENT_NUM === null) {
+	
 	#If it's null, request the root elements
 	$components = sql_getAllRootComponents($_SESSION["NUM"]);
 	

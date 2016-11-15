@@ -22,4 +22,3 @@ if($classes === null) { ?>
 } else {
 	fun_listClasses("js_classes_edit", $classes);
 }
-?>
