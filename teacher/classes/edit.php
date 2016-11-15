@@ -37,6 +37,7 @@ if($class == null) {
 
 $currentAssignments = sql_getAllCurrentAssignments($CLASS_NUM);
 if($currentAssignments === null) {
+	
 	#There are no current assignments ?>
 	</div>
 		<div class="object subtext">
@@ -57,6 +58,7 @@ if($currentAssignments === null) {
 
 $pastAssignments = sql_getAllPastAssignments($CLASS_NUM);
 if($pastAssignments === null) {
+	
 	#No past assignments either. ?>
 	<div class="object subtext">
 		<p>No assignments have ever been active in this class.
@@ -78,12 +80,15 @@ if($pastAssignments === null) {
 #Gets a list of students in a class that belongs to the logged in teacher.
 $students = sql_getAllStudentsInClass($class["NUM"]);
 if($students == null) { 
+
 	#There are no students.?>
 	<div class="object subtext">
 		<p>No students belong to this class.
 		<p>Try adding some through the <a href="#" id="js_accounts" class="floatinglink"><span>Accounts</span></a> tab.
 	</div><?php
 } else {
+	
+	#List actual students
 	fun_listStudents("js_accounts_view_link", $students); ?>
 	<div class="object subtext">
 		<p>You can add and remove more students through <a href="#" id="js_accounts" class="floatinglink"><span>Accounts</span></a>.

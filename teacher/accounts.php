@@ -51,13 +51,13 @@ if($SEARCH === "") {
 
 #If we are searching, tell the user what we searched, otherwise just say "Everything"
 if(isset($SEARCH) && $SEARCH !== "") { ?>
-<div class="object subtitle">
-	<h2><?php echo $WHERE . " filter: " . htmlentities($SEARCH); ?></h2>
-</div><?php 
+	<div class="object subtitle">
+		<h2><?php echo $WHERE . " filter: " . htmlentities($SEARCH); ?></h2>
+	</div><?php 
 } else { ?>
-<div class="object subtitle">
-	<h2>All linked student accounts:</h2>
-</div><?php 
+	<div class="object subtitle">
+		<h2>All linked student accounts:</h2>
+	</div><?php 
 }
 
 

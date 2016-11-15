@@ -3,8 +3,8 @@
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
-include "../../restricted/db.php";
-?>
+include "../../restricted/db.php"; ?>
+
 <div class="object subtitle">
 	<a href="#" data-document="MAXPOINTSPERCRITERIA" class="js_help"><img class="help" src="images/help.svg" alt="Help" title="Help"></a>
 	<h2>Information</h2>

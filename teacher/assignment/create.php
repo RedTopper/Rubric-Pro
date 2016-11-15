@@ -3,8 +3,8 @@
 $needsAuthentication = true;
 $needsAJAX = true;
 $needsTeacher = true;
-include "../../restricted/db.php";
-?>
+include "../../restricted/db.php"; ?>
+
 <div class="object subtitle">
 	<h2>Information</h2>
 </div>

@@ -34,7 +34,8 @@ $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen(
 			<div id="sidebar">
 				<p id="name">Crafted with &lt;3 by<br> Aaron Walter</p>
 				<div id="logowrapper">
-					<img id="logo" src="images/logo.png" alt="Rubric Pro">
+					<img id="logo" src="images/logo.svg" alt="Rubric Pro">
+					<p> Rubric Pro</p>
 					<div id="version"><?php echo $version; ?></div>
 				</div>
 				<div id="navigation">

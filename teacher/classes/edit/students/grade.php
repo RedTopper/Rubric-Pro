@@ -15,6 +15,10 @@ $STUDENT_NUM = isset($_POST["STUDENT_NUM"]) ? $_POST["STUDENT_NUM"] : "";
 
 header("JS-Resize: auto"); ?>
 
+ <div class="object subtitle">
+	<h2>Choose your grade:</h2>
+</div>
+
 <?php
 $rubrics = sql_getAllRubricsInAssignment($_SESSION["NUM"], $ASSIGNMENT_NUM);
 
@@ -26,8 +30,3 @@ foreach($rubrics as $rubric) {
 	fun_gradeRubric($rubric["NUM"]);
 }
 ?>
- 
- <div class="object subtext"></div>
- <div class="object subtitle">
-	<h2>Grade Total:</h2>
-</div>

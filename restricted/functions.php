@@ -338,8 +338,9 @@ function fun_gradeRubric($rubricNum) {
 
 			#Print out each quality at the top
 			foreach($qualities as $quality) {
-				echo "<th class='rubricquality'>" . htmlspecialchars($quality["QUALITY_TITLE"]) . "<br>" . $quality["POINTS"] . " points </th>"; 
+				echo "<th class='rubricquality' data-qualitynum='" . $quality["NUM"] . "' data-points='" . $quality["POINTS"] . "'>" . htmlspecialchars($quality["QUALITY_TITLE"]) . "<br>" . $quality["POINTS"] . " points </th>"; 
 			} ?>
+			<th>Leave Comment</td>
 		</tr><?php
 	
 		$intcol = 0;
@@ -366,10 +367,11 @@ function fun_gradeRubric($rubricNum) {
 			}
 			
 			#Output all of the data.
-			echo "<td class='rubriccell'>" . htmlentities($cell["CONTENTS"]) . "</td>";
+			echo "<td class='rubriccell' data-qualitynum='" . $cell["RUBRIC_QUALITY_NUM"] . "' data-criterianum='" . $cell["RUBRIC_CRITERIA_NUM"] . "'>" . htmlentities($cell["CONTENTS"]) . "</td>";
 			
 			#When we hit the end, finish the row and reset the column.
-			if($intcol == $qualitiesCount - 1) {
+			if($intcol == $qualitiesCount - 1) { ?>
+				<td><a  href="#" class="js_classes_edit_students_grade_comment comment" data-criterianum="<?php echo $cell["RUBRIC_CRITERIA_NUM"]; ?>">Comment</a></td><?php
 				echo "</tr>";
 				$intcol = -1;
 			}

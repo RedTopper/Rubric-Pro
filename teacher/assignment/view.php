@@ -2,8 +2,8 @@
 #Libraries.
 $needsFunction = true;
 include "../../restricted/headassignment.php";
-include "../../restricted/functions.php";
-?>
+include "../../restricted/functions.php"; ?>
+
 <div class="object subtitle">
 	<h2><?php echo htmlentities($assignment["TITLE"]); ?></h2>
 </div>

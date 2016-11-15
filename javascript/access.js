@@ -11,6 +11,17 @@ var rubricEditStartText = "";
 //true if the console is being shown.
 var consoleShown = false;
 
+//allowed to set only when data is present on the screen
+var cssWindowSetAllowed = true;
+
+//locked from resetting when loading data.
+var cssWindowStateLocked = false;
+
+//size of the window screen scrollbar.
+var cssWindowSize = 0;
+
+var cssWindowAimationCount = 0;
+
 
 //======================================================================================================
 //======================================= STATIC VARIABLES BELOW =======================================
@@ -98,11 +109,18 @@ function scrollPage() {
 	var delta = innerwidth - $('#contentscroller').outerWidth(false) * RIGHT_SPACE_MULTIPLYER;
 	if(delta < 0) delta = 0;
 	
+	cssWindowStateLocked = false;
+	cssWindowSetAllowed = true;
+	cssWindowAimationCount++;
+	
 	//scroll the page.
 	$('#contentscroller').animate({scrollLeft: delta}, 400, "swing", function() {
-		
+		cssWindowAimationCount--;
 		//we need to remove that temporary padding.
-		$('#content').css("min-width", "");
+		if(!cssWindowStateLocked && cssWindowSetAllowed && cssWindowAimationCount == 0){
+			$('#content').css("min-width", "");
+			cssWindowSize = 0;
+		}
 		
 		//Removing min width may remove a scrollbar!
 		fixDevConsoleHeight();
@@ -182,7 +200,13 @@ function removeToTier(tier) {
 	$('#content').children().each(function() {
 		innerwidth += $(this).outerWidth(true);
 	});
-	$('#content').css("min-width", innerwidth + "px");
+	
+	cssWindowStateLocked = true;
+	if(cssWindowSetAllowed || cssWindowSize < innerwidth) {
+		cssWindowSetAllowed = false;
+		cssWindowSize = innerwidth;
+		$('#content').css("min-width", innerwidth + "px");
+	}
 
 	
 	//remove tiers.

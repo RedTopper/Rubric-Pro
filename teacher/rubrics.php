@@ -18,8 +18,8 @@ if($SEARCH === "") {
 	$rubrics = sql_getAllRubrics($_SESSION["NUM"]);
 } else {
 	$rubrics = sql_getAllRubricsBasedOnSearch($_SESSION["NUM"], $SEARCH);
-}
-?>
+} ?>
+
 <div class="editor">
 	<input id="js_rubrics_search_box" class="full" type="text" name="SEARCH" placeholder="Filter">
 </div>
@@ -27,21 +27,21 @@ if($SEARCH === "") {
 
 #If we are searching, tell the user what we searched, otherwise just say "Everything"
 if($SEARCH !== "") { ?>
-<div class="object subtitle">
-	<h2><?php echo "Filter: " . htmlentities($SEARCH); ?></h2>
-</div><?php 
+	<div class="object subtitle">
+		<h2><?php echo "Filter: " . htmlentities($SEARCH); ?></h2>
+	</div><?php 
 } else { ?>
-<div class="object subtitle">
-	<h2>All Rubrics:</h2>
-</div><?php 
-}?>
+	<div class="object subtitle">
+		<h2>All Rubrics:</h2>
+	</div><?php 
+} ?>
 
 <a id="js_rubrics_create" class="object create" href="#"><div class="arrow"></div><h3>Create new rubric</h3></a><?php
 
 if($rubrics === null) { ?>
-<div class="object subtext">
-	<p>Looks like you don't have any rubrics yet.<br>Try creating one with the button above!</p>
-</div><?php
+	<div class="object subtext">
+		<p>Looks like you don't have any rubrics yet.<br>Try creating one with the button above!</p>
+	</div><?php
 } else {
 	fun_listRubrics("js_rubrics_view", $rubrics);
 }

@@ -47,9 +47,9 @@ body {
 }
 .navicon {
 	display: block;
-	width: 30px;
-	height: 30px;
-	padding: 10px 15px 10px 10px;
+	width: 36px;
+	height: 36px;
+	padding: 7px;
 	margin: 0;
 	float: left;
 }
@@ -423,6 +423,22 @@ body {
 	color: #EEE;
 }
 
+.comment {
+	display: block;
+	text-align: center;
+	margin: 10px auto;
+	color: #EEE;
+	background-color: rgba(27,150,254, 0.5);
+	border: 1px solid #777;
+	width: 70px;
+	padding: 5px 10px;
+	text-decoration: none;
+	font-weight: bold;
+}
+.comment:hover {
+	background-color: rgba(27,150,254, 0.7);
+}
+
 .example {
 	border: 1px solid #777;
 	border-collapse: collapse;
@@ -475,6 +491,7 @@ body {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	width: 140px;
 }
 .rubriceditor td, .rubriceditor tr, .rubriceditor th {
 	border: 1px solid #777;

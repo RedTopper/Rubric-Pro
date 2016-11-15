@@ -42,7 +42,7 @@ function display($login, $error, $success) {
 </head>
 <body>
 	<div id="login">
-		<img id="logo" src="images/logo.png" alt="Rubric Pro">
+		<img id="logo" src="images/logo.svg" alt="Rubric Pro">
 <?php if($login) { ?>
 		<form method="post">
 		  <h2>Username:</h2>
