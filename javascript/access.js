@@ -870,9 +870,66 @@ $(document).on('click', '#js_classes', doClass);
 			});
 				$(document).on('click', ".rubriccell", function(e) {
 					$("#" + $(this).parent().attr("id")).children().each(function() {
-						$(this).removeClass("rubricselected"); 
+						$(this).removeClass("rubricselected scoreisleft scoreisright scoreisbeyond"); 
 					});
-					$(this).addClass("rubricselected"); 
+					clicked = $(this);
+					points = 0;
+					clicked.addClass("rubricselected"); 
+					$(".rubricquality").each(function(){
+						if(clicked.data("qualitynum") == $(this).data("qualitynum")) {
+							points = $(this).data("points");
+						}
+					});
+					$(".points").each(function(){
+						if(clicked.data("criterianum") == $(this).data("criterianum")) {
+							$(this).val(points);
+						}
+					});
+					return false;
+				});
+				$(document).on('change', ".points", function(e) {
+					var changed = $(this);
+					if(!$.isNumeric(changed.val())) return;
+					var changedPoints = Number(changed.val());
+					var cells = [];
+					$(".rubriccell").each(function(){
+						if(changed.data("criterianum") == $(this).data("criterianum")) {
+							var found = $(this);
+							var points = 0;
+							$(".rubricquality").each(function(){
+								if(found.data("qualitynum") == $(this).data("qualitynum")) {
+									points = $(this).data("points");
+								}
+							});
+							cells.push({
+								object: found,
+								value: Number(points)
+							});
+						}
+					});
+					cells.sort(function(a, b){
+						return a.value - b.value;
+					});
+					for(var i = 0; i < cells.length; i++) {
+						if(i == 0) {
+							$("#" + cells[i].object.parent().attr("id")).children().each(function() {
+								$(this).removeClass("rubricselected scoreisleft scoreisright scoreisbeyond"); 
+							});
+						}
+						if(changedPoints <= cells[i].value) {
+							if(changedPoints == cells[i].value || i == 0) {
+								//if it matches
+								cells[i].object.addClass("rubricselected"); 
+								return false;
+							} else {
+								cells[i].object.addClass("rubricselected scoreisleft"); 
+								cells[i-1].object.addClass("rubricselected scoreisright"); 
+								return false;
+							}
+						}
+					}
+					cells[cells.length-1].object.addClass("rubricselected scoreisbeyond"); 
+					return false;
 				});
 		//editor: Click on an assignment link
 		$(document).on('click', '.js_assignments_view_link', function(e) {

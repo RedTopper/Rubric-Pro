@@ -326,7 +326,7 @@ function fun_getCompiledSymbolTree($teacherNum, $num) {
 	return $tree;
 }
 
-function fun_gradeRubric($rubricNum) { 
+function fun_gradeRubric($rubricNum, $offset = 0) { 
 	$qualitiesCount = 0;
 	$qualities = sql_getAllQualitiesInRubric($rubricNum, $qualitiesCount);
 	$cells = sql_getAllRubricCells($rubricNum);
@@ -341,7 +341,7 @@ function fun_gradeRubric($rubricNum) {
 				echo "<th class='rubricquality' data-qualitynum='" . $quality["NUM"] . "' data-points='" . $quality["POINTS"] . "'>" . htmlspecialchars($quality["QUALITY_TITLE"]) . "<br>" . $quality["POINTS"] . " points </th>"; 
 			} ?>
 			<th>Leave Comment</th>
-			<th>Manual Entry</th>
+			<th>Manual Points</th>
 		</tr><?php
 	
 		$intcol = 0;
@@ -373,10 +373,10 @@ function fun_gradeRubric($rubricNum) {
 			#When we hit the end, finish the row and reset the column.
 			if($intcol == $qualitiesCount - 1) { ?>
 				<td>
-					<a  href="#" class="js_classes_edit_students_grade_comment comment" data-criterianum="<?php echo $cell["RUBRIC_CRITERIA_NUM"]; ?>">Comment</a>
+					<a href="#" class="js_classes_edit_students_grade_comment comment" data-criterianum="<?php echo $cell["RUBRIC_CRITERIA_NUM"]; ?>">New</a>
 				</td>
 				<td>
-					<input id="points" type="number" name="POINTS" tabindex="<?php echo $introw; ?>">
+					<input class="points" type="number" name="POINTS" tabindex="<?php echo $introw + $offset; ?>" step="any" min="0" data-criterianum="<?php echo $cell["RUBRIC_CRITERIA_NUM"]; ?>">
 				</td><?php
 				echo "</tr>";
 				$intcol = -1;
@@ -385,6 +385,10 @@ function fun_gradeRubric($rubricNum) {
 			#Go to the next column.
 			$intcol++;
 		} ?>
+		<tr>
+			<th colspan="<?php echo $qualitiesCount + 2; ?>">Subtotal Points:</th>
+			<td class="subtotal"></td>
+		</tr>
 	</table> <?php
+	return $introw;
 }
-?>

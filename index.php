@@ -35,6 +35,7 @@ function display($login, $error, $success) {
 <?php } ?>
 	<link rel="stylesheet" href="css/login.css"> 
 	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet"> 
+	<?php include "./favicons/icon.php" ?>
 	<meta charset="UTF-8">
 	<meta name="author" content="Aaron Walter (2016)">
 	<meta name="description" content="Log in to Rubric Pro.">

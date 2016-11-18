@@ -25,6 +25,7 @@ if($rubrics == null) {
 	db_showError("Whoops!", "There are no rubrics to grade in this assignment", "Try adding a few first!", 500);	
 }
 
+$offset = 0;
 foreach($rubrics as $rubric) {
-	fun_gradeRubric($rubric["NUM"]);
+	$offset = fun_gradeRubric($rubric["NUM"], $offset);
 }

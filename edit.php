@@ -11,16 +11,21 @@ $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen(
 <!DOCTYPE html>
 <head>
 	<title>Rubric Pro</title>
+	<!-- Styles -->
 	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Ubuntu+Mono|Amatic+SC" rel="stylesheet"> 
 	<link rel="stylesheet" href="css/style.css"> 
 	<link rel="stylesheet" href="css/ui.css">
 	<link rel="stylesheet" href="css/tutorial.css">
 	<link rel="stylesheet" href="css/credits.css">
 	<link rel='stylesheet' href='javascript/nprogress.css'/>
+	<!-- Favicons -->
+	<?php include "./favicons/icon.php" ?>
+	<!-- Metadata -->
 	<meta charset="UTF-8">
 	<meta name="author" content="Aaron Walter (2016)">
 	<meta name="description" content="Edit your class rubrics and track progress with Rubric Pro!">
-	<meta name="viewport" content="width=device-width, initial-scale=0.6">
+	<meta name="viewport" content="width=device-width, initial-scale=0.7,maximum-scale=0.7,user-scalable=no">
+	<!-- Javascript -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script src="/javascript/access.js"></script>
@@ -34,7 +39,7 @@ $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen(
 			<div id="sidebar">
 				<p id="name">Crafted with &lt;3 by<br> Aaron Walter</p>
 				<div id="logowrapper">
-					<img id="logo" src="images/logo.svg" alt="Rubric Pro">
+					<img id="logo" src="images/sidebar/logo.svg" alt="Rubric Pro">
 					<div id="version"><?php echo $version; ?></div>
 				</div>
 				<div id="navigation">
@@ -49,6 +54,7 @@ $version = ($version != null ? $version : (file_exists("version") ? fgets(fopen(
 					<a href="mailto:red@rubric.me?subject=Rubric%20Pro%20Feedback&amp;body=Please%20describe%20the%20feedback%2C%20problem%2C%20or%20suggestion%20with%20detail%20here. Thanks%20for%20using%20Rubric%20Pro!" id="js_mail"><img class="navicon" src="images/sidebar/mail.svg"><span>Feedback</span></a>
 					<a href="#" id="js_credits"><img class="navicon" src="images/sidebar/credits.svg"><span>Credits</span></a>
 					<a href="/logout.php"><img class="navicon" src="images/sidebar/logout.svg"><span>Log out</span></a>
+					<div class="smallspacer"></div>
 					<div class="smallspacer"></div>
 				</div>
 			</div>

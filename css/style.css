@@ -73,7 +73,7 @@ body {
 	display: block;
 }
 #logowrapper {
-	padding: 10px;
+	padding: 20px 30px 10px;
 	margin: 3px 0 10px;
 }
 #name {
@@ -415,8 +415,8 @@ body {
 	background-color: #64B8FC;
 	transition: background-color 0.3s ease;
 }
-#points[type="text"],
-#points[type="number"] {
+.points[type="text"],
+.points[type="number"] {
 	display: block;
 	padding: 5px;
 	margin: 10px auto;
@@ -424,8 +424,8 @@ body {
 	border: none;
 	border-bottom: solid 4px #c9c9c9;
 }
-#points[type="number"]:focus,
-#points[type="number"].focus {
+.points[type="number"]:focus,
+.points[type="number"].focus {
 	border-bottom: solid 4px #1B96FE;
 	transition: border-bottom 0.3s;
 }
@@ -444,7 +444,7 @@ body {
 	color: #EEE;
 	background-color: rgba(27,150,254, 0.5);
 	border: 1px solid #777;
-	width: 70px;
+	width: 40px;
 	padding: 5px 10px;
 	text-decoration: none;
 	font-weight: bold;
@@ -487,14 +487,23 @@ body {
 	border-collapse: collapse;
 	margin: 20px;
 }
-.rubriceditor .rubricside {
+.rubriceditor.rubricside {
 	width: 180px;
 }
-.rubriceditor .rubricquality {
+.rubriceditor.rubricquality {
 	width: 140px;
 }
 .rubricselected {
 	box-shadow:0 0 10px #1B96FE inset;
+}
+.rubricselected.scoreisleft {
+	box-shadow: -11px -15px 15px -15px #FF980A inset, -11px 15px 15px -15px #FF980A inset;
+}
+.rubricselected.scoreisright {
+	box-shadow: 11px -15px 15px -15px #FF980A inset, 11px 15px 15px -15px #FF980A inset;
+}
+.rubricselected.scoreisbeyond {
+	box-shadow:0 0 10px #FF980A inset;
 }
 .rubriceditor td.rubriccell {
 	background-color: #DDD;
