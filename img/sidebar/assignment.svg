@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg data-name="Layer 1" version="1.1" viewBox="0 0 677.52 677.52" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>Assignments-transp-fixed</dc:title>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style>.cls-1{fill:#1b96fe;}.cls-1,.cls-2{fill-rule:evenodd;}.cls-2{fill:#fff;}</style>
+ </defs>
+ <title>Assignments-transp-fixed</title>
+ <g>
+  <path d="m29.52 0a29.52 29.52 0 0 0 -29.52 29.52v618.48a29.52 29.52 0 0 0 29.52 29.52h618.48a29.52 29.52 0 0 0 29.52 -29.52v-618.48a29.52 29.52 0 0 0 -29.52 -29.52h-618.48zm120.4 79.199h378.72 0.12305a17.28 17.28 0 0 1 17.262 16.783l0.01758-0.021484v483.84 0.51953l-0.01758-0.02148a17.28 17.28 0 0 1 -17.262 16.781h-0.12305-378.72a17.28 17.28 0 0 1 -17.264 -16.781l-0.01758 0.02148v-0.51953-483.84l0.01758 0.021484a17.28 17.28 0 0 1 17.264 -16.783z" fill="#1b96fe" fill-rule="evenodd"/>
+ </g>
+ <g fill="#1b96fe" fill-rule="evenodd">
+  <path class="cls-1" transform="translate(-20.6,-21.6)" d="m205.16 280.56h319.68a19.44 19.44 0 0 1 0 38.88h-319.68a19.44 19.44 0 0 1 0 -38.88z"/>
+  <path class="cls-1" transform="translate(-20.6,-21.6)" d="m205.88 346.08h319.68a19.44 19.44 0 1 1 0 38.88h-319.68a19.44 19.44 0 0 1 0 -38.88z"/>
+  <path class="cls-1" transform="translate(-20.6,-21.6)" d="m205.88 411.6h319.68a19.44 19.44 0 1 1 0 38.88h-319.68a19.44 19.44 0 0 1 0 -38.88z"/>
+  <path class="cls-1" transform="translate(-20.6,-21.6)" d="m205.16 477.12h319.68a19.44 19.44 0 0 1 0 38.88h-319.68a19.44 19.44 0 0 1 0 -38.88z"/>
+  <path class="cls-1" transform="translate(-20.6,-21.6)" d="m205.88 542.64h319.68a19.44 19.44 0 1 1 0 38.88h-319.68a19.44 19.44 0 0 1 0 -38.88z"/>
+  <path class="cls-1" transform="translate(-20.6,-21.6)" d="m305.24 215h120.24a19.44 19.44 0 0 1 0 38.88h-120.24a19.44 19.44 0 0 1 0 -38.88z"/>
+  <path class="cls-1" transform="translate(-20.6,-21.6)" d="m194.36 138h45.36a19.44 19.44 0 0 1 0 38.88h-45.36a19.44 19.44 0 0 1 0 -38.88z"/>
+ </g>
+</svg>
