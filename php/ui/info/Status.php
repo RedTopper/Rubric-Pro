@@ -1,17 +1,28 @@
 <?php
-namespace ui\info;
+namespace RubricPro\ui\info;
 
 use RubricPro\ui\Json;
-use structure\Code;
+use RubricPro\structure\Code;
 
 class Status extends Json {
 
-	public static final function ERR_DB() {return new Code("Database Connection Failed", 504);}
-	public static final function ERR_SERVER() {return new Code("Internal Server Error", 500);}
-	public static final function ERR_CLIENT() {return new Code("Request Error", 400);}
-	public static final function ERR_TIMEOUT() {return new Code("Session timed out", 400);}
-	public static final function ERR_AUTH() {return new Code("Permission Denied", 403);}
-	public static final function ERR_MISSING() {return new Code("Not Found", 404);}
+	public static final function ERROR_DB()
+	{return new Code(Code::ERROR, 504, "Database Connection Failed");}
+
+	public static final function ERROR_SERVER()
+	{return new Code(Code::ERROR, 500, "Internal Server Error");}
+
+	public static final function ERROR_CLIENT()
+	{return new Code(Code::ERROR, 400, "Request Error");}
+
+	public static final function ERROR_TIMEOUT()
+	{return new Code(Code::ERROR, 400, "Session timed out");}
+
+	public static final function ERROR_AUTH()
+	{return new Code(Code::ERROR, 403, "Permission Denied");}
+
+	public static final function ERROR_MISSING()
+	{return new Code(Code::ERROR, 404, "Not Found");}
 
 	private $error;
 	private $message;
@@ -26,14 +37,18 @@ class Status extends Json {
 	 */
 	public function __construct(Code $error, $message, $hint) {
 		parent::__construct();
+		http_response_code($error->getCode());
 		$this->error = $error;
 		$this->message = $message;
 		$this->hint = $hint;
+		$this->destroy();
+	}
+
+	protected function destroy() {
 		$this->sendJson();
 	}
 
 	protected function compile() {
-		http_response_code($this->error->getCode());
 		$this->addJson("error", $this->error->getMessage());
 		$this->addJson("code", $this->error->getCode());
 		$this->addJson("message", $this->message);
