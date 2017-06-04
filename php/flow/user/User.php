@@ -1,7 +1,7 @@
 <?php
 namespace RubricPro\flow\user;
 
-use \PDO;
+use PDO;
 use RubricPro\ui\Json;
 use RubricPro\ui\info\Status;
 use RubricPro\structure\Key;
@@ -9,7 +9,7 @@ use RubricPro\structure\Key;
 class User extends Json {
 
 	#constants for lengths and such
-	const TIME_DIFFERENCE_MAX = 15 * 60;
+	const TIME_DIFFERENCE_MAX = 15;
 	const PASSWORD_MIN = 7;
 	const PASSWORD_MAX = 60;
 
@@ -26,8 +26,8 @@ class User extends Json {
 	private $user;
 	private $first;
 	private $last;
-	private $type = User::TYPE_NOBODY;
 	private $time;
+	private $type = User::TYPE_NOBODY;
 
 	public function __construct(PDO $db) {
 		parent::__construct();
@@ -56,6 +56,9 @@ class User extends Json {
 		$this->first = $row["FIRST_NAME"];
 		$this->last = $row["LAST_NAME"];
 		$this->time = time();
+
+		#save data
+		session_start();
 		$this->save();
 
 		new Login(Login::SUCCESS_LOGIN(),
@@ -116,16 +119,20 @@ class User extends Json {
 	}
 
 	public function fromSession() {
+
+		#recall session
+		session_start();
 		$this->fetch();
 
 		#check if the user is timed out
-		if($this->time > time() + User::TIME_DIFFERENCE_MAX) {
+		if($this->time + User::TIME_DIFFERENCE_MAX < time()) {
 			new Status(Status::ERROR_TIMEOUT(),"Your session timed out.","Please return to the login page.");
 			return false;
 		}
 
 		#update time per request
 		$this->time = time();
+		$this->save();
 
 		#check if the user still exists
 		if($this->getUser($this->user) === null) {
@@ -137,7 +144,6 @@ class User extends Json {
 	}
 
 	private function getUser($user) {
-
 		#check from teachers table
 		$stmt = $this->db->prepare("SELECT NUM, USERNAME, PASSWORD, FIRST_NAME, LAST_NAME FROM TEACHER WHERE USERNAME = :username");
 		$stmt->execute(['username' => $user]);
@@ -164,9 +170,23 @@ class User extends Json {
 		return null;
 	}
 
-	private function fetch() {
-		#recall session
+	public function logout() {
 		session_start();
+		$this->fetch();
+		$user = $this->user;
+		$this->terminate();
+		new Login(Login::SUCCESS_LOGOUT(),
+			"You have been logged out!", "You can now log in.", $user);
+	}
+
+	private function fetch() {
+
+		#check if session exists
+		if(!isset($_SESSION[Key::NUM])) {
+			new Status(Status::ERROR_AUTH(),"You are not logged in!","Please return to the login page.");
+		}
+
+		#recall session. Needs to be started prior to calling method!
 		$this->num = $_SESSION[Key::NUM];
 		$this->user = $_SESSION[Key::USER];
 		$this->first = $_SESSION[Key::FIRST];
@@ -175,8 +195,8 @@ class User extends Json {
 	}
 
 	private function save() {
-		#Initialize session
-		session_start();
+
+		#Initialize session. Needs to be started prior to calling method!
 		$_SESSION[Key::NUM] = $this->num;
 		$_SESSION[Key::USER] = $this->user;
 		$_SESSION[Key::FIRST] = $this->first;
@@ -184,13 +204,15 @@ class User extends Json {
 		$_SESSION[Key::TIME] = $this->time;
 	}
 
-	public function terminate() {
-		session_start();
+	private function terminate() {
+
+		#Erases data and destroys the session. It's like the user was never here!
 		$this->num = 0;
 		$this->user = "";
 		$this->first = "";
 		$this->last = "";
 		$this->time = 0;
+		$this->save();
 		session_destroy();
 	}
 
