@@ -8,8 +8,8 @@ class Button extends Paragraph {
 	private $title;
 	private $data = [];
 
-	public function __construct($title, $para, $uri) {
-		parent::__construct($para);
+	public function __construct($title, $body, $uri) {
+		parent::__construct($body);
 		$this->title = $title;
 		$this->uri = $uri;
 	}

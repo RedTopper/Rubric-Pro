@@ -6,13 +6,13 @@ use RubricPro\ui\Json;
 class Paragraph extends Json {
 	private $body = [];
 
-	public function __construct($para) {
+	public function __construct($body) {
 		parent::__construct();
-		array_push($this->body, $para);
+		array_push($this->body, $body);
 	}
 
-	public function addParagraph($para) {
-		array_push($this->body, $para);
+	public function addParagraph($body) {
+		array_push($this->body, $body);
 	}
 
 	protected function compile() {
