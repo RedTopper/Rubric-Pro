@@ -2,8 +2,10 @@
 namespace RubricPro\flow\user;
 
 use PDO;
+use RubricPro\flow\status\message\Change;
+use RubricPro\flow\status\message\Error;
+use RubricPro\flow\status\message\Success;
 use RubricPro\ui\Json;
-use RubricPro\ui\info\Status;
 use RubricPro\structure\Key;
 
 class User extends Json {
@@ -39,15 +41,13 @@ class User extends Json {
 
 		#If the database says "CHANGE", then the user needs to set their password before they log in.
 		if($row["PASSWORD"] === "CHANGE") {
-			new Login(Login::CHANGE_FIRST_TIME(),
-				"You need to change your password before you can log in.", "Please do that.", $row["USERNAME"]);
+			Change::FIRST_TIME($row["USERNAME"]);
 			return false;
 		}
 
 		#Verify password
 		if(!(password_verify($password, $row["PASSWORD"]))) {
-			new Login(Login::ERROR_USERNAME_PASSWORD_WRONG(),
-				"Your username or password is incorrect.", "Try again.", $row["USERNAME"]);
+			Error::USERNAME_PASSWORD_WRONG($row["USERNAME"]);
 			return false;
 		}
 
@@ -61,8 +61,7 @@ class User extends Json {
 		session_start();
 		$this->save();
 
-		new Login(Login::SUCCESS_LOGIN(),
-			"You are now logged in!", "Enjoy!", $row["USERNAME"]);
+		Success::LOGIN($row["USERNAME"]);
 		return true;
 	}
 
@@ -70,29 +69,25 @@ class User extends Json {
 		$row = $this->getUser($username);
 
 		if($row["PASSWORD"] !== "CHANGE") {
-			new Login(Login::ERROR_NO_CHANGE(),
-				"You do not need to change your password! Nice try.", "Please return to the login page.", $row["USERNAME"]);
+			Error::NO_PASSWORD_CHANGE($row["USERNAME"]);
 			return false;
 		}
 
 		#Password length can't be too short
 		if(strlen($password) < User::PASSWORD_MIN) {
-			new Login(Login::ERROR_PASSWORD_SHORT(),
-				"Your password needs to be at least " . User::PASSWORD_MIN . " characters!", "Choose a longer password!", $row["USERNAME"]);
+			Error::PASSWORD_SHORT($row["USERNAME"]);
 			return false;
 		}
 
 		#Password length can't be too long. If it is, BCRYPT does some really weird stuff.
 		if(strlen($password) > User::PASSWORD_MAX) {
-			new Login(Login::ERROR_PASSWORD_LONG(),
-				"Your password needs to be less than " . User::PASSWORD_MAX . " characters!", "Choose a shorter password!", $row["USERNAME"]);
+			Error::PASSWORD_LONG($row["USERNAME"]);
 			return false;
 		}
 
 		#Check if the passwords match
 		if($password !== $passwordRetype) {
-			new Login(Login::ERROR_PASSWORD_CHANGE_MISMATCH(),
-				"The password retype field is different than the first password!", "Try again.", $row["USERNAME"]);
+			Error::PASSWORD_CHANGE_MISMATCH($row["USERNAME"]);
 			return false;
 		}
 
@@ -106,15 +101,13 @@ class User extends Json {
 		} else if($this->type === User::TYPE_STUDENT){
 			$stmt = $this->db->prepare("UPDATE STUDENT SET PASSWORD = :password WHERE NUM = :num");
 		} else {
-			new Login(Login::ERROR_SERVER(),
-				"Something bad happened. Action prevented.", "Try again.", $row["USERNAME"]);
+			Error::SERVER();
 			return false;
 		}
 
 		$hashword = password_hash($password, PASSWORD_BCRYPT, $options);
 		$stmt->execute(['password' => $hashword, 'num' => $row["NUM"]]);
-		new Login(Login::SUCCESS_CHANGED(),
-			"Your password was changed!", "You can now log in.", $row["USERNAME"]);
+		Success::PASSWORD_CHANGED($row["USERNAME"]);
 		return true;
 	}
 
@@ -126,7 +119,7 @@ class User extends Json {
 
 		#check if the user is timed out
 		if($this->time + User::TIME_DIFFERENCE_MAX < time()) {
-			new Status(Status::ERROR_TIMEOUT(),"Your session timed out.","Please return to the login page.");
+			Error::TIMEOUT();
 			return false;
 		}
 
@@ -136,11 +129,19 @@ class User extends Json {
 
 		#check if the user still exists
 		if($this->getUser($this->user) === null) {
-			new Status(Status::ERROR_AUTH(),"Your account was deleted.","Sorry about that :(");
+			Error::DELETED();
 			return false;
 		}
 
 		return true;
+	}
+
+	public function logout() {
+		session_start();
+		$this->fetch();
+		$user = $this->user;
+		$this->terminate();
+		Success::LOGOUT($user);
 	}
 
 	private function getUser($user) {
@@ -164,26 +165,16 @@ class User extends Json {
 			return $row;
 		}
 
-		new Login(Login::ERROR_USERNAME_PASSWORD_WRONG(),
-			"Your username or password is incorrect.", "Try again.", $row["USERNAME"]);
+		Error::USERNAME_PASSWORD_WRONG($user);
 		$this->type = User::TYPE_NOBODY;
 		return null;
-	}
-
-	public function logout() {
-		session_start();
-		$this->fetch();
-		$user = $this->user;
-		$this->terminate();
-		new Login(Login::SUCCESS_LOGOUT(),
-			"You have been logged out!", "You can now log in.", $user);
 	}
 
 	private function fetch() {
 
 		#check if session exists
 		if(!isset($_SESSION[Key::NUM])) {
-			new Status(Status::ERROR_AUTH(),"You are not logged in!","Please return to the login page.");
+			Error::AUTHENTICATION();
 		}
 
 		#recall session. Needs to be started prior to calling method!
