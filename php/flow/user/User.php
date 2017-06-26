@@ -36,7 +36,7 @@ class User extends Json {
 		$this->db = $db;
 	}
 
-	public function fromLogin($username, $password) {
+	public function fromPassword($username, $password) {
 		$row = $this->getUser($username);
 
 		#If the database says "CHANGE", then the user needs to set their password before they log in.

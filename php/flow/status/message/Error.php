@@ -73,6 +73,15 @@ class Error {
 		"Sorry about that :("))->sendJson();
 	}
 
+	public static final function INCORRECT_TOKEN() {
+		(new Code(
+		self::ERROR,
+		400,
+		"Incorrect Token",
+		"No token was sent with this request. Please try again.",
+		"Blocked for account security."))->sendJson();
+	}
+
 	#login error messages
 	public static final function NO_PASSWORD_CHANGE($username) {
 		(new Login(

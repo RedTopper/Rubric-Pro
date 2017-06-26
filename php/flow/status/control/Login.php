@@ -5,8 +5,8 @@ class Login extends Code {
 
 	private $username;
 
-	public function __construct($type, $httpCode, $title, $message, $hint, $username) {
-		parent::__construct($type, $httpCode, $title, $message, $hint);
+	public function __construct($status, $http, $title, $message, $hint, $username) {
+		parent::__construct($status, $http, $title, $message, $hint);
 		$this->username = $username;
 	}
 
